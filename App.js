@@ -1,8 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 
 import React, { Component } from 'react';
 import {
@@ -13,45 +8,36 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
+import TabNavigator from 'react-native-tab-navigator';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Con1 from './component/Con1'
+import Con2 from './component/Con2'
 
-class Blink extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { showText: true };
 
-    // 每1000毫秒对showText状态做一次取反操作
-    setInterval(() => {
-      this.setState(previousState => {
-        return { showText: !previousState.showText };
-      });
-    }, 1000);
-  }
-
-  render() {
-    // 根据当前showText的值决定是否显示text内容
-    let display = this.state.showText ? this.props.text : ' ';
-    return (
-      <Text>{display}</Text>
-    );
-  }
-}
 export default class App extends Component<{}> {
+  state = {
+    selectedTab:'Home'
+  }
+  _renderTabar = (selectedTab,Component) => {
+    return (
+      <TabNavigator.Item 
+        selected={this.state.selectedTab === selectedTab}
+        title={selectedTab}
+        onPress={() => this.setState({ selectedTab: selectedTab })}
+      >
+        <Component />
+      </TabNavigator.Item>
+    )
+  }
   render() {
     return (
-      <ScrollView>
-         <Text style={{fontSize:36}}>毛不易</Text>
-         <Image source={require('./img/1.jpg')} />
-         <Image source={require('./img/1.jpg')} />
-         <Image source={require('./img/1.jpg')} />
-         <Image source={require('./img/1.jpg')} />
-         <Image source={require('./img/1.jpg')} />
-         <Text style={{fontSize:40}}>巨星不易</Text>
-         <Image source={require('./img/1.jpg')} />
-         <Image source={require('./img/1.jpg')} />
-         <Image source={require('./img/1.jpg')} />
-         <Image source={require('./img/1.jpg')} />
-         <Image source={require('./img/1.jpg')} />
-       </ScrollView>
+      <TabNavigator>
+        {this._renderTabar('Home',Con1)}
+        {this._renderTabar('Find',Con2)}
+        {this._renderTabar('+',Con1)}
+        {this._renderTabar('collection',Con2)}
+        {this._renderTabar('mine',Con2)}
+      </TabNavigator>
     );
   }
 }
