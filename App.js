@@ -10,8 +10,11 @@ import {
 } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Con1 from './component/Con1'
-import Con2 from './component/Con2'
+import Con1 from './component/Con1';
+import Con2 from './component/Con2';
+import New from './component/New';
+import Mine from './component/Mine';
+import Head from './component/Head';
 
 
 export default class App extends Component<{}> {
@@ -32,11 +35,11 @@ export default class App extends Component<{}> {
   render() {
     return (
       <TabNavigator>
-        {this._renderTabar('Home',Con1)}
+        {this._renderTabar('Home',New)}
         {this._renderTabar('Find',Con2)}
-        {this._renderTabar('+',Con1)}
+        {this._renderTabar('+',Head)}
         {this._renderTabar('collection',Con2)}
-        {this._renderTabar('mine',Con2)}
+        {this._renderTabar('mine',Mine)}
       </TabNavigator>
     );
   }
