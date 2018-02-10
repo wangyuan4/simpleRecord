@@ -3,7 +3,6 @@ import{ StyleSheet,ScrollView, Image, Text, View, TextInput, Button, FlatList} f
 import {Actions} from 'react-native-router-flux';
 import Swipeout from 'react-native-swipeout'
 import Icon from 'react-native-vector-icons/Ionicons';
-import MarkdownEditor from './/MarkdownEditor';
 import Input from './searchBar';
 
 
@@ -23,7 +22,7 @@ export default class FileList extends Component <{}> {
   share = () => {
   }
   render() {
-      const {data,title,searchVal} = this.props;
+      const {data,title,searchVal,backBtn,addMean} = this.props;
       const cpn = (
         <View style={styles.shareDel}>
           <Icon name='md-share' color='white' size={15}/>
@@ -39,12 +38,16 @@ export default class FileList extends Component <{}> {
       return(
         <View>
           <View style={styles.head} >
-            <View style={styles.hV1}></View>
+            <View style={styles.hV1}>{backBtn && <Icon name='ios-arrow-back' color='white' size={20} onPress={() => Actions.pop()}/>}</View>
             <View style={[styles.hV1,{marginRight:50}]}>
               <Text style={styles.word} >{title}</Text>
             </View>
             <View marginRight={10}>
-              <Icon name="md-add" color='white' size={20}  onPress={() => Actions.MarkdownEditor()}/>
+              {
+                addMean === 'md' 
+                ? <Icon name="md-add" color='white' size={20}  onPress={() => Actions.MarkdownEditor()}/>
+                : <Icon name='md-qr-scanner' color='white' size={20} />
+              }
             </View>
           </View>
           <View style={styles.search} >
@@ -81,7 +84,8 @@ const styles = StyleSheet.create({
     flex:1,
     flexDirection:'column',
     justifyContent:'center',
-    marginRight:20
+    marginRight:20,
+    paddingLeft:10
   },
   word:{
     color:'white'

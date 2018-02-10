@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import FileList from '../Component/FileList';
 
 
-export default class WorkFiles extends Component <{}> {
+export default class FriendsList extends Component <{}> {
   constructor(props){
     super(props)
     this.state = {
@@ -21,28 +21,28 @@ export default class WorkFiles extends Component <{}> {
   render() {
       const data = [
         {
-          title:'md1',
+          title:'friend1',
           key:1
         },
         {
-          title:'md1',
+          title:'friend2',
           key:2
         },
         {
-          title:'md1',
+          title:'friend3',
           key:3
         },
         {
-          title:'md1',
+          title:'friend4',
           key:4
         }
       ]
       return (<FileList
                 data={data}
-                title='workRecord'
+                title='myFriends'
                 searchVal={this.searchVal}
-                backBtn={false}
-                addMean='md'
+                backBtn={true}
+                addMean='scan'
               />);
   }
 }

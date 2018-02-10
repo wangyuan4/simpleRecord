@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View,TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {Actions} from 'react-native-router-flux';
 
 export default class Mine extends Component <{}> {
 	render() {
@@ -12,6 +14,18 @@ export default class Mine extends Component <{}> {
 				</View>
         <View style={styles.item}>
           <Text style={styles.itemTitle}>User Name</Text>
+        </View>
+        <View style={styles.item}>
+          <TouchableOpacity style={styles.friendBtn}  onPress={() => Actions.jump('FriendsList')}>
+            <Text style={styles.itemTitle}>Friends</Text>
+            <Icon name='ios-arrow-forward' size={18}/>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.item}>
+          <TouchableOpacity style={styles.friendBtn}>
+            <Text style={styles.itemTitle}>User manual</Text>
+            <Icon name='ios-arrow-forward' size={18}/>
+          </TouchableOpacity>
         </View>
 			</View>
 		);
@@ -36,10 +50,18 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
     marginTop:25,
     height:50,
-    justifyContent:'center'
+    flexDirection:'row',
+    alignItems:'center',
+    paddingLeft:30,
+    paddingRight:30
+  },
+  friendBtn:{
+    flex:1,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'space-between'
   },
   itemTitle:{
-    marginLeft:30,
     fontSize:16
   }
 });

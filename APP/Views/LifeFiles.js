@@ -41,6 +41,8 @@ export default class LifeFiles extends Component <{}> {
                 data={data}
                 title='LifeRecord'
                 searchVal={this.searchVal}
+                backBtn={false}
+                addMean='md'
               />);
   }
 }
