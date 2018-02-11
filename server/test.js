@@ -10,7 +10,7 @@ var connection = mysql.createConnection({
  
 connection.connect();
  
-var  sql = 'SELECT * FROM user';
+var  sql = 'SELECT * FROM user where user_name = "admin"';
 //查
 connection.query(sql,function (err, result) {
 	if(err){
@@ -19,7 +19,7 @@ connection.query(sql,function (err, result) {
 	}
  
 	console.log('--------------------------SELECT----------------------------');
-	console.log(result[0].user_id);
+	console.log(result.user_id);
 	console.log('------------------------------------------------------------\n\n');  
 });
  

@@ -27,6 +27,11 @@ export default class Mine extends Component <{}> {
             <Icon name='ios-arrow-forward' size={18}/>
           </TouchableOpacity>
         </View>
+        <View style={styles.item}>
+          <TouchableOpacity style={styles.friendBtn}>
+            <Text style={styles.itemTitle}>Sign Out</Text>
+          </TouchableOpacity>
+        </View>
 			</View>
 		);
 	}
