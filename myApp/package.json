@@ -1,0 +1,40 @@
+{
+  "name": "myApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "babel-preset-react-native": "2.1.0",
+    "diff": "^3.4.0",
+    "eslint": "^4.16.0",
+    "global": "^4.3.2",
+    "gradle": "^1.0.9",
+    "react": "^16.2.0",
+    "react-native": "0.54.2",
+    "react-native-cli": "^2.0.1",
+    "react-native-markdown-editor": "^1.0.1",
+    "react-native-router-flux": "^4.0.0-beta.28",
+    "react-native-simple-markdown": "^1.1.0",
+    "react-native-swipe-list-view": "^1.0.6",
+    "react-native-swipeout": "^2.3.3",
+    "react-native-tab-navigator": "^0.3.4",
+    "react-native-vector-icons": "^4.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.16.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-react": "^7.6.1",
+    "eslint-plugin-standard": "^3.0.1",
+    "jest": "22.0.4",
+    "react-test-renderer": "16.0.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

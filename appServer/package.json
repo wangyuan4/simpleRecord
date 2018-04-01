@@ -1,0 +1,21 @@
+{
+  "name": "appserver",
+  "version": "1.0.0",
+  "description": "myApp server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "wang",
+  "license": "ISC",
+  "dependencies": {
+    "babel-loader": "^7.1.3",
+    "babel-preset-es2015": "^6.24.1",
+    "diff": "^3.4.0",
+    "koa": "^2.5.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.4.0",
+    "lodash": "^4.17.5",
+    "mysql": "^2.15.0"
+  }
+}
