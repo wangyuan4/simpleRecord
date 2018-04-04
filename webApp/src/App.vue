@@ -3,7 +3,7 @@
     <!-- <x-header></x-header> -->
     <router-view></router-view>
     <tabbar>
-      <tabbar-item selected link="/">
+      <tabbar-item selected link="/note/add">
         <!-- <img slot="icon" src="../assets/demo/icon_nav_article.png"> -->
         <span slot="label">添加笔记</span>
       </tabbar-item>
@@ -27,6 +27,9 @@ export default {
     XHeader,
     Tabbar,
     TabbarItem
+  },
+  beforeCreate(){
+    this.$router.push({path:'/note/add'})
   }
 }
 </script>

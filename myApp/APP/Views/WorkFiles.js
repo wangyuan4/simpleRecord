@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import List from '../Component/List';
 import {fetchJSONByPost, fetchJSONByGet} from '../utils/ajax';
 import { Actions } from 'react-native-router-flux';
-import {fileInfoTran} from '../utils/dataTran'
+import {fileInfoTran} from '../utils/dataTran';
+import {getValue} from '../../storage'
 
 
 export default class WorkFiles extends Component <{}> {
@@ -20,16 +21,25 @@ export default class WorkFiles extends Component <{}> {
   }
   shareFile = () => {
   }
-  deleteFile = () => {
-
+  deleteFile = (id) => {
+    const body = {
+      userId:global.user.id,
+      fileId:id
+    }
+    fetchJSONByPost('deleteFile')(body)
+    .then(res => res.json())
+    .then(res => {
+      res && this.searchLifeFiles()
+    })
   }
   editFile = (item) => {
     Actions.MarkdownEditor({
       file:item,
-      saveFile:this.props.saveFile
+      saveFile:this.saveFile
     })
   }
   saveFile = (title,content,fileId) => {
+    console.log(fileId)
     const body = {
       id:global.user.id,
       title,
@@ -37,11 +47,19 @@ export default class WorkFiles extends Component <{}> {
       type:0,
       fileId
     }
-    const result = fetchJSONByPost('addFile')(body)
-    result ? Actions.App() : ''
-
+    fetchJSONByPost('addFile')(body)
+    .then(res => res.json())
+    .then(res => {
+      console.log(res)
+      res ? Actions.App() : console.log(res)
+    })
   }
   searchWorkFiles = () => {
+    getValue('userInfo',(res) => {
+      console.log(res)
+    },(eb => {
+      console.log(eb)
+    }))
     const query = {
       id:global.user.id,
       type:0

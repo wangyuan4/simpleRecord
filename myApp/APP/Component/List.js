@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import{ StyleSheet, Text, View} from 'react-native';
+import{ StyleSheet, Text, View, Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Input from './searchBar';
@@ -20,13 +20,18 @@ export default class List extends Component <{}> {
       visible:true
     })
   }
+  deleteFile = (id) => {
+    this.props.deleteFile(item.id)
+  }
   swipeoutBtns = (item) => {
     return ([
       {
         component:(
           <View style={styles.shareDel}>
             <Icon name='md-share' color='white' size={15} onPress={() => this.props.shareFile(item.id)}/>
-            <Icon name='md-trash' color='white' size={15} onPress={() => this.props.deleteFile(item.id)}/>
+            <Icon name='md-trash' color='white' size={15} onPress={() => {
+              Alert.alert()
+            }}/>
           </View>
         ),
         backgroundColor:'#6f8fa8'
@@ -87,7 +92,9 @@ const styles = StyleSheet.create({
     flex:1,
 		flexDirection: 'row',
 		alignItems:'center',
-		justifyContent:'space-between'
+    justifyContent:'space-between',
+    paddingLeft:20,
+    paddingRight:20
   },
   word:{
     color:'white'

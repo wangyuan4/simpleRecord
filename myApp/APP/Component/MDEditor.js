@@ -15,7 +15,7 @@ export default class MDEditor extends Component <{}>{
 	render () {
 		const {saveFile,file} = this.props;
 		const {title,content} = this.state;
-		const fileId = file ? file.file_id : false;
+		const fileId = file ? file.id : '';
 		return (
 			<View style={styles.container}>
 				<View style={styles.navBar}>
@@ -29,7 +29,7 @@ export default class MDEditor extends Component <{}>{
 					</View>
 				</View>
 				<View>
-					<TextInput  style={{paddingLeft:20}} placeholder='Title' value={file ? file.title : undefined} onChangeText={(title) => this.setState({title})}/>
+					<TextInput  style={{paddingLeft:20}} placeholder='Title' defaultValue={file ? file.title : undefined} onChangeText={(title) => this.setState({title})}/>
 				</View>
 				<MarkdownEditor onMarkdownChange={(content) => this.setState({content})}  text={file ? file.content : undefined}/>
 			</View>

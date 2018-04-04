@@ -4739,6 +4739,21 @@ react-devtools-core@3.1.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
+react-native-audio@^4.0.0:
+  version "4.0.0"
+  resolved "http://registry.npm.taobao.org/react-native-audio/download/react-native-audio-4.0.0.tgz#e263c7711150de37b013741eeb2ede37941d3011"
+
+react-native-barcodescanner@^3.1.1:
+  version "3.1.1"
+  resolved "http://registry.npm.taobao.org/react-native-barcodescanner/download/react-native-barcodescanner-3.1.1.tgz#99cdc4e89caac8ac6d5fd844fb6b72b9c4485928"
+
+react-native-camera@^1.0.3:
+  version "1.0.3"
+  resolved "http://registry.npm.taobao.org/react-native-camera/download/react-native-camera-1.0.3.tgz#bb255a3e24659c7da6f36138d0fc1e49ae34c127"
+  dependencies:
+    lodash "^4.17.4"
+    prop-types "^15.5.10"
+
 react-native-cli@^2.0.1:
   version "2.0.1"
   resolved "http://registry.npm.taobao.org/react-native-cli/download/react-native-cli-2.0.1.tgz#f2cd3c7aa1b83828cdfba630e2dfd817df766d54"
@@ -4796,6 +4811,14 @@ react-native-simple-markdown@^1.1.0:
   dependencies:
     lodash "^4.15.0"
     simple-markdown "git://github.com/CharlesMangwa/simple-markdown.git"
+
+react-native-sound@^0.10.9:
+  version "0.10.9"
+  resolved "http://registry.npm.taobao.org/react-native-sound/download/react-native-sound-0.10.9.tgz#6b00b0f4afd017cde09fbb9d171df1b5d5b851a8"
+
+react-native-storage@^0.2.2:
+  version "0.2.2"
+  resolved "http://registry.npm.taobao.org/react-native-storage/download/react-native-storage-0.2.2.tgz#4449197f122b2da0650e3704e1f050260ed58d9f"
 
 react-native-swipe-list-view@^1.0.6:
   version "1.0.6"

@@ -5,6 +5,7 @@ import {View,Text,TouchableHighlight,StyleSheet, TextInput, TouchableOpacity,Ale
 import TextIpt from '../Component/TextIpt';
 import {fetchJSONByGet, fetchJSONByPost} from '../utils/ajax';
 import {userInfoTran} from '../utils/dataTran'
+import {setValue,getValue} from '../../storage'
 
 export default class Login extends Component <{}> {
   constructor(props){
@@ -23,6 +24,7 @@ export default class Login extends Component <{}> {
     .then(res => res.json())
     .then(res => {
       if(res.status){
+        // setValue('userInfo',userInfoTran(res.data,true))
         global.user = userInfoTran(res.data,true)
         Actions.App();
       }else{

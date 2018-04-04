@@ -115,8 +115,8 @@ export default class MarkdownEditor extends React.Component {
 
   render() {
     const WrapperView = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
-    const { Formats, markdownButton } = this.props;
-    const { text, selection, showPreview } = this.state;
+    const { Formats, markdownButton ,text} = this.props;
+    const { selection, showPreview } = this.state;
     return (
       <WrapperView behavior="padding" style={styles.screen}>
         <TextInput
@@ -125,7 +125,7 @@ export default class MarkdownEditor extends React.Component {
           underlineColorAndroid="transparent"
           onChangeText={this.changeText}
           onSelectionChange={this.onSelectionChange}
-          value={text}
+          defaultValue={text || undefined}
           placeholder={'Write a long message'}
           ref={textInput => (this.textInput = textInput)}
           selection={selection}
