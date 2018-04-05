@@ -1,6 +1,10 @@
 <template>
   <div>
-    <input type="file" accept="image/*" capture="camera">
+		<div></div>
+		<div>
+			
+		</div>
+    <!-- <input type="file" accept="image/*" capture="camera"> -->
   </div>
 </template>
 
