@@ -1,17 +1,12 @@
 <template>
   <div>
-    <input type="file" accept="image/*" capture="camera">
+mine
   </div>
 </template>
 
-
 <script>
-import Icon from 'vue-awesome'
-export default {
-  components: {
-    Icon
+  export default {
   }
-}
 </script>
 
 <style scoped>

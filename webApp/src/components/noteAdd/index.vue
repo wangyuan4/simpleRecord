@@ -2,8 +2,7 @@
   <div>
     <div style="margin: 10px;overflow: hidden;" v-for="(item, index) in list" :key="index">
       <masker style="border-radius: 2px;" @click.native="onClickMask(item)">
-        <!-- <div class="m-img" :style="{backgroundImage: 'url(' + item.img + ')'}"></div> -->
-        <div class="m-img"></div>
+        <div class="m-img" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
         <div slot="content" class="m-title">
           {{item.title}}
           <br/>
@@ -23,17 +22,22 @@ export default {
         title: '新建笔记',
         desc: '输入文字以创建笔记',
         target: 'input',
-        img: 'https://cdn.xiaotaojiang.com/uploads/82/1572ec37969ee263735262dc017975/_.jpg'
+        img: require('@/assets/note-add-input.jpg')
+      }, {
+        title: '新建MarkDown',
+        desc: '以markdown的形式创建笔记',
+        target: 'markdown',
+        img: require('@/assets/note-add-input.jpg')
       }, {
         title: '文档扫描',
         desc: '使用摄像头对文档进行扫描',
         target: 'scan',
-        img: 'https://cdn.xiaotaojiang.com/uploads/59/b22e0e62363a4a652f28630b3233b9/_.jpg'
+        img: require('@/assets/note-add-scan.jpg')
       }, {
         title: '上传文件',
         desc: '输入文字以创建笔记',
         target: 'uploadFile',
-        img: 'https://cdn.xiaotaojiang.com/uploads/56/4b3601364b86fdfd234ef11d8712ad/_.jpg'
+        img: require('@/assets/note-add-upload.png')
       }, {
         title: '上传图片',
         desc: '输入文字以创建笔记',

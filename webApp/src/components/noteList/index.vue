@@ -57,7 +57,7 @@
         })
       },
       searchWorkFiles () {
-        axios.get(`${global.IP}/getFileList`, {
+        axios.get(`/getFileList`, {
           params: {
             id: global.user.id,
             type: 0
@@ -77,8 +77,8 @@
       }
     },
     beforeCreate () {
-      console.log()
-      axios.get(`${global.IP}/getFileList`, {
+      console.log(global)
+      axios.get(`/getFileList`, {
         params: {
           id: global.user.id,
           type: 0
