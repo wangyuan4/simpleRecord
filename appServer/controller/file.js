@@ -14,7 +14,13 @@ const router = new Router();
 router.get('/getFileList',async (ctx) => {
     const {id,type} = ctx.query;
 		const result = await getFileList(id,type);
-    ctx.body = result;
+    ctx.body = result ? {
+			status:true,
+			list:result
+		} : {
+			status:false,
+			msg:'请求失败'
+		}
 })
 router.post('/addFile',async (ctx) => {
 	// var one = 'beep boop';

@@ -25,7 +25,7 @@ router.get('/searchuser',async (ctx, next) => {
 		msg
 	} : {
 		status:true,
-		data
+		list:data
 	} ;
 });
 

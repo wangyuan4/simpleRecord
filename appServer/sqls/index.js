@@ -15,7 +15,7 @@ import {
 const mysql  = require('mysql');
 
 const connection = mysql.createConnection({
-	host     : 'localhost',
+	host     : '118.89.24.21',
 	user     : 'root',
 	password : '123456',
 	port: '3306',

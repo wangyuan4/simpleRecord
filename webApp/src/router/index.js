@@ -7,6 +7,7 @@ import NoteList from '@/components/noteList'
 
 import NoteAddInput from '@/components/noteAddInput'
 import NoteAddScan from '@/components/noteAddScan'
+import Mine from '@/components/Mine'
 
 Vue.use(Router)
 
@@ -38,6 +39,10 @@ export default new Router({
           path: '/note/add/scan',
           name: 'NoteAddScan',
           component: NoteAddScan
+        }, {
+          path: '/me',
+          name: 'mine',
+          component: Mine
         }
       ]
     }

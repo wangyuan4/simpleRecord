@@ -28,8 +28,8 @@ export default {
     Tabbar,
     TabbarItem
   },
-  beforeCreate(){
-    this.$router.push({path:'/note/add'})
+  beforeCreate () {
+    this.$router.push({path: '/note/add'})
   }
 }
 </script>

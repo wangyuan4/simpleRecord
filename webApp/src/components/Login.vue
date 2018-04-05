@@ -17,7 +17,7 @@
 <script>
   import {Group,XInput,Flexbox,FlexboxItem,AlertModule} from 'vux'
 	import Icon from 'vue-awesome/components/Icon'
-	import {fetchJSONByGet,fetchJSONByPost} from '../utils/ajax'
+	import axios from 'axios'
 	import {userInfoTran} from '../utils/dataTran'
   export default {
 		data () {
@@ -28,36 +28,24 @@
   },
   methods: {
 		login(){
-			// this.$router.push({path:'/app'})
-			const query = {
-				name:this.userName,
-				pwd:this.userPwd
-			}
-			fetchJSONByGet('searchuser')(query)
-			.then(res => 
-				{console.log(res)
-				res.json()
+			axios.get(`${global.IP}/searchuser`, {
+				params: {
+					name:this.userName,
+					pwd:this.userPwd
 				}
-			)
-			.then(res => {
-				console.log(res)
-				if(res.status){
-					// setValue('userInfo',userInfoTran(res.data,true))
-					global.user = userInfoTran(res.data,true)
-					Actions.App();
+			}).then((res) => {
+				if(res.data.status){
+					global.user = userInfoTran(res.data.list,true)
+					this.$router.push({path:'/app'})
 				}else{
 					AlertModule.show({
-						content: res.msg,
-						onShow () {
-							console.log('Module: I\'m showing')
-						},
-						onHide () {
-							console.log('Module: I\'m hiding now')
-						}
+						content: res.data.msg
 					})
 				}
-			})
-		}
+			}).catch((error) => {
+				console.log(error);
+			});
+			}
   },
   components: {
 		XInput,
