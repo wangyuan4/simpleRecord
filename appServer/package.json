@@ -4,6 +4,7 @@
   "description": "myApp server",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon --exec babel-node --presets=es2015 ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "wang",
@@ -18,5 +19,10 @@
     "koa2-cors": "^2.0.5",
     "lodash": "^4.17.5",
     "mysql": "^2.15.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "nodemon": "^1.17.3"
   }
 }
