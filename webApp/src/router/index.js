@@ -6,6 +6,7 @@ import NoteAdd from '@/components/noteAdd'
 import NoteList from '@/components/noteList'
 
 import NoteAddInput from '@/components/noteAddInput'
+import NoteAddMakdown from '@/components/noteAddMarkdown'
 import NoteAddScan from '@/components/noteAddScan'
 import Mine from '@/components/Mine'
 
@@ -35,6 +36,10 @@ export default new Router({
           path: '/note/add/input',
           name: 'noteAddInput',
           component: NoteAddInput
+        }, {
+          path: '/note/add/markdown',
+          name: 'noteAddMakdown',
+          component: NoteAddMakdown
         }, {
           path: '/note/add/scan',
           name: 'NoteAddScan',

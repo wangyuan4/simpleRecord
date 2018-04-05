@@ -1,8 +1,8 @@
 <template>
   <div>
-    <icon name="camera" scale="2">
+    <!-- <icon name="camera" scale="2">
     </icon>
-      <input type="file" accept="image/*" capture="camera">
+      <input type="file" accept="image/*" capture="camera"> -->
   </div>
 </template>
 
@@ -10,10 +10,10 @@
 <script>
 import 'vue-awesome/icons/camera'
 import 'vue-awesome/icons/ban'
-import Icon from 'vue-awesome/components/Icon'
+// import Icon from 'vue-awesome/components/Icon'
 export default {
   components: {
-    Icon
+    // Icon,
   }
 }
 </script>
