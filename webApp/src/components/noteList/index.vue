@@ -2,14 +2,19 @@
   <div>
     <div class="filelist-title">文件列表</div>
     <search
-    @result-click="resultClick"
-    @on-change="getResult"
-    :results="results"
-    v-model="value"
-    position="absolute"
-    auto-scroll-to-top top="46px"
-    @on-submit="onSubmit"
-    ref="search"></search>
+      @result-click="resultClick"
+      @on-change="getResult"
+      :results="results"
+      v-model="value"
+      position="absolute"
+      auto-scroll-to-top top="46px"
+      @on-submit="onSubmit"
+      ref="search">
+    </search>
+    <tab>
+      <tab-item selected @on-item-click="switchTabitem">工作文件</tab-item>
+      <tab-item @on-item-click="switchTabitem">生活文件</tab-item>
+    </tab>
     <swipeout style="margin-top:5%">
       <swipeout-item transition-mode="follow" v-for="(item,index) in list" :key="index">
         <div slot="right-menu" >
@@ -23,7 +28,7 @@
 </template>
 
 <script>
-  import {AlertModule, Search, Swipeout, SwipeoutItem, SwipeoutButton} from 'vux'
+  import {AlertModule, Search, Tab, TabItem, Swipeout, SwipeoutItem, SwipeoutButton} from 'vux'
   import axios from 'axios'
   import {fileInfoTran} from '../../utils/dataTran'
   export default {
@@ -31,13 +36,16 @@
       Search,
       Swipeout,
       SwipeoutItem,
-      SwipeoutButton
+      SwipeoutButton,
+      Tab,
+      TabItem
     },
     data () {
       return {
         results: [],
         value: '',
-        list: []
+        list: [],
+        index01: 0
       }
     },
     methods: {
@@ -55,6 +63,9 @@
           position: 'top',
           text: 'on submit'
         })
+      },
+      switchTabitem (index) {
+        console.log(index)
       },
       searchWorkFiles () {
         axios.get(`/getFileList`, {

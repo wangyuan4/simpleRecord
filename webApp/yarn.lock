@@ -156,7 +156,7 @@ arr-union@^3.1.0:
 
 array-filter@^1.0.0:
   version "1.0.0"
-  resolved "http://registry.npm.taobao.org/array-filter/download/array-filter-1.0.0.tgz#baf79e62e6ef4c2a4c0b831232daffec251f9d83"
+  resolved "https://registry.npmjs.org/array-filter/-/array-filter-1.0.0.tgz#baf79e62e6ef4c2a4c0b831232daffec251f9d83"
 
 array-find-index@^1.0.1:
   version "1.0.2"
@@ -164,7 +164,7 @@ array-find-index@^1.0.1:
 
 array-find@^1.0.0:
   version "1.0.0"
-  resolved "http://registry.npm.taobao.org/array-find/download/array-find-1.0.0.tgz#6c8e286d11ed768327f8e62ecee87353ca3e78b8"
+  resolved "https://registry.npmjs.org/array-find/-/array-find-1.0.0.tgz#6c8e286d11ed768327f8e62ecee87353ca3e78b8"
 
 array-flatten@1.1.1:
   version "1.1.1"
@@ -183,11 +183,11 @@ array-includes@^3.0.3:
 
 array-map@^0.0.0:
   version "0.0.0"
-  resolved "http://registry.npm.taobao.org/array-map/download/array-map-0.0.0.tgz#88a2bab73d1cf7bcd5c1b118a003f66f665fa662"
+  resolved "https://registry.npmjs.org/array-map/-/array-map-0.0.0.tgz#88a2bab73d1cf7bcd5c1b118a003f66f665fa662"
 
 array-shuffle@^1.0.1:
   version "1.0.1"
-  resolved "http://registry.npm.taobao.org/array-shuffle/download/array-shuffle-1.0.1.tgz#7ea4882a356b4bca5f545e0b6e52eaf6d971557a"
+  resolved "https://registry.npmjs.org/array-shuffle/-/array-shuffle-1.0.1.tgz#7ea4882a356b4bca5f545e0b6e52eaf6d971557a"
 
 array-union@^1.0.1:
   version "1.0.2"
@@ -295,7 +295,7 @@ autoprefixer@^7.1.2:
 
 autosize@^3.0.20:
   version "3.0.21"
-  resolved "http://registry.npm.taobao.org/autosize/download/autosize-3.0.21.tgz#f182f40d17757d978a139a4c9ca40c4c0e448603"
+  resolved "https://registry.npmjs.org/autosize/-/autosize-3.0.21.tgz#f182f40d17757d978a139a4c9ca40c4c0e448603"
 
 aws-sign2@~0.6.0:
   version "0.6.0"
@@ -307,7 +307,7 @@ aws4@^1.2.1:
 
 axios@^0.15.3:
   version "0.15.3"
-  resolved "http://registry.npm.taobao.org/axios/download/axios-0.15.3.tgz#2c9d638b2e191a08ea1d6cc988eadd6ba5bdc053"
+  resolved "https://registry.npmjs.org/axios/-/axios-0.15.3.tgz#2c9d638b2e191a08ea1d6cc988eadd6ba5bdc053"
   dependencies:
     follow-redirects "1.0.0"
 
@@ -951,7 +951,7 @@ bluebird@^3.1.1, bluebird@^3.4.7, bluebird@^3.5.1:
 
 blueimp-md5@^2.6.0:
   version "2.10.0"
-  resolved "http://registry.npm.taobao.org/blueimp-md5/download/blueimp-md5-2.10.0.tgz#02f0843921f90dca14f5b8920a38593201d6964d"
+  resolved "https://registry.npmjs.org/blueimp-md5/-/blueimp-md5-2.10.0.tgz#02f0843921f90dca14f5b8920a38593201d6964d"
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
@@ -1555,7 +1555,7 @@ cosmiconfig@^2.1.0, cosmiconfig@^2.1.1:
 
 countup.js@^1.8.1:
   version "1.9.3"
-  resolved "http://registry.npm.taobao.org/countup.js/download/countup.js-1.9.3.tgz#ce3e50cd7160441e478f07da31895edcc0f1c9dd"
+  resolved "https://registry.npmjs.org/countup.js/-/countup.js-1.9.3.tgz#ce3e50cd7160441e478f07da31895edcc0f1c9dd"
 
 create-ecdh@^4.0.0:
   version "4.0.0"
@@ -2633,7 +2633,7 @@ flush-write-stream@^1.0.0:
 
 follow-redirects@1.0.0:
   version "1.0.0"
-  resolved "http://registry.npm.taobao.org/follow-redirects/download/follow-redirects-1.0.0.tgz#8e34298cbd2e176f254effec75a1c78cc849fd37"
+  resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.0.0.tgz#8e34298cbd2e176f254effec75a1c78cc849fd37"
   dependencies:
     debug "^2.2.0"
 
@@ -2976,6 +2976,14 @@ hawk@3.1.3, hawk@~3.1.3:
 he@1.1.x, he@^1.1.0:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/he/download/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
+
+highlight.js-async-webpack@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/highlight.js-async-webpack/-/highlight.js-async-webpack-1.0.4.tgz#c06b67bf99f049045d62b756e5855b0912ec616c"
+
+highlight.js@^9.11.0:
+  version "9.12.0"
+  resolved "https://registry.npmjs.org/highlight.js/-/highlight.js-9.12.0.tgz#e6d9dbe57cbefe60751f02af336195870c90c01e"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -3734,7 +3742,7 @@ lodash.clonedeep@^4.5.0:
 
 lodash.debounce@^4.0.8:
   version "4.0.8"
-  resolved "http://registry.npm.taobao.org/lodash.debounce/download/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
 
 lodash.differencewith@^4.5.0:
   version "4.5.0"
@@ -3762,7 +3770,7 @@ lodash.mergewith@^4.6.0:
 
 lodash.throttle@^4.1.1:
   version "4.1.1"
-  resolved "http://registry.npm.taobao.org/lodash.throttle/download/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  resolved "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
 
 lodash.unionwith@^4.6.0:
   version "4.6.0"
@@ -3841,6 +3849,13 @@ map-visit@^1.0.0:
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
   resolved "http://registry.npm.taobao.org/math-expression-evaluator/download/math-expression-evaluator-1.2.17.tgz#de819fdbcd84dccd8fae59c6aeb79615b9d266ac"
+
+mavon-editor@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.npmjs.org/mavon-editor/-/mavon-editor-2.5.2.tgz#c0c7c1b1025d40993e5ece560d048b2d920ac0c8"
+  dependencies:
+    highlight.js "^9.11.0"
+    highlight.js-async-webpack "^1.0.4"
 
 md5.js@^1.3.4:
   version "1.3.4"
@@ -4975,7 +4990,7 @@ q@^1.1.2:
 
 qr.js@0.0.0:
   version "0.0.0"
-  resolved "http://registry.npm.taobao.org/qr.js/download/qr.js-0.0.0.tgz#cace86386f59a0db8050fa90d9b6b0e88a1e364f"
+  resolved "https://registry.npmjs.org/qr.js/-/qr.js-0.0.0.tgz#cace86386f59a0db8050fa90d9b6b0e88a1e364f"
 
 qs@6.5.1:
   version "6.5.1"
@@ -5500,7 +5515,7 @@ sha.js@^2.4.0, sha.js@^2.4.8:
 
 shake.js@^1.2.2:
   version "1.2.2"
-  resolved "http://registry.npm.taobao.org/shake.js/download/shake.js-1.2.2.tgz#b2ac560a82abe68d78a029623a7088e1b30bacff"
+  resolved "https://registry.npmjs.org/shake.js/-/shake.js-1.2.2.tgz#b2ac560a82abe68d78a029623a7088e1b30bacff"
 
 shebang-command@^1.2.0:
   version "1.2.0"
@@ -6208,11 +6223,11 @@ validate-npm-package-license@^3.0.1:
 
 validator@^9.3.0:
   version "9.4.1"
-  resolved "http://registry.npm.taobao.org/validator/download/validator-9.4.1.tgz#abf466d398b561cd243050112c6ff1de6cc12663"
+  resolved "https://registry.npmjs.org/validator/-/validator-9.4.1.tgz#abf466d398b561cd243050112c6ff1de6cc12663"
 
 vanilla-masker@^1.2.0:
   version "1.2.0"
-  resolved "http://registry.npm.taobao.org/vanilla-masker/download/vanilla-masker-1.2.0.tgz#c2830e9d994a5fecd2261506477c2707fe589756"
+  resolved "https://registry.npmjs.org/vanilla-masker/-/vanilla-masker-1.2.0.tgz#c2830e9d994a5fecd2261506477c2707fe589756"
 
 vary@~1.1.2:
   version "1.1.2"
@@ -6239,6 +6254,10 @@ vm-browserify@0.0.4:
 vue-awesome@^3.0.0:
   version "3.0.0"
   resolved "http://registry.npm.taobao.org/vue-awesome/download/vue-awesome-3.0.0.tgz#0b0b37488dd4b7e4b9a269d0e9173cd5ab65ff0f"
+
+vue-barcode-scanner@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.npmjs.org/vue-barcode-scanner/-/vue-barcode-scanner-0.6.0.tgz#cc21949fe37f93d2ec229e364b9664decd711611"
 
 vue-hot-reload-api@^2.2.0:
   version "2.3.0"
@@ -6298,7 +6317,7 @@ vuex@^2.1.1:
 
 vux-blazy@^1.6.4:
   version "1.6.4"
-  resolved "http://registry.npm.taobao.org/vux-blazy/download/vux-blazy-1.6.4.tgz#e33073d902e0a3844ef1a463cce3ca2e0aab47bf"
+  resolved "https://registry.npmjs.org/vux-blazy/-/vux-blazy-1.6.4.tgz#e33073d902e0a3844ef1a463cce3ca2e0aab47bf"
 
 vux-loader@^1.0.56:
   version "1.2.6"
@@ -6326,11 +6345,11 @@ vux-loader@^1.0.56:
 
 vux-xscroll@^3.1.10:
   version "3.1.12"
-  resolved "http://registry.npm.taobao.org/vux-xscroll/download/vux-xscroll-3.1.12.tgz#e352e7f9dc5f9fee9253db331c967dd56b3bc950"
+  resolved "https://registry.npmjs.org/vux-xscroll/-/vux-xscroll-3.1.12.tgz#e352e7f9dc5f9fee9253db331c967dd56b3bc950"
 
-vux@^2.2.0:
+vux@^2.8.1:
   version "2.8.1"
-  resolved "http://registry.npm.taobao.org/vux/download/vux-2.8.1.tgz#abc66ce3fdf5056db5babc9cb2f0f2c9f4e3f0a7"
+  resolved "https://registry.npmjs.org/vux/-/vux-2.8.1.tgz#abc66ce3fdf5056db5babc9cb2f0f2c9f4e3f0a7"
   dependencies:
     array-filter "^1.0.0"
     array-find "^1.0.0"
@@ -6567,7 +6586,7 @@ ws@^4.0.0:
 
 x-photoswipe@^4.1.3-rc.1:
   version "4.1.3-rc.1"
-  resolved "http://registry.npm.taobao.org/x-photoswipe/download/x-photoswipe-4.1.3-rc.1.tgz#e761901752dd3dd1f718e538514b609b5df5f7db"
+  resolved "https://registry.npmjs.org/x-photoswipe/-/x-photoswipe-4.1.3-rc.1.tgz#e761901752dd3dd1f718e538514b609b5df5f7db"
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.1"

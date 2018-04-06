@@ -8,9 +8,14 @@
   </div>
 </template>
 
+
 <script>
-  export default {
+import Icon from 'vue-awesome'
+export default {
+  components: {
+    Icon
   }
+}
 </script>
 
 <style scoped>
