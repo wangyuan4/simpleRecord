@@ -8,7 +8,7 @@
         <x-input class="input" placeholder="密码" v-model="userPwd"></x-input>
       <!-- </group> -->
       <div class="login-forget">忘记密码？</div>
-      <button class="login-btn" @click="fakeLogin">登录</button>
+      <button class="login-btn" @click="login">登录</button>
     </div>
     <div class="fonts"><span>新用户？点击这里注册</span></div>
   </div>
