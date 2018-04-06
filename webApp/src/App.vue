@@ -7,7 +7,8 @@
         <!-- <img slot="icon" src="../assets/demo/icon_nav_article.png"> -->
         <span slot="label">添加笔记</span>
       </tabbar-item>
-      <tabbar-item link="/note/list">
+      <!-- <tabbar-item link="/note/list" @on-item-click="handler"> -->
+      <tabbar-item @on-item-click="handler">
         <!-- <img slot="icon" src="../assets/demo/icon_nav_cell.png"> -->
         <span slot="label">笔记列表</span>
       </tabbar-item>
@@ -27,6 +28,11 @@ export default {
     XHeader,
     Tabbar,
     TabbarItem
+  },
+  methods: {
+    handler () {
+      console.log(111)
+    }
   },
   beforeCreate () {
     this.$router.push({path: '/note/add'})
