@@ -8,6 +8,7 @@ import NoteList from '@/components/noteList'
 import NoteAddInput from '@/components/noteAddInput'
 import NoteAddMakdown from '@/components/noteAddMarkdown'
 import NoteAddScan from '@/components/noteAddScan'
+import NoteAddVoice from '@/components/noteAddVoice'
 import Mine from '@/components/Mine'
 
 Vue.use(Router)
@@ -44,6 +45,10 @@ export default new Router({
           path: '/note/add/scan',
           name: 'NoteAddScan',
           component: NoteAddScan
+        }, {
+          path: '/note/add/voice',
+          name: 'NoteAddVoice',
+          component: NoteAddVoice
         }, {
           path: '/me',
           name: 'mine',
