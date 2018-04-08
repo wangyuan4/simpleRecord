@@ -17,6 +17,7 @@
     "fastclick": "^1.0.6",
     "mavon-editor": "^2.5.2",
     "moment": "^2.22.0",
+    "sw-precache-webpack-plugin": "^0.11.5",
     "vue": "^2.5.2",
     "vue-awesome": "^3.0.0",
     "vue-barcode-scanner": "^0.6.0",
