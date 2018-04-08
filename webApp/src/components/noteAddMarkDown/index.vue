@@ -1,5 +1,7 @@
 <template>
   <div>
+    <x-header><a slot="right">图标</a></x-header>
+    <x-input class="input" placeholder="标题" v-model="title"></x-input>
     <mavon-editor
       v-model="value"
       :toolbarsFlag="true"
@@ -16,7 +18,7 @@
         ol: false, // 有序列表
         ul: false, // 无序列表
         link: false, // 链接
-        imagelink: false, // 图片链接
+        imagelink: true, // 图片链接
         code: false, // code
         table: false, // 表格
         fullscreen: true, // 全屏编辑
@@ -24,8 +26,8 @@
         htmlcode: false, // 展示html源码
         help: false, // 帮助
         /* 1.3.5 */
-        undo: false, // 上一步
-        redo: false, // 下一步
+        undo: true, // 上一步
+        redo: true, // 下一步
         trash: false, // 清空
         save: false, // 保存（触发events中的save事件）
         /* 1.4.2 */
@@ -45,15 +47,39 @@
 <script>
 import 'mavon-editor/dist/css/index.css'
 import {mavonEditor} from 'mavon-editor'
+import { XInput, XHeader } from 'vux'
+import axios from 'axios'
 
 export default {
   data () {
     return {
-      value: ''
+      value: '',
+      title: ''
     }
   },
   components: {
-    mavonEditor
+    mavonEditor,
+    XInput,
+    XHeader
+  },
+  method: {
+    saveFile (title, content, fileId) {
+      console.log(fileId)
+      const body = {
+        id: global.user.id,
+        title,
+        content,
+        type: 0,
+        fileId
+      }
+      axios
+        .post(`${global.IP}/addFile`, body)
+        .then((res) => {
+          console.log(res)
+        }).catch((error) => {
+          console.log(error)
+        })
+    }
   }
 }
 </script>

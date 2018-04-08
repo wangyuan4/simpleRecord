@@ -8,11 +8,11 @@
         <span slot="label">添加笔记</span>
       </tabbar-item>
       <!-- <tabbar-item link="/note/list" @on-item-click="handler"> -->
-      <tabbar-item @on-item-click="handler">
+      <tabbar-item link="/note/list">
         <!-- <img slot="icon" src="../assets/demo/icon_nav_cell.png"> -->
         <span slot="label">笔记列表</span>
       </tabbar-item>
-      <tabbar-item link="/me">
+      <tabbar-item link="/mine">
         <!-- <img slot="icon" src="../assets/demo/icon_nav_cell.png"> -->
         <span slot="label">个人中心</span>
       </tabbar-item>

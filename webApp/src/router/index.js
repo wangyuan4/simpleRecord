@@ -8,7 +8,12 @@ import NoteList from '@/components/noteList'
 import NoteAddInput from '@/components/noteAddInput'
 import NoteAddMakdown from '@/components/noteAddMarkdown'
 import NoteAddScan from '@/components/noteAddScan'
-import Mine from '@/components/Mine'
+import Mine from '@/components/mine/index'
+import Info from '@/components/mine/info'
+import Friends from '@/components/mine/friends'
+import QRCode from '@/components/mine/qrcode'
+import CPwd from '@/components/mine/cpwd'
+import NFriends from '@/components/mine/newfriend'
 
 Vue.use(Router)
 
@@ -45,9 +50,29 @@ export default new Router({
           name: 'NoteAddScan',
           component: NoteAddScan
         }, {
-          path: '/me',
+          path: '/mine',
           name: 'mine',
           component: Mine
+        }, {
+          path: '/mine/info',
+          name: 'info',
+          component: Info
+        }, {
+          path: '/mine/friends',
+          name: 'friends',
+          component: Friends
+        }, {
+          path: '/mine/qrcode',
+          name: 'qrcode',
+          component: QRCode
+        }, {
+          path: '/mine/changePwd',
+          name: 'changepwd',
+          component: CPwd
+        }, {
+          path: '/mine/newfriend',
+          name: 'newfriend',
+          component: NFriends
         }
       ]
     }

@@ -32,7 +32,7 @@ export default {
     },
     login () {
       axios
-        .get(`/searchuser`, {
+        .get(`${global.IP}/searchuser`, {
           params: {
             name: this.userName,
             pwd: this.userPwd

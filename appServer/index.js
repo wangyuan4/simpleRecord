@@ -13,7 +13,7 @@ app.use(cors({
 	origin:'*'
 }));
 
-app.use(knex(config.mysql));
+// app.use(knex(config.mysql));
 // app.use(bodyparser);
 
 app.use(bodyparser())
