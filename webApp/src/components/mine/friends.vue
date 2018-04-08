@@ -27,18 +27,15 @@ export default {
     SwipeoutItem,
     SwipeoutButton
   },
-	data () {
-		return {
-			results: [],
-			value: '',
-			list: [{
-				name:'wang'
-			},{
-				name:'wang'
-			}],
-			index01: 0
-		}
-	},
+  data () {
+    return {
+      results: [],
+      value: '',
+      list: [{
+        name: 'wang'
+      }]
+    }
+  }
 }
 </script>
 

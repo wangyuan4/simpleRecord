@@ -33,13 +33,15 @@ export default {
     XDialog
   },
   method: {
-    add () {}
+    add () {
+
+    }
   },
-  data(){
-		return {
-			
-		}
-	}
+  data () {
+    return {
+
+    }
+  }
 }
 </script>
 

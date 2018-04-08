@@ -29,6 +29,11 @@ export default {
         target: 'markdown',
         img: require('@/assets/note-add-input.jpg')
       }, {
+        title: '新建语音笔记',
+        desc: '随时随地记录灵感',
+        target: 'voice',
+        img: require('@/assets/note-add-input.jpg')
+      }, {
         title: '文档扫描',
         desc: '使用摄像头对文档进行扫描',
         target: 'scan',

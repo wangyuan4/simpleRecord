@@ -14,6 +14,7 @@ import Friends from '@/components/mine/friends'
 import QRCode from '@/components/mine/qrcode'
 import CPwd from '@/components/mine/cpwd'
 import NFriends from '@/components/mine/newfriend'
+import NoteAddVoice from '@/components/noteAddVoice'
 
 Vue.use(Router)
 
@@ -49,6 +50,10 @@ export default new Router({
           path: '/note/add/scan',
           name: 'NoteAddScan',
           component: NoteAddScan
+        }, {
+          path: '/note/add/voice',
+          name: 'NoteAddVoice',
+          component: NoteAddVoice
         }, {
           path: '/mine',
           name: 'mine',

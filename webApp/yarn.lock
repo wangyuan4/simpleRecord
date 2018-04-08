@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"@accentdotai/recorderjs@^0.9.3":
+  version "0.9.3"
+  resolved "https://registry.npmjs.org/@accentdotai/recorderjs/-/recorderjs-0.9.3.tgz#b8201f55398fca404209de0be040bcc5ba40f3cb"
+  dependencies:
+    inline-worker "0.1.0"
+
 "@types/node@*":
   version "9.6.1"
   resolved "https://registry.npmjs.org/@types/node/-/node-9.6.1.tgz#e2d374ef15b315b48e7efc308fa1a7cd51faa06c"
@@ -3202,6 +3208,10 @@ inline-manifest-webpack-plugin@^3.0.1:
   dependencies:
     source-map-url "0.4.0"
 
+inline-worker@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/inline-worker/-/inline-worker-0.1.0.tgz#b290c336eb54a721ed3d22f72a2b9aacdf680e84"
+
 inquirer@^0.12.0:
   version "0.12.0"
   resolved "http://registry.npm.taobao.org/inquirer/download/inquirer-0.12.0.tgz#1ef2bfd63504df0bc75785fff8c2c41df12f077e"
@@ -6289,6 +6299,12 @@ vue-loader@^13.3.0:
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.6.0"
 
+vue-loading-template@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.npmjs.org/vue-loading-template/-/vue-loading-template-0.1.7.tgz#32ab9bb67c78b9f44e495a2717255fc032ae689f"
+  dependencies:
+    vue "^2.2.1"
+
 vue-router@^3.0.1:
   version "3.0.1"
   resolved "http://registry.npm.taobao.org/vue-router/download/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
@@ -6311,7 +6327,7 @@ vue-template-es2015-compiler@^1.6.0:
   version "1.6.0"
   resolved "http://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
 
-vue@^2.5.2:
+vue@^2.2.1, vue@^2.5.2:
   version "2.5.16"
   resolved "http://registry.npm.taobao.org/vue/download/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 
