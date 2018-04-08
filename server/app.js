@@ -20,6 +20,8 @@ app.use(knex(config.mysql));
 app.use(convert(bodyparser));
 app.use(convert(json()));
 app.use(response_formatter('^/api'));
+app.use(require('koa-static')(__dirname + '../webApp/dist'));
+
 // app.use(require('koa-static')(__dirname + '/client/dist'));
 // router.use('/api', api.routes(), api.allowedMethods());
 

@@ -17,6 +17,7 @@ app.use(cors({
 // app.use(bodyparser);
 
 app.use(bodyparser())
+app.use(require('koa-static')(__dirname + './../webApp/dist'));
 
 router.map((el) => {
 	app.use(el.routes())
