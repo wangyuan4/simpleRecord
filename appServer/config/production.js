@@ -4,15 +4,15 @@
 
 module.exports = {
     env: 'production', //环境名称
-    port: 8088,         //服务端口号
+    port: 3320,         //服务端口号
     mysql: {
       client: 'mysql',
       connection: {
-        host: '45.32.105.50',
+        host: '118.89.24.21',
         port: 3306,
-        user: 'haowen',
-        password: 'haowen2017',
-        database: 'haowen',
+        user: 'root',
+        password: '123456',
+        database: 'myapp',
         charset: 'utf8',
         connectTimeout: 15000,
         stringifyObjects: false,
