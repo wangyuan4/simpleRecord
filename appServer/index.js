@@ -23,6 +23,8 @@ router.map((el) => {
 	app.use(el.routes())
 	.use(el.allowedMethods());
 })
-app.listen(config.port);
-console.log('server is listening on port', config.port)
+
+module.exports = app;
+// app.listen(config.port);
+// console.log('server is listening on port', config.port)
 
