@@ -4,8 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>simple-record</title>
+    <!-- 添加manifest文件 -->
+    <link rel="manifest" href="/static/manifest.json">
   </head>
   <body>
+    <!-- 注册service-worker.js -->
+    <%= htmlWebpackPlugin.options.serviceWorkerLoader %>
     <div id="app-box"></div>
     <!-- built files will be auto injected -->
   </body>
