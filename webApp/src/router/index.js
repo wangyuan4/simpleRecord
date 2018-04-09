@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../components/Login'
+import Register from '../components/Register'
 import App from '../App'
 import NoteAdd from '@/components/noteAdd'
 import NoteList from '@/components/noteList'
@@ -15,6 +16,7 @@ import QRCode from '@/components/mine/qrcode'
 import CPwd from '@/components/mine/cpwd'
 import NFriends from '@/components/mine/newfriend'
 import NoteAddVoice from '@/components/noteAddVoice'
+import Calender from '@/components/mine/calender'
 
 Vue.use(Router)
 
@@ -24,6 +26,10 @@ export default new Router({
       path: '/',
       name: 'login',
       component: Login
+    }, {
+      path: '/register',
+      name: 'register',
+      component: Register
     },
     {
       path: '/app',
@@ -78,6 +84,10 @@ export default new Router({
           path: '/mine/newfriend',
           name: 'newfriend',
           component: NFriends
+        }, {
+          path: '/mine/calender',
+          name: 'calender',
+          component: Calender
         }
       ]
     }

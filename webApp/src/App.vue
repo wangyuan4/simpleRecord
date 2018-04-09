@@ -2,7 +2,7 @@
   <div id="app">
     <!-- <x-header></x-header> -->
     <router-view></router-view>
-    <tabbar>
+    <tabbar slot="bottom">
       <tabbar-item selected link="/note/add">
         <!-- <img slot="icon" src="../assets/demo/icon_nav_article.png"> -->
         <span slot="label">添加笔记</span>

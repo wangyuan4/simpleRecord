@@ -1,6 +1,6 @@
 <template>
   <div>
-    <x-header><a slot="right">图标</a></x-header>
+    <x-header><span slot="right">回退版本</span><span slot="right" class="option-line">|</span><span slot="right" @click="saveFile">保存</span></x-header>
     <x-input class="input" placeholder="标题" v-model="title"></x-input>
     <mavon-editor
       v-model="value"
@@ -41,41 +41,59 @@
         preview: false, // 预览
       }"
     />
+    <popup v-model="show">
+        <popup-header
+        :right-text="确定"
+        title="请选择文件保存分类:"
+        :show-bottom-border="false"
+        @on-click-left="show = false"
+        @on-click-right="show = false"></popup-header>
+        <group gutter="0">
+          <radio :options="options"></radio>
+        </group>
+      </popup>
   </div>
 </template>
 
 <script>
 import 'mavon-editor/dist/css/index.css'
 import {mavonEditor} from 'mavon-editor'
-import { XInput, XHeader } from 'vux'
+import { XInput, XHeader, PopupHeader, Popup, Group, Radio } from 'vux'
 import axios from 'axios'
 
 export default {
   data () {
     return {
       value: '',
-      title: ''
+      title: '',
+      fileId: '',
+      options: ['生活文件', '工作文件'],
+      show: false
     }
   },
   components: {
     mavonEditor,
     XInput,
-    XHeader
+    XHeader,
+    PopupHeader,
+    Popup,
+    Group,
+    Radio
   },
-  method: {
-    saveFile (title, content, fileId) {
-      console.log(fileId)
+  methods: {
+    saveFile () {
       const body = {
         id: global.user.id,
-        title,
-        content,
+        title: this.title === '' ? '无标题' : this.title,
+        content: this.value,
         type: 0,
-        fileId
+        fileType: 'md',
+        fileId: this.fileId
       }
       axios
-        .post(`${global.IP}/addFile`, body)
+        .post(`${global.IP}/saveFile`, body)
         .then((res) => {
-          console.log(res)
+          res.data && this.$router.push({path: '/note/list'})
         }).catch((error) => {
           console.log(error)
         })
@@ -84,6 +102,9 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style  scoped>
+.option-line{
+  margin-left:4px;
+  margin-right: 4px
+}
 </style>

@@ -7,7 +7,7 @@ import {
 	updateFileFun,
 	deleteFileFun
 } from '../sqls/index';
-import {removeSpeciChar,createId} from './comDataDeal'
+import {removeSpeciChar,createUTC} from './comDataDeal'
 
 const router = new Router();
 
@@ -22,7 +22,7 @@ router.get('/getFileList',async (ctx) => {
 			msg:'请求失败'
 		}
 })
-router.post('/addFile',async (ctx) => {
+router.post('/saveFile',async (ctx) => {
 	// var one = 'beep boop';
 	// var other = 'beep boob blah';
 
@@ -35,10 +35,11 @@ router.post('/addFile',async (ctx) => {
 	// 	var color = part.added ? 'green' :
 	// 		part.removed ? 'red' : 'grey';
 	// });
-		const {id,title,content,type,fileId} = ctx.request.body;
-		console.log(title,content,fileId)
+		const {id,title,content,type,fileType,fileId} = ctx.request.body;
     if(fileId !== ''){
 			const result = await getFileById(fileId);
+			const updateTime = createUTC()
+			console.log(result)
 			const diffRes = diffLines(result[0].file_content,content);
 			let haveConflict = false
 			diff.forEach(part => {
@@ -46,10 +47,11 @@ router.post('/addFile',async (ctx) => {
 						haveConflict = true
 					}
 				});
-			haveConflict ? ctx.body = diffRes : await updateFileFun(id,fileId,title,content)
+			haveConflict ? ctx.body = diffRes : await addFileFun(id, fileId, title, content, type, fileType, updateTime)
     }else{
-			const fileId = createId()
-			const result = await addFileFun(id,fileId,title,content,type);
+			const fileId = createUTC()
+			const updateTime = createUTC()
+			const result = await addFileFun(id, fileId, title, content, type, fileType, updateTime);
     	ctx.body = result ? true : false;
     }
 	

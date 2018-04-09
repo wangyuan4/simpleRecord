@@ -3,10 +3,10 @@ import { query } from "./index";
 
 const createId = () => Math.round(new Date().getTime()/1000)
 
-export const addFileFun = (id,fileId,title,content,type) => {
+export const addFileFun = (id, fileId, title, content, type,fileType,updateTime) => {
   return new Promise((resolve,reject) => {
     const  sql = `
-        insert into file (file_id,file_title,file_content,user_id,file_type) values ("${fileId}","${title}","${content}","${id}",${type})
+        insert into file (file_id,file_title,file_content,user_id,file_type,update_time,type) values ("${fileId}","${title}","${content}","${id}","${fileType}","${updateTime}",${type})
       `;
       console.log(sql)
     query(sql,resolve,reject)
@@ -33,16 +33,10 @@ export const getFileById = (id) => {
   })
 }
 
-export const updateFileFun = (fileId,updateOpt) => {
-	// let setOpt = ''
-	// updateOpt.forEach(el => {
-	// 	setOpt = el.keyName + '=' + el.keyVal + ','
-	// });
-	// const sqlSetOpt = _.dropRight(setOpt.split(',')).join(',')
-	// console.log(sqlSetOpt)
+export const updateFileFun = (fileId, title, content, updateTime) => {
   return new Promise((resolve,reject) => {
     const sql = `
-      update file set ${sqlSetOpt}  
+      update file set
     `;
     query(sql,resolve,reject)
   })
