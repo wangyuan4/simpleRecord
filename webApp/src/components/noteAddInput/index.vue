@@ -1,21 +1,27 @@
 <template>
   <div>
+    <x-header><span slot="right">回退版本</span><span slot="right" class="option-line">|</span><span slot="right" @click="saveFile">保存</span></x-header>
+    <x-input class="input" placeholder="标题" v-model="title"></x-input>
     <vue-html5-editor :content="content" :height='500'></vue-html5-editor>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import { XInput, XHeader } from 'vux'
 import VueHtml5Editor from 'vue-html5-editor'
+import 'font-awesome/css/font-awesome.min.css'
 export default {
   name: 'h5Editor',
   data () {
     return {
-      content: 'editor'
+      content: ''
     }
   },
   components: {
-    VueHtml5Editor
+    // VueHtml5Editor,
+    XInput,
+    XHeader
   }
 }
 Vue.use(VueHtml5Editor, {
@@ -155,5 +161,8 @@ Vue.use(VueHtml5Editor, {
 </script>
 
 <style scoped>
-
+.option-line{
+  margin-left:4px;
+  margin-right: 4px
+}
 </style>

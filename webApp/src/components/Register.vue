@@ -2,13 +2,12 @@
   <div>
     <div class="login-font">登  录</div>
     <div class="loginBg">
-      <div class="login-icon"><i class='fa fa-user-circle' style="font-size:100px;color:#494949;"></i></div>
+      <div class="login-icon"><i class='fa fa-user-plus' style="font-size:100px;color:#494949;"></i></div>
         <x-input class="input" placeholder="用户名" v-model="userName" :required="true"></x-input>
         <x-input class="input" placeholder="密码" v-model="userPwd" type="password" :required="true"></x-input>
-      <div class="login-forget">忘记密码？</div>
-      <button class="login-btn" @click="login">登录</button>
+      <button class="login-btn" @click="sign">注册</button>
     </div>
-    <div class="fonts"><router-link to="/register">新用户？点击这里注册</router-link></div>
+    <div class="fonts"><router-link to="/">已经有账号？点击这里登录</router-link></div>
   </div>
 </template>
 
@@ -29,18 +28,19 @@ export default {
     fakeLogin () {
       this.$router.replace('/note/add')
     },
-    login () {
+    sign () {
+      const body = {
+        name: this.userName,
+        pwd: this.userPwd
+
+      }
       this.userName === '' || this.userPwd === ''
       ? AlertModule.show({
         content: '请填写用户名和密码！'
       })
       : axios
-        .get(`${global.IP}/searchuser`, {
-          params: {
-            name: this.userName,
-            pwd: this.userPwd
-          }
-        }).then((res) => {
+        .post(`${global.IP}/adduser`, body)
+        .then((res) => {
           if (res.data.status) {
             global.user = userInfoTran(res.data.list, true)
             this.$router.push({path: '/app'})

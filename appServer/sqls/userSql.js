@@ -5,7 +5,7 @@ import {query} from './index'
 export const createTable = (userId) => {
   console.log(userId)
   return new Promise((resolve,reject) => {
-    const sql = 'create table F' + userId + ' (friend_id varchar(20),friend_note varchar(20),friend_group varchar(20))'
+    const sql = 'create table F' + userId + '(id int auto_increment,friend_id varchar(20),friend_note varchar(20),file_id varchar(20),primary key (id))'
     console.log(sql)
     query(sql,resolve,reject)
   })

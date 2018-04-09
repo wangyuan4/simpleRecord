@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import { createTable, searchUserFun,addUserFun,searchFriendsFun,addFriendFun} from "../sqls/index";
-import {createId} from './comDataDeal'
+import {createUTC} from './comDataDeal'
 
 const router = new Router();
 const searchUserByName = async (name) => {
@@ -33,16 +33,16 @@ router.post('/adduser',async (ctx,next) => {
 	const {name,pwd} = ctx.request.body;
 	const data = await searchUserByName(name)
 	if(data.length === 0){
-		const userId = createId()
+		const userId = createUTC()
 		const result = await addUserFun(userId,name,pwd);
 		const res = await createTable(userId)
 		ctx.body = result && res && {
 			status:true,
-			data:{
+			list:[{
 				user_id:userId,
 				user_name:name,
 				user_pwd:pwd
-			}
+			}]
 		};
 	}else{
 		ctx.body = {

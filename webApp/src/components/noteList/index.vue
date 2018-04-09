@@ -20,17 +20,17 @@
       <swipeout-item transition-mode="follow" v-for="(item,index) in list" :key="index">
         <div slot="right-menu" >
           <swipeout-button type="primary" background-color="rgb(73, 73, 73)" >分享</swipeout-button>
-          <swipeout-button type="warn" background-color="rgb(73, 73, 73)" >删除</swipeout-button>
+          <swipeout-button type="warn" background-color="rgb(73, 73, 73)" @click="dele">删除</swipeout-button>
         </div>
-        <div slot="content" class="list">
+        <router-link slot="content" class="list" to="/note/add/markdown">
           <div class="list-left">
-            <div class="day">{{list.day}}</div>
-            <div class="week">{{list.week}}</div>
-            <div class="time">{{list.time}}</div>
+            <div class="day">{{item.month}}</div>
+            <div class="week">{{item.day}}日</div>
+            <div class="time">{{item.time}}</div>
           </div>
           <div class="list-line"></div>
-          <div class="list-right">标题</div>
-        </div>
+          <div class="list-right">{{item.title}}.{{item.fileType}}</div>
+        </router-link>
       </swipeout-item>
     </swipeout>
   </div>
@@ -38,7 +38,6 @@
 
 <script>
   import {AlertModule, Search, Tab, TabItem, Swipeout, SwipeoutItem, SwipeoutButton} from 'vux'
-  import moment from 'moment'
   import axios from 'axios'
   import {fileInfoTran} from '../../utils/dataTran'
   export default {
@@ -54,11 +53,7 @@
       return {
         results: [],
         value: '',
-        list: {
-          day: '07',
-          week: '周六',
-          time: '12:00'
-        },
+        list: [],
         index01: 0
       }
     },
@@ -69,6 +64,9 @@
       getResult (val) {
         console.log('on-change', val)
         this.results = val ? this.getResult(this.value) : []
+      },
+      dele () {
+        console.log(123)
       },
       onSubmit () {
         this.$refs.search.setBlur()
@@ -102,25 +100,22 @@
       }
     },
     beforeCreate () {
-      // axios.get(`${global.IP}/getFileList`, {
-      //   params: {
-      //     id: global.user.id,
-      //     type: 0
-      //   }})
-      //   .then((res) => {
-      //     if (res.data.status) {
-      //       this.list = fileInfoTran(res.data.list)
-      //     } else {
-      //       AlertModule.show({
-      //         content: res.data.msg
-      //       })
-      //     }
-      //   }).catch((error) => {
-      //     console.log(error)
-      //   })
-      const dt = (new Date(Math.round(new Date().getTime() / 1000) * 1000)).toString()
-      console.log(dt)
-      console.log(moment(dt).format('YYYY-MM-DD HH:mm:ss'))
+      axios.get(`${global.IP}/getFileList`, {
+        params: {
+          id: global.user.id,
+          type: 0
+        }})
+        .then((res) => {
+          if (res.data.status) {
+            this.list = fileInfoTran(res.data.list)
+          } else {
+            AlertModule.show({
+              content: res.data.msg
+            })
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
     }
   }
 </script>
@@ -139,6 +134,7 @@
   flex-direction: row;
   margin: 6px 6px;
   background-color: white;
+  color: rgb(90, 88, 88)
 }
 .list-left{
   width: 100px;
@@ -163,6 +159,9 @@
 .list-right{
   width: 100%;
   text-align: center;
-  padding: 6px 10px
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: row;
+  padding: 25px 10px
 }
 </style>

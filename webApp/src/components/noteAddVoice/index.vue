@@ -1,12 +1,13 @@
 <template>
   <div>
+    <x-header>录制音频文件</x-header>
     <div class="animate-group">
       <vue-loading v-if="recordIng" type="bars" color="#d9544e" :size="{ width: '50px', height: '50px' }"></vue-loading>
       <vue-loading v-if="!recordIng" type="beat" color="#d9544e" :size="{ width: '50px', height: '50px' }"></vue-loading>
     </div>
     <box gap="10px 10px"></box>
     <div class="btn-group">
-      <x-button class="record-btn" v-if="!recordIng" @click.native="startRecording" :gradients="['#1D62F0', '#19D5FD']">开始录制</x-button>
+      <x-button class="record-btn" v-if="!recordIng" @click.native="startRecording" :gradients="['#494949', '#35485d']">开始录制</x-button>
       <x-button class="record-btn" v-if="recordIng" @click.native="stopRecording" :gradients="['#1D62F0', '#19D5FD']">停止录制</x-button>
     </div>
   </div>
@@ -15,7 +16,7 @@
 <script>
 import Recorder from '@/../static/recorder.browser.min.js'
 import vueLoading from 'vue-loading-template'
-import { XButton, Box } from 'vux'
+import { XButton, Box, XHeader } from 'vux'
 
 let audioContext
 let recorder
@@ -23,7 +24,8 @@ export default {
   components: {
     XButton,
     vueLoading,
-    Box
+    Box,
+    XHeader
   },
   mounted () {
     try {
@@ -94,7 +96,7 @@ export default {
 
 <style scoped>
 .animate-group {
-  margin: 50px 0;
+  margin: 150px 0;
 }
 .btn-group {
   position: absolute;
