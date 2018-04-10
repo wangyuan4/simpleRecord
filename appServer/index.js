@@ -1,13 +1,13 @@
 import Koa from 'koa';
 import bodyparser from 'koa-bodyparser';
 import convert from 'koa-convert';
-import cors from 'koa2-cors'
-
+import cors from 'koa2-cors';
+import websockify from 'koa-websocket';
 import router from './routes';
 
 const knex = require('./lib/knex');
 const config = require('./config');
-const app = new Koa();
+const app = websockify(new Koa());
 
 app.use(cors({
 	origin:'*'
@@ -17,14 +17,14 @@ app.use(cors({
 // app.use(bodyparser);
 
 app.use(bodyparser())
-app.use(require('koa-static')(__dirname + './../webApp/dist'));
+// app.ws.use(require('koa-static')(__dirname + './../webApp/dist'));
 
 router.map((el) => {
 	app.use(el.routes())
 	.use(el.allowedMethods());
 })
 
-module.exports = app;
-// app.listen(config.port);
-// console.log('server is listening on port', config.port)
+// module.exports = app;
+app.listen(config.port);
+console.log('server is listening on port', config.port)
 

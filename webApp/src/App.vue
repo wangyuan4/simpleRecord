@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <!-- <x-header></x-header> -->
-    <div class="content"><router-view></router-view></div>
+    <view-box ref="viewBox" class="content"><router-view></router-view></view-box>
     <div  class="tab">
       <tabbar slot="bottom">
       <tabbar-item selected link="/note/add">
@@ -23,13 +22,14 @@
 </template>
 
 <script>
-import { XHeader, Tabbar, TabbarItem } from 'vux'
+import { XHeader, Tabbar, TabbarItem, ViewBox } from 'vux'
 export default {
   name: 'app',
   components: {
     XHeader,
     Tabbar,
-    TabbarItem
+    TabbarItem,
+    ViewBox
   },
   methods: {
     handler () {

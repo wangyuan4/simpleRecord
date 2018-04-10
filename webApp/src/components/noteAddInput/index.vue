@@ -2,7 +2,7 @@
   <div>
     <x-header><span slot="right">回退版本</span><span slot="right" class="option-line">|</span><span slot="right" @click="saveFile">保存</span></x-header>
     <x-input class="input" placeholder="标题" v-model="title"></x-input>
-    <vue-html5-editor :content="content" :height='500'></vue-html5-editor>
+    <vue-html5-editor :content="content" :height='500' @change="updateData"></vue-html5-editor>
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
   name: 'h5Editor',
   data () {
     return {
-      content: ''
+      content: '请输入文本：'
     }
   },
   components: {
@@ -24,8 +24,11 @@ export default {
     XHeader
   },
   methods: {
+    updateData (e = '') {
+      this.content = e
+    },
     saveFile () {
-      console.log(this.content)
+      console.log(1111)
     }
   }
 }

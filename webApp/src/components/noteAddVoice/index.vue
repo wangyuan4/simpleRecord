@@ -99,8 +99,8 @@ export default {
   margin: 150px 0;
 }
 .btn-group {
-  position: absolute;
-  bottom: 200px;
+  position:relative;
+  bottom: 10%;
   width: 100%;
   box-sizing: border-box;
   padding: 30px;

@@ -12,18 +12,10 @@ export const createTable = (userId) => {
   
 }
 
-export const searchUserFun = (queryArr) => {
-	let selOpt = ''
-	queryArr.forEach(el => {
-    selOpt = typeof el.keyVal === 'string' ?
-    `${selOpt}${el.keyName} = '${el.keyVal}' and ` :
-    `${selOpt}${el.keyName} = ${el.keyVal} and `
-	});
-  const sqlSelOpt = _.dropRight(selOpt.split(' and ')).join(' and ')
-  console.log(sqlSelOpt)
+export const searchUserByNameFun = (val) => {
   return new Promise((resolve,reject) => {
     const  sql = `
-        select * from user where ${sqlSelOpt}
+        select * from user where user_name like '%${val}%' or user_id like '%${val}%'
       `;
     query(sql,resolve,reject)
   })
@@ -37,11 +29,11 @@ export const addUserFun = (id,name,pwd) => {
   })
 }
 
-export const searchFriendsFun = (userId,friendName) => {
+export const searchFriendsFun = (userId,val) => {
   return new Promise((resolve,reject) => {
-    const  sql = friendName ? 
+    const  sql = val ? 
       `
-        select * from F${userId},user where user.user_id = F${userId}.friend_id and user.user_name like '${friendName}%'
+        select * from F${userId},user where user.user_id = F${userId}.friend_id and user.user_name like '%${val}%' or user.user_id like '%${val}%'
       ` :
       `
         select * from F${userId},user where user.user_id = F${userId}.friend_id
@@ -53,10 +45,36 @@ export const searchFriendsFun = (userId,friendName) => {
 export const addFriendFun = (userId,friendId) => {
   return new Promise((resolve,reject) => {
     const  sql = `
-        insert into F${userId} (friend_id,friend_note,friend_group) values ('${friendId}','','')
+        insert into F${userId} (friend_id,friend_note,file_id) values ('${friendId}','','')
       `;
     query(sql,resolve,reject)
   })
 }
 
+export const getUsersFun = (userId,val) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+        select * from user where user_id not in (select friend_id from F${userId}) and user_id != '${userId}' and user_name like '%${val}%' or user_id like '%${val}%'
+      `;
+    query(sql, resolve, reject)
+  })
+}
+
+export const delFriendFun = (userId, friendId) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+        delete from F${userId} where friend_id = '${friendId}' 
+      `;
+    query(sql, resolve, reject)
+  })
+}
+
+export const shareFileFun = (userId, friendId, fileId) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+        update F${userId} where set file_id = '${fileId}' where friend_id = '${friendId}' 
+      `;
+    query(sql, resolve, reject)
+  })
+}
 

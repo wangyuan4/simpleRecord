@@ -2,13 +2,11 @@
   <div>
     <div class="filelist-title">文件列表</div>
     <search
-      @result-click="resultClick"
       @on-change="getResult"
-      :results="results"
       v-model="value"
       position="absolute"
       auto-scroll-to-top top="46px"
-      @on-submit="onSubmit"
+      @on-submit="getResult"
       ref="search">
     </search>
     <tab>
@@ -19,10 +17,11 @@
     <swipeout style="margin-top:6px">
       <swipeout-item transition-mode="follow" v-for="(item,index) in list" :key="index">
         <div slot="right-menu" >
-          <swipeout-button type="primary" background-color="rgb(73, 73, 73)" >分享</swipeout-button>
-          <swipeout-button type="warn" background-color="rgb(73, 73, 73)" @click="dele">删除</swipeout-button>
+          <swipeout-button v-if="!item.isTrash" type="primary" background-color="rgb(73, 73, 73)"><div @click="show1=true;currentIndex=index">分享</div></swipeout-button>
+          <swipeout-button v-if="item.isTrash" type="primary" background-color="rgb(73, 73, 73)"><div @click="() => revert(index)">还原</div></swipeout-button>
+          <swipeout-button type="warn" background-color="rgb(73, 73, 73)" ><div @click="show=true;currentIndex=index;confirmCont=item.isTrash?'确定永久删除？':'确定移进垃圾桶吗？'">删除</div></swipeout-button>
         </div>
-        <router-link slot="content" class="list" to="/note/add/markdown">
+        <div slot="content" class="list" @click="() => jumpToEdit(index)">
           <div class="list-left">
             <div class="day">{{item.month}}</div>
             <div class="week">{{item.day}}日</div>
@@ -30,14 +29,35 @@
           </div>
           <div class="list-line"></div>
           <div class="list-right">{{item.title}}.{{item.fileType}}</div>
-        </router-link>
+        </div>
       </swipeout-item>
     </swipeout>
+    <confirm v-model="show"
+      title=""
+      theme="android"
+      @on-cancel="show=false"
+      @on-confirm="dele"
+      @on-show="show=true"
+      @on-hide="show=false">
+      <p style="text-align:center;">{{confirmCont}}</p>
+      </confirm>
+    <popup v-model="show1">
+      <popup-header
+      right-text="确定"
+      title="分享至："
+      :show-bottom-border="true"
+      @on-click-left="show1 = false"
+      @on-click-right="share">
+      </popup-header>
+      <group gutter="0">
+        <radio fill-mode fill-label="邮箱：" fill-placeholder="请填写邮箱地址" :options="options" @on-change="change"></radio>
+      </group>
+    </popup>
   </div>
 </template>
 
 <script>
-  import {AlertModule, Search, Tab, TabItem, Swipeout, SwipeoutItem, SwipeoutButton} from 'vux'
+  import {AlertModule, Search, Tab, TabItem, Swipeout, SwipeoutItem, SwipeoutButton, Confirm, PopupHeader, Popup, Radio, Group} from 'vux'
   import axios from 'axios'
   import {fileInfoTran} from '../../utils/dataTran'
   export default {
@@ -47,14 +67,30 @@
       SwipeoutItem,
       SwipeoutButton,
       Tab,
-      TabItem
+      TabItem,
+      Confirm,
+      AlertModule,
+      PopupHeader,
+      Popup,
+      Radio,
+      Group
     },
     data () {
       return {
         results: [],
         value: '',
         list: [],
-        index01: 0
+        index01: 0,
+        show: false,
+        currentIndex: 0,
+        confirmCont: '',
+        currentTabIndex: 0,
+        show1: false,
+        options: [{
+          key: 0,
+          value: '我的好友'
+        }],
+        shareType: ''
       }
     },
     methods: {
@@ -65,8 +101,50 @@
         console.log('on-change', val)
         this.results = val ? this.getResult(this.value) : []
       },
+      change (value, label) {
+        this.shareType = value
+      },
       dele () {
-        console.log(123)
+        const body = {
+          userId: global.user.id,
+          fileId: this.list[this.currentIndex].id
+        }
+        axios.post(`${global.IP}/deletefile`, body)
+        .then((res) => {
+          AlertModule.show({
+            title: '删除成功！',
+            content: this.list[this.currentIndex].isTrash ? '已永久删除！' : '已移到垃圾桶，如有需要可还原！'
+          })
+          this.searchWorkFiles(this.currentTabIndex, this.currentTabIndex === 2 ? 1 : 0)
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
+      share () {
+        // eslint-disable-next-line
+        const re = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/
+        if (this.shareType === 0) {
+          this.$router.push({path: '/mine/choosefriend'})
+        } else if (re.test(this.shareType) === true) {
+          console.log('分享至邮箱')
+        } else {
+          AlertModule.show({
+            title: '邮箱格式错误！'
+          })
+          this.show1 = true
+        }
+      },
+      revert (index) {
+        const body = {
+          userId: global.user.id,
+          fileId: this.list[this.currentIndex].id
+        }
+        axios.post(`${global.IP}/revertfile`, body)
+        .then((res) => {
+          this.searchWorkFiles(this.currentTabIndex, this.currentTabIndex === 2 ? 1 : 0)
+        }).catch((error) => {
+          console.log(error)
+        })
       },
       onSubmit () {
         this.$refs.search.setBlur()
@@ -77,45 +155,59 @@
         })
       },
       switchTabitem (index) {
-        console.log(index)
+        this.currentTabIndex = index
+        switch (index) {
+          case 0: this.searchWorkFiles(0, 0)
+            break
+          case 1: this.searchWorkFiles(1, 0)
+            break
+          case 2: this.searchWorkFiles(2, 1)
+            break
+          default: this.searchWorkFiles(0, 0)
+            break
+        }
       },
-      searchWorkFiles () {
-        axios.get(`/getFileList`, {
+      jumpToEdit () {
+        const data = this.list[this.currentIndex]
+        let name = ''
+        switch (data.fileType) {
+          case 'md': name = 'noteAddMakdown'
+            break
+          case 'html': name = '/note/add/input'
+            break
+          default: name = 'noteAddMakdown'
+            break
+        }
+        const opt = {
+          name,
+          params: {
+            item: data
+          }
+        }
+        this.$router.push(opt)
+      },
+      searchWorkFiles (type, isTrash) {
+        axios.get(`${global.IP}/getfilelist`, {
           params: {
             id: global.user.id,
-            type: 0
-          }
-        }).then((res) => {
-          if (res.data.status) {
-            this.list = fileInfoTran(res.data.list)
-            console.log(this.list)
-          } else {
-            AlertModule.show({
-              content: res.data.msg
-            })
-          }
-        }).catch((error) => {
-          console.log(error)
-        })
+            type,
+            isTrash
+          }})
+          .then((res) => {
+            if (res.data.status) {
+              this.list = fileInfoTran(res.data.list)
+            } else {
+              AlertModule.show({
+                content: res.data.msg
+              })
+            }
+          }).catch((error) => {
+            console.log(error)
+          })
       }
     },
-    beforeCreate () {
-      axios.get(`${global.IP}/getFileList`, {
-        params: {
-          id: global.user.id,
-          type: 0
-        }})
-        .then((res) => {
-          if (res.data.status) {
-            this.list = fileInfoTran(res.data.list)
-          } else {
-            AlertModule.show({
-              content: res.data.msg
-            })
-          }
-        }).catch((error) => {
-          console.log(error)
-        })
+    created () {
+      this.searchWorkFiles(0, 0)
     }
   }
 </script>

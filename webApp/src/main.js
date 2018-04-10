@@ -9,7 +9,7 @@ import Index from './Index'
 
 import router from './router'
 
-global.IP = 'http://192.168.101.235:3000'
+global.IP = 'http://192.168.101.235:3320'
 Vue.use(VueRouter)
 
 FastClick.attach(document.body)

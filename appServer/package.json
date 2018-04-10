@@ -21,6 +21,7 @@
     "koa-convert": "^1.2.0",
     "koa-router": "^7.4.0",
     "koa-static": "^4.0.2",
+    "koa-websocket": "^4.1.0",
     "koa2-cors": "^2.0.5",
     "lodash": "^4.17.5",
     "mysql": "^2.15.0",

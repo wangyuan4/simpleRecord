@@ -1,6 +1,5 @@
 <template>
   <div>
-    <view-box ref="viewBox">
     <div style="margin: 10px" v-for="(item, index) in list" :key="index">
       <masker style="border-radius: 2px;" @click.native="onClickMask(item)">
         <div class="m-img" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
@@ -11,12 +10,11 @@
         </div>
       </masker>
     </div>
-    </view-box>
   </div>
 </template>
 
 <script>
-import { Masker, ViewBox } from 'vux'
+import { Masker } from 'vux'
 export default {
   data () {
     return {
@@ -60,8 +58,7 @@ export default {
     }
   },
   components: {
-    Masker,
-    ViewBox
+    Masker
   }
 }
 </script>

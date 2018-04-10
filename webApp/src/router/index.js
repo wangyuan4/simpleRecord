@@ -17,6 +17,7 @@ import CPwd from '@/components/mine/cpwd'
 import NFriends from '@/components/mine/newfriend'
 import NoteAddVoice from '@/components/noteAddVoice'
 import Calender from '@/components/mine/calender'
+import ChooseFriend from '@/components/mine/chooseFriend'
 
 Vue.use(Router)
 
@@ -88,6 +89,10 @@ export default new Router({
           path: '/mine/calender',
           name: 'calender',
           component: Calender
+        }, {
+          path: '/mine/choosefriend',
+          name: 'choosefriend',
+          component: ChooseFriend
         }
       ]
     }

@@ -1,19 +1,21 @@
 import Router from 'koa-router';
-import { createTable, searchUserFun,addUserFun,searchFriendsFun,addFriendFun} from "../sqls/index";
+import { 
+  createTable, 
+  searchUserByNameFun, 
+  addUserFun, 
+  searchFriendsFun, 
+  addFriendFun, 
+  getUsersFun, 
+  delFriendFun,
+  shareFileFun
+} from "../sqls/index";
 import {createUTC} from './comDataDeal'
 
 const router = new Router();
-const searchUserByName = async (name) => {
-	const res = await searchUserFun([{
-		keyName:'user_name',
-		keyVal:name
-	}])
-	return res
-}
 
 router.get('/searchuser',async (ctx, next) => {
 	const {name,pwd} = ctx.query;
-	const data = await searchUserByName(name)
+  const data = await searchUserByNameFun(name)
 	let msg = ''
 	if(data.length && data[0].user_pwd !== pwd){
 		msg = '密码错误,请重试！'
@@ -31,7 +33,7 @@ router.get('/searchuser',async (ctx, next) => {
 
 router.post('/adduser',async (ctx,next) => {
 	const {name,pwd} = ctx.request.body;
-	const data = await searchUserByName(name)
+  const data = await searchUserByNameFun(name)
 	if(data.length === 0){
 		const userId = createUTC()
 		const result = await addUserFun(userId,name,pwd);
@@ -55,29 +57,57 @@ router.post('/adduser',async (ctx,next) => {
 router.post('/addfriend',async (ctx,next) => {
 	const {userId,friendId} = ctx.request.body;
 	const res = await addFriendFun(userId,friendId);
-	console.log(res)
-	ctx.body = res ? true : false;
+  ctx.body = res ? true : false;
+  // ctx.websocket.send('message')
+	// ctx.websocket.on('message',(message) => {
+  //   console.log(message)
+  // });
 })
 
 router.get('/getfriendslist',async (ctx, next) => {
-	const {userId,friendName} = ctx.query;
-	let friendsInfo = {}
-	if(friendName === ''){
-		friendsInfo = {
-			list:(await searchFriendsFun(userId)),
-			isFriend:true
-		}
-	}else{
-		const res = await searchFriendsFun(userId,friendName);
-		friendsInfo = res.length ? {
-			list:res,
-			isFriend:true
-		} : {
-			list: await searchUserByName(friendName),
-			isFriend:false
-		}
+	const {userId,val} = ctx.query;
+	let res = {}
+	if(val === ''){
+		res = await searchFriendsFun(userId)
+	} else {
+    res = await searchFriendsFun(userId,val);
 	}
-	return ctx.body = friendsInfo;
+  return ctx.body = res ? {
+    status: true,
+    list: res
+  } : {
+      status: false,
+      msg: '服务器内部错误！'
+  }
 });
+
+router.get('/getuserlist', async (ctx, next) => {
+  const { userId, val } = ctx.query;
+  const res = await getUsersFun(userId, val)
+  return ctx.body = res ? {
+    status: true,
+    list: res
+  } : {
+    status: false,
+    msg: '服务器内部错误！'
+
+  }
+});
+
+router.post('/deletefriend', async (ctx, next) => {
+  const { userId, friendId } = ctx.request.body;
+  const res = await delFriendFun(userId, friendId);
+  ctx.body = res ? true : false;
+})
+
+// router.post('/sharefile', async (ctx, next) => {
+//   const { userId, friendId, fileIds } = ctx.request.body;
+//   let isSuc = true
+//   fileIds.forEach(el => {
+//     const res = await shareFileFun(userId, friendId, el);
+//     !res && !isSuc
+//   });
+//   ctx.body = isSuc ? true : false;
+// })
 
 export default router

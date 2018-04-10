@@ -26,7 +26,8 @@ export const fileInfoTran = (data) => {
       userId: el.user_id,
       month: times[1],
       day: times[2],
-      time: times[3]
+      time: times[3],
+      isTrash: el.is_trash
     }
   })
 }

@@ -2,7 +2,7 @@
   <div>
     <!-- <icon name="camera" scale="2">
     </icon> -->
-      <input type="file" accept="image/*" >
+      <input type="file" accept="image/*" capture="camera">
   </div>
 </template>
 

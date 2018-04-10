@@ -1,6 +1,5 @@
 <template>
   <div>
-    <view-box ref="viewBox">
 		<div class="mine-head">
 			<i class='fa fa-user' style="font-size:100px;color:#35495e"></i>
       <div>{{name}}</div>
@@ -16,20 +15,18 @@
       <cell title="切换账号" class="list-style" link="/"></cell>
       <cell title="退出登录" class="list-style" link="/"></cell>
     </group>
-    </view-box>
   </div>
 </template>
 
 
 <script>
 import 'font-awesome/css/font-awesome.min.css'
-import { Group, Cell, CellBox, ViewBox, Badge } from 'vux'
+import { Group, Cell, CellBox, Badge } from 'vux'
 export default {
   components: {
     Group,
     Cell,
     CellBox,
-    ViewBox,
     Badge
   },
   data () {

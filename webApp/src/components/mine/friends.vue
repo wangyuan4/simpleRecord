@@ -2,60 +2,88 @@
   <div>
     <x-header>好友列表</x-header>
 		<search
-      @result-click="resultClick"
       @on-change="getResult"
-      :results="results"
-      v-model="value"
       position="absolute"
       auto-scroll-to-top top="46px"
-      @on-submit="onSubmit"
+      @on-submit="getResult"
       ref="search">
     </search>
     <swipeout style="margin-top:6px">
       <swipeout-item transition-mode="follow" v-for="(item,index) in list" :key="index">
         <div slot="right-menu" >
-          <swipeout-button type="warn" background-color="#35485d" >删除</swipeout-button>
+          <swipeout-button type="warn" background-color="#35485d"><div @click="show=true;currentIndex=index">删除</div></swipeout-button>
         </div>
         <div slot="content" class="list">   
             <cell class="list-style">{{item.name}}</cell>
         </div>
       </swipeout-item>
     </swipeout>
+    <confirm v-model="show"
+      title=""
+      theme="android"
+      @on-cancel="show=false"
+      @on-confirm="dele"
+      @on-show="show=true"
+      @on-hide="show=false">
+      <p style="text-align:center;">确定删除该好友吗？</p>
+    </confirm>
   </div>
 </template>
 
 
 <script>
-import { Group, Cell, CellBox, XHeader, Swipeout, SwipeoutItem, SwipeoutButton, Search } from 'vux'
+import { XHeader, Swipeout, SwipeoutItem, SwipeoutButton, Search, Cell, Confirm } from 'vux'
+import axios from 'axios'
+import { userInfoTran } from '../../utils/dataTran'
 export default {
   components: {
-    Group,
-    Cell,
-    CellBox,
     XHeader,
     Swipeout,
     SwipeoutItem,
     SwipeoutButton,
-    Search
+    Search,
+    Cell,
+    Confirm
   },
   data () {
     return {
       results: [],
       value: '',
-      list: [{
-        name: '王俊凯'
-      }, {
-        name: '王源'
-      }, {
-        name: '易烊千玺'
-      }, {
-        name: '毛不易'
-      }, {
-        name: '廖峻涛'
-      }, {
-        name: '钟易轩'
-      }]
+      list: [],
+      show: false,
+      currentIndex: 0
     }
+  },
+  methods: {
+    getResult (val) {
+      axios
+      .get(`${global.IP}/getfriendslist`, {
+        params: {
+          userId: global.user.id,
+          val: val || ''
+        }
+      })
+      .then((res) => {
+        this.list = res.data.status && userInfoTran(res.data.list, false)
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    dele () {
+      const body = {
+        userId: global.user.id,
+        friendId: this.list[this.currentIndex].id
+      }
+      axios.post(`${global.IP}/deletefriend`, body)
+      .then((res) => {
+        res.data && this.getResult()
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+  },
+  created () {
+    this.getResult()
   }
 }
 </script>

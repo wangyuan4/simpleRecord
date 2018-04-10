@@ -1,9 +1,9 @@
 <template>
   <div>
-    <x-header><span slot="right">回退版本</span><span slot="right" class="option-line">|</span><span slot="right" @click="saveFile">保存</span></x-header>
-    <x-input class="input" placeholder="标题" v-model="title"></x-input>
+    <x-header><span slot="right">回退版本</span><span slot="right" class="option-line">|</span><span slot="right" @click="show=true">保存</span></x-header>
+    <x-input class="input" placeholder="标题" v-model="item.title"></x-input>
     <mavon-editor
-      v-model="value"
+      v-model="item.content"
       :toolbarsFlag="true"
       :toolbars="{
         bold: true, // 粗体
@@ -42,16 +42,16 @@
       }"
     />
     <popup v-model="show">
-        <popup-header
-        :right-text="确定"
-        title="请选择文件保存分类:"
-        :show-bottom-border="false"
-        @on-click-left="show = false"
-        @on-click-right="show = false"></popup-header>
-        <group gutter="0">
-          <radio :options="options"></radio>
-        </group>
-      </popup>
+      <popup-header
+      right-text="确定"
+      title="请选择文件保存分类:"
+      :show-bottom-border="true"
+      @on-click-left="show = false"
+      @on-click-right="saveFile"></popup-header>
+      <group gutter="0">
+        <radio :options="options" v-model="opt"></radio>
+      </group>
+    </popup>
   </div>
 </template>
 
@@ -59,16 +59,22 @@
 import 'mavon-editor/dist/css/index.css'
 import {mavonEditor} from 'mavon-editor'
 import { XInput, XHeader, PopupHeader, Popup, Group, Radio } from 'vux'
-import axios from 'axios'
+import { saveFiles } from '../../utils/comAjax'
 
 export default {
+  props: ['item'],
   data () {
     return {
-      value: '',
-      title: '',
-      fileId: '',
-      options: ['生活文件', '工作文件'],
-      show: false
+      item: {},
+      options: [{
+        key: 0,
+        value: '工作文件'
+      }, {
+        key: 1,
+        value: '生活文件'
+      }],
+      show: false,
+      opt: 0
     }
   },
   components: {
@@ -80,23 +86,24 @@ export default {
     Group,
     Radio
   },
+  created () {
+    console.log(this.$router.params)
+    this.item = this.$router.params.item || {
+      title: '',
+      content: ''
+    }
+  },
   methods: {
     saveFile () {
-      const body = {
+      this.show = !this.show
+      saveFiles({
         id: global.user.id,
         title: this.title === '' ? '无标题' : this.title,
-        content: this.value,
-        type: 0,
-        fileType: 'md',
+        content: this.content,
+        type: this.opt,
+        fileType: this.fileType,
         fileId: this.fileId
-      }
-      axios
-        .post(`${global.IP}/saveFile`, body)
-        .then((res) => {
-          res.data && this.$router.push({path: '/note/list'})
-        }).catch((error) => {
-          console.log(error)
-        })
+      })
     }
   }
 }

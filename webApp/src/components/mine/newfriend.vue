@@ -1,20 +1,18 @@
 <template>
   <div>
-		<x-header>新朋友<span slot="right" @click="add">扫二维码</span></x-header>
+		<x-header>新朋友<span slot="right" @click="scan">扫二维码</span></x-header>
     <search
-      @result-click="resultClick"
       @on-change="getResult"
-      :results="results"
-      v-model="value"
       position="absolute"
       auto-scroll-to-top top="46px"
-      @on-submit="onSubmit"
+      @on-submit="getResult"
       ref="search">
     </search>
 		<div class="title">好友通知</div>
-		<group style="margin-top:20px">
-			<cell title="wang" class="list-style" value="已同意"></cell>
-			<cell title="yuan" class="list-style" value="已同意"></cell>
+		<group style="margin-top:30px" >
+			<cell :title="item.name" class="list-style"  v-for="(item,index) in list" :key="index">
+        <i class='fa fa-plus' style="color:#494949;margin-right:10px" @click="() => add(index)"></i>
+      </cell>
     </group>
   </div>
 </template>
@@ -22,7 +20,25 @@
 
 <script>
 import Icon from 'vue-awesome/components/Icon'
-import { Group, Cell, CellBox, Search, XDialog, XHeader } from 'vux'
+import 'font-awesome/css/font-awesome.min.css'
+import axios from 'axios'
+import { Group, Cell, CellBox, Search, XDialog, XHeader, AlertModule } from 'vux'
+import { userInfoTran } from '../../utils/dataTran'
+
+// const ws = new WebSocket('ws://localhost:3320')
+
+// ws.onopen = (evt) => {
+//   console.log('Connection open ...')
+//   ws.send('Hello WebSockets!')
+// }
+// ws.onmessage = (evt) => {
+//   console.log('Received Message: ' + evt.data)
+//   ws.close()
+// }
+
+// ws.onclose = (evt) => {
+//   console.log('Connection closed.')
+// }
 export default {
   components: {
     Icon,
@@ -33,14 +49,49 @@ export default {
     XDialog,
     XHeader
   },
-  method: {
-    add () {
+  methods: {
+    add (index) {
+      const body = {
+        userId: global.user.id,
+        friendId: this.list[index].id
+      }
+      const _this = this
+      axios
+      .post(`${global.IP}/addfriend`, body)
+      .then((res) => {
+        if (res.data) {
+          AlertModule.show({
+            title: '添加成功！',
+            onHide () {
+              _this.$router.push({path: '/mine/friends'})
+            }
+          })
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    scan () {
 
+    },
+    getResult (val) {
+      val !== '' && axios
+      .get(`${global.IP}/getuserlist`, {
+        params: {
+          userId: global.user.id,
+          val: val || ''
+        }
+      })
+      .then((res) => {
+        this.list = res.data.status && userInfoTran(res.data.list, false)
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   },
   data () {
     return {
-
+      list: []
     }
   }
 }
@@ -49,7 +100,7 @@ export default {
 <style scoped>
 .list-style{
   height:40px;
-  font-size:18px
+  font-size:18px;
 }
 .title{
 	color: rgb(131, 130, 130);
