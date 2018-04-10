@@ -24,7 +24,8 @@ router.map((el) => {
 	.use(el.allowedMethods());
 })
 
-// module.exports = app;
-app.listen(config.port);
+// 傻媛请用npm run start, 服务器需要
+module.exports = app;
+// app.listen(config.port);
 console.log('server is listening on port', config.port)
 
