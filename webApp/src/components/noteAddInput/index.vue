@@ -22,6 +22,11 @@ export default {
     // VueHtml5Editor,
     XInput,
     XHeader
+  },
+  methods: {
+    saveFile () {
+      console.log(this.content)
+    }
   }
 }
 Vue.use(VueHtml5Editor, {

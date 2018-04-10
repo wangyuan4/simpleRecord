@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- <icon name="camera" scale="2">
-    </icon>
-      <input type="file" accept="image/*" capture="camera"> -->
+    </icon> -->
+      <input type="file" accept="image/*" >
   </div>
 </template>
 

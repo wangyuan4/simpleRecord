@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <!-- <x-header></x-header> -->
-    <router-view></router-view>
-    <tabbar slot="bottom">
+    <div class="content"><router-view></router-view></div>
+    <div  class="tab">
+      <tabbar slot="bottom">
       <tabbar-item selected link="/note/add">
         <!-- <img slot="icon" src="../assets/demo/icon_nav_article.png"> -->
         <span slot="label">添加笔记</span>
@@ -16,7 +17,8 @@
         <!-- <img slot="icon" src="../assets/demo/icon_nav_cell.png"> -->
         <span slot="label">个人中心</span>
       </tabbar-item>
-    </tabbar>
+      </tabbar>
+    </div>
   </div>
 </template>
 
@@ -45,5 +47,15 @@ export default {
 
 body {
   background-color: #fbf9fe;
+}
+.content{
+  height: 100%;
+  overflow: hidden;
+}
+.tab{
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
 }
 </style>
