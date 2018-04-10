@@ -10,7 +10,7 @@ export const saveFiles = (data) => {
     fileId: data.fileId
   }
   axios
-.post(`${global.IP}/savefile`, body)
+.post(`/api/savefile`, body)
 .then((res) => {
   res.data && this.$router.push({ path: '/note/list' })
 }).catch((error) => {

@@ -3,15 +3,17 @@
 import Vue from 'vue'
 import FastClick from 'fastclick'
 import VueRouter from 'vue-router'
+import { ToastPlugin } from 'vux'
 // import App from './App'
 // import Login from './components/Login'
 import Index from './Index'
 
 import router from './router'
 
-global.IP = 'http://192.168.101.235:3320'
+// global.IP = 'http://192.168.101.235:3320'
+global.IP = 'localhost:3320'
 Vue.use(VueRouter)
-
+Vue.use(ToastPlugin)
 FastClick.attach(document.body)
 
 Vue.config.productionTip = false

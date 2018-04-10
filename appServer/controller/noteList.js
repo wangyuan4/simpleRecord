@@ -7,7 +7,7 @@ const getNoteList = async (ctx, next) => {
   ctx.body = articles || [];
 }
 
-router.get('/notes', getNoteList);
+router.get('/api/notes', getNoteList);
 
 export default router
 

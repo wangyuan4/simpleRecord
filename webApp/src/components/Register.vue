@@ -39,7 +39,7 @@ export default {
         content: '请填写用户名和密码！'
       })
       : axios
-        .post(`${global.IP}/adduser`, body)
+        .post(`/api/adduser`, body)
         .then((res) => {
           if (res.data.status) {
             global.user = userInfoTran(res.data.list, true)

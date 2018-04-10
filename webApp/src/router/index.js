@@ -18,6 +18,7 @@ import NFriends from '@/components/mine/newfriend'
 import NoteAddVoice from '@/components/noteAddVoice'
 import Calender from '@/components/mine/calender'
 import ChooseFriend from '@/components/mine/chooseFriend'
+import QrcodeScanner from '@/components/mine/qrcodeScanner'
 
 Vue.use(Router)
 
@@ -93,6 +94,10 @@ export default new Router({
           path: '/mine/choosefriend',
           name: 'choosefriend',
           component: ChooseFriend
+        }, {
+          path: '/mine/qrcode/scanner',
+          name: 'qrcodeScanner',
+          component: QrcodeScanner
         }
       ]
     }

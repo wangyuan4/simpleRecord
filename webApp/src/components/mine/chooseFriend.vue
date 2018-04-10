@@ -37,7 +37,7 @@ export default {
     },
     getResult (val) {
       axios
-      .get(`${global.IP}/getfriendslist`, {
+      .get(`/api/getfriendslist`, {
         params: {
           userId: global.user.id,
           val: val || ''

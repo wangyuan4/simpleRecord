@@ -57,7 +57,7 @@ export default {
       }
       const _this = this
       axios
-      .post(`${global.IP}/addfriend`, body)
+      .post(`/api/addfriend`, body)
       .then((res) => {
         if (res.data) {
           AlertModule.show({
@@ -72,11 +72,11 @@ export default {
       })
     },
     scan () {
-
+      this.$router.push('/mine/qrcode/scanner')
     },
     getResult (val) {
       val !== '' && axios
-      .get(`${global.IP}/getuserlist`, {
+      .get(`/api/getuserlist`, {
         params: {
           userId: global.user.id,
           val: val || ''

@@ -57,7 +57,7 @@ export default {
   methods: {
     getResult (val) {
       axios
-      .get(`${global.IP}/getfriendslist`, {
+      .get(`/api/getfriendslist`, {
         params: {
           userId: global.user.id,
           val: val || ''
@@ -74,7 +74,7 @@ export default {
         userId: global.user.id,
         friendId: this.list[this.currentIndex].id
       }
-      axios.post(`${global.IP}/deletefriend`, body)
+      axios.post(`/api/deletefriend`, body)
       .then((res) => {
         res.data && this.getResult()
       }).catch((error) => {
