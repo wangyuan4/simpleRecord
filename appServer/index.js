@@ -19,7 +19,8 @@ app.use(cors({
 app.use(bodyparser())
 
 // Haowen: 再注释这行打一顿
-app.ws.use(require('koa-static')(__dirname + './../webApp/dist'));
+// app.ws.use(require('koa-static')(__dirname + './../webApp/dist'));
+app.use(require('koa-static')(__dirname + './../webApp/dist'));
 
 router.map((el) => {
 	app.use(el.routes())
