@@ -93,6 +93,11 @@
         shareType: ''
       }
     },
+    // 生命周期钩子函放在前面是个好习惯
+    mounted () {
+      console.log(123123)
+      this.searchWorkFiles(0, 0)
+    },
     methods: {
       resultClick (item) {
         window.alert('you click the result item: ' + JSON.stringify(item))
@@ -109,7 +114,7 @@
           userId: global.user.id,
           fileId: this.list[this.currentIndex].id
         }
-        axios.post(`${global.IP}/deletefile`, body)
+        axios.post(`/api/deletefile`, body)
         .then((res) => {
           AlertModule.show({
             title: '删除成功！',
@@ -127,6 +132,7 @@
           this.$router.push({path: '/mine/choosefriend'})
         } else if (re.test(this.shareType) === true) {
           console.log('分享至邮箱')
+          this.readySendMail()
         } else {
           AlertModule.show({
             title: '邮箱格式错误！'
@@ -134,12 +140,27 @@
           this.show1 = true
         }
       },
+      readySendMail () {
+        // from：当前用户，to：填写的邮箱，内容，傻媛你自己写下
+        axios
+          .post(`/api/sendmail`, {
+            from: 'userName',
+            to: 'haowen737@gmail.com',
+            content: 'hi, zhengmeili'
+          })
+          .then((res) => {
+            this.$vux.toast.text('分享成功')
+            this.show1 = false
+          }).catch((error) => {
+            this.$vux.toast.text(error || '分享失败')
+          })
+      },
       revert (index) {
         const body = {
           userId: global.user.id,
           fileId: this.list[this.currentIndex].id
         }
-        axios.post(`${global.IP}/revertfile`, body)
+        axios.post(`/api/revertfile`, body)
         .then((res) => {
           this.searchWorkFiles(this.currentTabIndex, this.currentTabIndex === 2 ? 1 : 0)
         }).catch((error) => {
@@ -187,9 +208,11 @@
         this.$router.push(opt)
       },
       searchWorkFiles (type, isTrash) {
-        axios.get(`${global.IP}/getfilelist`, {
+        const userId = window.localStorage.getItem('userId')
+        axios.get(`/api/getfilelist`, {
           params: {
-            id: global.user.id,
+            // id: global.user.id,
+            id: userId,
             type,
             isTrash
           }})
@@ -205,9 +228,6 @@
             console.log(error)
           })
       }
-    },
-    created () {
-      this.searchWorkFiles(0, 0)
     }
   }
 </script>

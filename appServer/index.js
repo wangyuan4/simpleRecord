@@ -17,14 +17,18 @@ app.use(cors({
 // app.use(bodyparser);
 
 app.use(bodyparser())
+
+// Haowen: 再注释这行打一顿
 // app.ws.use(require('koa-static')(__dirname + './../webApp/dist'));
+app.use(require('koa-static')(__dirname + './../webApp/dist'));
 
 router.map((el) => {
 	app.use(el.routes())
 	.use(el.allowedMethods());
 })
 
-// module.exports = app;
-app.listen(config.port);
+// 傻媛请用npm run start, 服务器需要
+module.exports = app;
+// app.listen(config.port);
 console.log('server is listening on port', config.port)
 

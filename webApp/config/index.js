@@ -10,7 +10,6 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
 
     // Various Dev Server settings
     host: '0.0.0.0', // can be overwritten by process.env.HOST
@@ -35,7 +34,6 @@ module.exports = {
     // https://webpack.js.org/configuration/devtool/#development
     // devtool: 'eval-source-map',
     devtool: 'inline-source-map',
-    
 
     // If you have problems debugging vue-files in devtools,
     // set this to false - it *may* help
@@ -48,6 +46,12 @@ module.exports = {
     // In our experience, they generally work as expected,
     // just be aware of this issue when enabling this option.
     cssSourceMap: false,
+    proxyTable: {
+      '/api': {
+        target: 'http://localhost:3320/',
+        changeOrigin: true
+      }
+    }
   },
 
   build: {

@@ -47,7 +47,7 @@ export default {
         title: '上传图片',
         desc: '输入文字以创建笔记',
         target: 'uploadImg',
-        img: 'https://cdn.xiaotaojiang.com/uploads/56/4b3601364b86fdfd234ef11d8712ad/_.jpg'
+        img: require('@/assets/note-add-upload.png')
       }]
     }
   },

@@ -11,7 +11,7 @@ import {removeSpeciChar,createUTC} from './comDataDeal'
 
 const router = new Router();
 
-router.get('/getfilelist',async (ctx) => {
+router.get('/api/getfilelist',async (ctx) => {
 		const {id,type,isTrash} = ctx.query;
 		const result = await getFileList(id,type,isTrash);
     ctx.body = result ? {
@@ -22,7 +22,7 @@ router.get('/getfilelist',async (ctx) => {
 			msg:'请求失败'
 		}
 })
-router.post('/savefile',async (ctx) => {
+router.post('/api/savefile',async (ctx) => {
 	// var one = 'beep boop';
 	// var other = 'beep boob blah';
 
@@ -57,7 +57,7 @@ router.post('/savefile',async (ctx) => {
 	
 })
 
-router.post('/deletefile',async (ctx) => {
+router.post('/api/deletefile',async (ctx) => {
 	const {userId,fileId} = ctx.request.body;
 	const fileInfo = (await getFileById(fileId))[0]
 	const result = fileInfo.user_id === userId && fileInfo.is_trash ?
@@ -66,7 +66,7 @@ router.post('/deletefile',async (ctx) => {
 	ctx.body = result ? true : false;
 })
 
-router.post('/revertfile', async (ctx) => {
+router.post('/api/revertfile', async (ctx) => {
 	const { userId, fileId } = ctx.request.body;
 	const result =	await updateFileFun(fileId, [{ keyName: 'is_trash', keyValue: 0 }])
 	ctx.body = result ? true : false;

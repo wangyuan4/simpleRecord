@@ -13,7 +13,7 @@ import {createUTC} from './comDataDeal'
 
 const router = new Router();
 
-router.get('/searchuser',async (ctx, next) => {
+router.get('/api/searchuser',async (ctx, next) => {
 	const {name,pwd} = ctx.query;
   const data = await searchUserByNameFun(name)
 	let msg = ''
@@ -31,7 +31,7 @@ router.get('/searchuser',async (ctx, next) => {
 	} ;
 });
 
-router.post('/adduser',async (ctx,next) => {
+router.post('/api/adduser',async (ctx,next) => {
 	const {name,pwd} = ctx.request.body;
   const data = await searchUserByNameFun(name)
 	if(data.length === 0){
@@ -54,7 +54,7 @@ router.post('/adduser',async (ctx,next) => {
 	}
 })
 
-router.post('/addfriend',async (ctx,next) => {
+router.post('/api/addfriend',async (ctx,next) => {
 	const {userId,friendId} = ctx.request.body;
 	const res = await addFriendFun(userId,friendId);
   ctx.body = res ? true : false;
@@ -64,7 +64,7 @@ router.post('/addfriend',async (ctx,next) => {
   // });
 })
 
-router.get('/getfriendslist',async (ctx, next) => {
+router.get('/api/getfriendslist',async (ctx, next) => {
 	const {userId,val} = ctx.query;
 	let res = {}
 	if(val === ''){
@@ -81,7 +81,7 @@ router.get('/getfriendslist',async (ctx, next) => {
   }
 });
 
-router.get('/getuserlist', async (ctx, next) => {
+router.get('/api/getuserlist', async (ctx, next) => {
   const { userId, val } = ctx.query;
   const res = await getUsersFun(userId, val)
   return ctx.body = res ? {
@@ -94,13 +94,13 @@ router.get('/getuserlist', async (ctx, next) => {
   }
 });
 
-router.post('/deletefriend', async (ctx, next) => {
+router.post('/api/deletefriend', async (ctx, next) => {
   const { userId, friendId } = ctx.request.body;
   const res = await delFriendFun(userId, friendId);
   ctx.body = res ? true : false;
 })
 
-// router.post('/sharefile', async (ctx, next) => {
+// router.post('/api/sharefile', async (ctx, next) => {
 //   const { userId, friendId, fileIds } = ctx.request.body;
 //   let isSuc = true
 //   fileIds.forEach(el => {

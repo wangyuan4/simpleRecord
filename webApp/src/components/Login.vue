@@ -26,23 +26,22 @@ export default {
     }
   },
   methods: {
-    fakeLogin () {
-      this.$router.replace('/note/add')
-    },
     login () {
       this.userName === '' || this.userPwd === ''
       ? AlertModule.show({
         content: '请填写用户名和密码！'
       })
       : axios
-        .get(`${global.IP}/searchuser`, {
+        .get(`/api/searchuser`, {
           params: {
             name: this.userName,
             pwd: this.userPwd
           }
         }).then((res) => {
           if (res.data.status) {
-            global.user = userInfoTran(res.data.list, true)
+            const user = userInfoTran(res.data.list, true)
+            global.user = user
+            window.localStorage.setItem('userId', user.id)
             this.$router.push({path: '/app'})
           } else {
             AlertModule.show({
@@ -50,7 +49,7 @@ export default {
             })
           }
         }).catch((error) => {
-          console.log(error)
+          this.$vux.toast.text(error || '登录失败')
         })
     }
   },

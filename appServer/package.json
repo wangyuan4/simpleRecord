@@ -4,8 +4,7 @@
   "description": "myApp server",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node --presets=es2015 ./index.js",
-    "start2": "./node_modules/.bin/nodemon bin/run",
+    "start": "./node_modules/.bin/nodemon bin/run",
     "pm2": "pm2 start bin/run ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,6 +24,7 @@
     "koa2-cors": "^2.0.5",
     "lodash": "^4.17.5",
     "mysql": "^2.15.0",
+    "nodemailer": "^4.6.4",
     "runkoa": "^1.5.9"
   },
   "devDependencies": {
