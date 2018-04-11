@@ -4,34 +4,34 @@
     <search
       @on-change="getResult"
       v-model="value"
-      position="absolute"
-      auto-scroll-to-top top="46px"
       @on-submit="getResult"
       ref="search">
     </search>
-    <tab>
-      <tab-item selected @on-item-click="switchTabitem">工作文件</tab-item>
-      <tab-item @on-item-click="switchTabitem">生活文件</tab-item>
-      <tab-item @on-item-click="switchTabitem">回收站</tab-item>
-    </tab>
-    <swipeout style="margin-top:6px">
-      <swipeout-item transition-mode="follow" v-for="(item,index) in list" :key="index">
-        <div slot="right-menu" >
-          <swipeout-button v-if="!item.isTrash" type="primary" background-color="rgb(73, 73, 73)"><div @click="show1=true;currentIndex=index">分享</div></swipeout-button>
-          <swipeout-button v-if="item.isTrash" type="primary" background-color="rgb(73, 73, 73)"><div @click="() => revert(index)">还原</div></swipeout-button>
-          <swipeout-button type="warn" background-color="rgb(73, 73, 73)" ><div @click="show=true;currentIndex=index;confirmCont=item.isTrash?'确定永久删除？':'确定移进垃圾桶吗？'">删除</div></swipeout-button>
-        </div>
-        <div slot="content" class="list" @click="() => jumpToEdit(index)">
-          <div class="list-left">
-            <div class="day">{{item.month}}</div>
-            <div class="week">{{item.day}}日</div>
-            <div class="time">{{item.time}}</div>
+      <tab>
+        <tab-item selected @on-item-click="switchTabitem">工作文件</tab-item>
+        <tab-item @on-item-click="switchTabitem">生活文件</tab-item>
+        <tab-item @on-item-click="switchTabitem">好友分享</tab-item>
+        <tab-item @on-item-click="switchTabitem">回收站</tab-item>
+      </tab>
+      <swipeout style="margin-top:6px">
+        <swipeout-item transition-mode="follow" v-for="(item,index) in list" :key="index">
+          <div slot="right-menu" >
+            <swipeout-button v-if="!item.isTrash&&!item.isShare" type="primary" background-color="rgb(73, 73, 73)"><div @click="show1=true;currentIndex=index">分享</div></swipeout-button>
+            <swipeout-button v-if="item.isTrash" type="primary" background-color="rgb(73, 73, 73)"><div @click="() => revert(index)">还原</div></swipeout-button>
+            <swipeout-button type="warn" background-color="rgb(73, 73, 73)" ><div @click="show=true;currentIndex=index;confirmCont=item.isTrash || item.friendName ?'确定永久删除？':'确定移进垃圾桶吗？'">删除</div></swipeout-button>
           </div>
-          <div class="list-line"></div>
-          <div class="list-right">{{item.title}}.{{item.fileType}}</div>
-        </div>
-      </swipeout-item>
-    </swipeout>
+          <div slot="content" class="list" @click="() => jumpToShow(index)">
+            <div class="list-left">
+              <div class="day">{{item.month}}</div>
+              <div class="week">{{item.day}}日</div>
+              <div class="time">{{item.time}}</div>
+            </div>
+            <div class="list-line"></div>
+            <div class="list-right" >{{item.title}}.{{item.fileType}}</div>
+            <div class="list-right" v-if="item.isShare">来自：{{item.friendName}}</div>
+          </div>
+        </swipeout-item>
+      </swipeout>
     <confirm v-model="show"
       title=""
       theme="android"
@@ -59,7 +59,8 @@
 <script>
   import {AlertModule, Search, Tab, TabItem, Swipeout, SwipeoutItem, SwipeoutButton, Confirm, PopupHeader, Popup, Radio, Group} from 'vux'
   import axios from 'axios'
-  import {fileInfoTran} from '../../utils/dataTran'
+  import { fileInfoTran } from '../../utils/dataTran'
+  import { getItem } from '../../utils/storage'
   export default {
     components: {
       Search,
@@ -90,37 +91,35 @@
           key: 0,
           value: '我的好友'
         }],
-        shareType: ''
+        shareType: '',
+        userId: getItem('user').id
       }
     },
     // 生命周期钩子函放在前面是个好习惯
     mounted () {
-      console.log(123123)
-      this.searchWorkFiles(0, 0)
+      this.getFileList(0, 0)
     },
     methods: {
-      resultClick (item) {
-        window.alert('you click the result item: ' + JSON.stringify(item))
-      },
       getResult (val) {
-        console.log('on-change', val)
-        this.results = val ? this.getResult(this.value) : []
+        this.getFileList(this.currentTabIndex, this.currentTabIndex === 2 ? 1 : 0, val)
       },
       change (value, label) {
         this.shareType = value
       },
       dele () {
+        const item = this.list[this.currentIndex]
         const body = {
-          userId: global.user.id,
-          fileId: this.list[this.currentIndex].id
+          userId: this.userId,
+          fileId: item.id
         }
-        axios.post(`/api/deletefile`, body)
+        const url = item.isShare ? '/api/delsharefile' : '/api/deletefile'
+        axios.post(url, body)
         .then((res) => {
-          AlertModule.show({
+          !item.isShare && AlertModule.show({
             title: '删除成功！',
             content: this.list[this.currentIndex].isTrash ? '已永久删除！' : '已移到垃圾桶，如有需要可还原！'
           })
-          this.searchWorkFiles(this.currentTabIndex, this.currentTabIndex === 2 ? 1 : 0)
+          this.getFileList(this.currentTabIndex, this.currentTabIndex === 2 ? 1 : 0)
         }).catch((error) => {
           console.log(error)
         })
@@ -129,7 +128,12 @@
         // eslint-disable-next-line
         const re = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/
         if (this.shareType === 0) {
-          this.$router.push({path: '/mine/choosefriend'})
+          this.$router.push({
+            name: 'choosefriend',
+            params: {
+              fileId: this.list[this.currentIndex].fileId
+            }
+          })
         } else if (re.test(this.shareType) === true) {
           console.log('分享至邮箱')
           this.readySendMail()
@@ -157,12 +161,12 @@
       },
       revert (index) {
         const body = {
-          userId: global.user.id,
-          fileId: this.list[this.currentIndex].id
+          userId: this.userId,
+          fileId: this.list[this.currentIndex].fileId
         }
         axios.post(`/api/revertfile`, body)
         .then((res) => {
-          this.searchWorkFiles(this.currentTabIndex, this.currentTabIndex === 2 ? 1 : 0)
+          this.getFileList(this.currentTabIndex, this.currentTabIndex === 2 ? 1 : 0)
         }).catch((error) => {
           console.log(error)
         })
@@ -178,43 +182,40 @@
       switchTabitem (index) {
         this.currentTabIndex = index
         switch (index) {
-          case 0: this.searchWorkFiles(0, 0)
+          case 0: this.getFileList(0, 0)
             break
-          case 1: this.searchWorkFiles(1, 0)
+          case 1: this.getFileList(1, 0)
             break
-          case 2: this.searchWorkFiles(2, 1)
+          case 2: this.getFileList(2, 0)
             break
-          default: this.searchWorkFiles(0, 0)
+          case 3: this.getFileList(3, 1)
+            break
+          default: this.getFileList(0, 0)
             break
         }
       },
-      jumpToEdit () {
+      jumpToShow () {
         const data = this.list[this.currentIndex]
-        let name = ''
-        switch (data.fileType) {
-          case 'md': name = 'noteAddMakdown'
-            break
-          case 'html': name = '/note/add/input'
-            break
-          default: name = 'noteAddMakdown'
-            break
-        }
-        const opt = {
-          name,
+        const opt = data.fileType === 'md' ? {
+          name: 'noteAddMakdown',
+          params: {
+            item: data
+          }
+        } : {
+          name: 'noteShow',
           params: {
             item: data
           }
         }
         this.$router.push(opt)
       },
-      searchWorkFiles (type, isTrash) {
-        const userId = window.localStorage.getItem('userId')
+      getFileList (type, isTrash, val) {
         axios.get(`/api/getfilelist`, {
           params: {
-            // id: global.user.id,
-            id: userId,
+            id: this.userId,
             type,
-            isTrash
+            isTrash,
+            val: val || ''
           }})
           .then((res) => {
             if (res.data.status) {

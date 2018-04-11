@@ -5,6 +5,7 @@ import Register from '../components/Register'
 import App from '../App'
 import NoteAdd from '@/components/noteAdd'
 import NoteList from '@/components/noteList'
+import NoteShow from '@/components/noteList/showFileInfo'
 
 import NoteAddInput from '@/components/noteAddInput'
 import NoteAddMakdown from '@/components/noteAddMarkdown'
@@ -46,6 +47,10 @@ export default new Router({
           path: '/note/list',
           name: 'noteList',
           component: NoteList
+        }, {
+          path: '/note/show',
+          name: 'noteShow',
+          component: NoteShow
         }, {
           path: '/note/add/input',
           name: 'noteAddInput',

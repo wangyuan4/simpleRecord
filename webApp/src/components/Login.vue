@@ -18,12 +18,20 @@ import 'font-awesome/css/font-awesome.min.css'
 import Icon from 'vue-awesome/components/Icon'
 import axios from 'axios'
 import {userInfoTran} from '../utils/dataTran'
+import { setItem, getItem } from '../utils/storage'
 export default {
   data () {
     return {
-      userName: 'tony',
-      userPwd: '111111'
+      userName: getItem('user').name || '',
+      userPwd: getItem('user').pwd || ''
     }
+  },
+  components: {
+    XInput,
+    Flexbox,
+    FlexboxItem,
+    Icon,
+    Group
   },
   methods: {
     login () {
@@ -40,8 +48,7 @@ export default {
         }).then((res) => {
           if (res.data.status) {
             const user = userInfoTran(res.data.list, true)
-            global.user = user
-            window.localStorage.setItem('userId', user.id)
+            setItem('user', user)
             this.$router.push({path: '/app'})
           } else {
             AlertModule.show({
@@ -52,13 +59,6 @@ export default {
           this.$vux.toast.text(error || '登录失败')
         })
     }
-  },
-  components: {
-    XInput,
-    Flexbox,
-    FlexboxItem,
-    Icon,
-    Group
   }
 }
 </script>

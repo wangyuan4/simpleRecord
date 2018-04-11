@@ -4,10 +4,10 @@
 		<div class="qrcode">
 			<div class="title">
 				<icon name="camera" scale="5"></icon>
-				<div>用户名</div>
+				<div>{{userName}}</div>
 			</div>
 			<div class="img">
-    		<qrcode value="wang" type="img"></qrcode>
+    		<qrcode :value="userName" type="img"></qrcode>
 			</div>
 			<div class="footer">扫二维码，加我好友</div>
 		</div>
@@ -18,11 +18,18 @@
 <script>
 import { Qrcode, XHeader } from 'vux'
 import Icon from 'vue-awesome/components/Icon'
+import { getItem } from '../../utils/storage'
 export default {
   components: {
     Qrcode,
     XHeader,
     Icon
+  },
+  data () {
+    return {
+      userId: getItem('user').id,
+      userName: getItem('user').id
+    }
   }
 }
 </script>

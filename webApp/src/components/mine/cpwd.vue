@@ -13,6 +13,8 @@
 
 <script>
 import { Group, Cell, CellBox, XHeader, XInput } from 'vux'
+import { getItem } from '../../utils/storage'
+
 export default {
   components: {
     Group,
@@ -23,8 +25,8 @@ export default {
   },
   data () {
     return {
-      name: global.user.name,
-      id: global.user.id
+      name: getItem('user').name,
+      userId: getItem('user').id
     }
   },
   methods: {

@@ -6,7 +6,9 @@ import {
 	addFriendFun,
 	getUsersFun,
 	delFriendFun,
-	shareFileFun
+	shareFileFun,
+	updateFriendFun,
+	delSFileFun
 } from './userSql'
 import {
 	getFileById,
@@ -50,6 +52,8 @@ export {
 	getUsersFun,
 	delFriendFun, 
 	shareFileFun,
+	updateFriendFun,
+	delSFileFun,
 
 	addFileFun,
 	getFileById,

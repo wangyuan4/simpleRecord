@@ -1,34 +1,88 @@
 <template>
   <div>
-    <x-header><span slot="right">回退版本</span><span slot="right" class="option-line">|</span><span slot="right" @click="saveFile">保存</span></x-header>
-    <x-input class="input" placeholder="标题" v-model="title"></x-input>
-    <vue-html5-editor :content="content" :height='500' @change="updateData"></vue-html5-editor>
+    <x-header><span slot="right">回退版本</span><span slot="right" class="option-line">|</span><span slot="right" @click="show=true">保存</span></x-header>
+    <x-input class="input" placeholder="标题" v-model="item.title"></x-input>
+    <vue-html5-editor :content="item.content" :height='500' @change="updateData"></vue-html5-editor>
+    <popup v-model="show">
+      <popup-header
+      right-text="确定"
+      title="请选择文件保存分类:"
+      :show-bottom-border="true"
+      @on-click-left="show = false"
+      @on-click-right="saveFile"></popup-header>
+      <group gutter="0">
+        <radio :options="options" v-model="opt"></radio>
+      </group>
+    </popup>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { XInput, XHeader } from 'vux'
+import { XInput, XHeader, PopupHeader, Popup, Group, Radio } from 'vux'
 import VueHtml5Editor from 'vue-html5-editor'
+import axios from 'axios'
 import 'font-awesome/css/font-awesome.min.css'
+import { getItem } from '../../utils/storage'
+
 export default {
   name: 'h5Editor',
   data () {
     return {
-      content: '请输入文本：'
+      item: {},
+      options: [{
+        key: 0,
+        value: '工作文件'
+      }, {
+        key: 1,
+        value: '生活文件'
+      }],
+      show: false,
+      opt: 0,
+      userId: getItem('user').id
     }
   },
   components: {
-    // VueHtml5Editor,
     XInput,
-    XHeader
+    XHeader,
+    PopupHeader,
+    Popup,
+    Group,
+    Radio
+  },
+  mounted () {
+    const { item } = this.$route.params
+    this.item = item || {
+      title: '',
+      content: '',
+      type: 0,
+      fileType: 'html',
+      fileId: ''
+    }
+    console.log(this.item)
   },
   methods: {
     updateData (e = '') {
-      this.content = e
+      this.item.content = e
     },
     saveFile () {
-      console.log(1111)
+      this.show = !this.show
+      console.log(this.item)
+      const body = {
+        id: this.userId,
+        title: this.title === '' ? '无标题' : this.title,
+        ...this.item,
+        type: this.opt
+      }
+      axios
+        .post(`/api/savefile`, body)
+        .then((res) => {
+          res.data && this.$router.push({
+            name: 'noteList'
+          })
+        }).catch((error) => {
+          console.log(error)
+        })
     }
   }
 }

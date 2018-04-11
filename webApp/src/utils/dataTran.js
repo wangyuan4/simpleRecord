@@ -14,11 +14,22 @@ const userDetailTran = (item) => {
     pwd: item.user_pwd
   })
 }
+
+export const friendInfoTran = (data) => {
+  return data.map(el => ({
+    id: el.user_id,
+    name: el.user_name,
+    fileAuth: el.file_auth,
+    fileId: el.file_id,
+    friendStatus: el.friend_status
+  }))
+}
+
 export const fileInfoTran = (data) => {
   return data.map(el => {
     const times = moment((new Date(el.update_time * 1000)).toString()).format('YYYY-MM-DD-HH:mm:ss').split('-')
     return {
-      id: el.file_id,
+      fileId: el.file_id,
       title: el.file_title,
       content: el.file_content,
       fileType: el.file_type,
@@ -27,7 +38,11 @@ export const fileInfoTran = (data) => {
       month: times[1],
       day: times[2],
       time: times[3],
-      isTrash: el.is_trash
+      isTrash: el.is_trash,
+      isShare: el.friend_id,
+      friendId: el.user_id,
+      friendName: el.user_name,
+      fileAuth: el.file_auth
     }
   })
 }

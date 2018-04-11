@@ -17,12 +17,20 @@ import 'font-awesome/css/font-awesome.min.css'
 import Icon from 'vue-awesome/components/Icon'
 import axios from 'axios'
 import {userInfoTran} from '../utils/dataTran'
+import { setItem } from '../utils/storage'
 export default {
   data () {
     return {
       userName: '',
       userPwd: ''
     }
+  },
+  components: {
+    XInput,
+    Flexbox,
+    FlexboxItem,
+    Icon,
+    Group
   },
   methods: {
     fakeLogin () {
@@ -42,7 +50,8 @@ export default {
         .post(`/api/adduser`, body)
         .then((res) => {
           if (res.data.status) {
-            global.user = userInfoTran(res.data.list, true)
+            const user = userInfoTran(res.data.list, true)
+            setItem('user', user)
             this.$router.push({path: '/app'})
           } else {
             AlertModule.show({
@@ -53,13 +62,6 @@ export default {
           console.log(error)
         })
     }
-  },
-  components: {
-    XInput,
-    Flexbox,
-    FlexboxItem,
-    Icon,
-    Group
   }
 }
 </script>

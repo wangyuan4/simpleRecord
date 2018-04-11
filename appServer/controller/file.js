@@ -12,29 +12,17 @@ import {removeSpeciChar,createUTC} from './comDataDeal'
 const router = new Router();
 
 router.get('/api/getfilelist',async (ctx) => {
-		const {id,type,isTrash} = ctx.query;
-		const result = await getFileList(id,type,isTrash);
-    ctx.body = result ? {
-			status:true,
-			list:result
-		} : {
-			status:false,
-			msg:'请求失败'
-		}
+  const {id,type,isTrash,val} = ctx.query;
+  const result = await getFileList(id,type,isTrash,val);
+  ctx.body = result ? {
+    status:true,
+    list:result
+  } : {
+    status:false,
+    msg:'请求失败'
+  }
 })
 router.post('/api/savefile',async (ctx) => {
-	// var one = 'beep boop';
-	// var other = 'beep boob blah';
-
-	// var diff = jsdiff.diffChars(one, other);
-	
-	// console.log(diff)
-	// diff.forEach(function(part){
-	// 	// green for additions, red for deletions
-	// 	// grey for common parts
-	// 	var color = part.added ? 'green' :
-	// 		part.removed ? 'red' : 'grey';
-	// });
 	const {id,title,content,type,fileType,fileId} = ctx.request.body;
 	if(fileId !== ''){
 		const result = await getFileById(fileId);
@@ -42,12 +30,29 @@ router.post('/api/savefile',async (ctx) => {
 		console.log(result)
 		const diffRes = diffLines(result[0].file_content,content);
 		let haveConflict = false
-		diff.forEach(part => {
+    diffRes.forEach(part => {
 			if(part.removed){
 				haveConflict = true
 			}
-		});
-		haveConflict ? ctx.body = diffRes : await addFileFun(id, fileId, title, content, type, fileType, updateTime)
+    });
+    haveConflict
+    ? ctx.body = diffRes
+    : await updateFileFun([{ 
+      keyName: 'update_user',
+      keyValue: id 
+      }, {
+        keyName: 'file_id',
+        keyValue: fileId
+      }, {
+        keyName: 'file_title',
+        keyValue: title
+      }, {
+        keyName: 'file_content',
+        keyValue: content
+      }, {
+        keyName: 'update_time',
+        keyValue: updateTime
+      }])
 	}else{
 		const fileId = createUTC()
 		const updateTime = createUTC()

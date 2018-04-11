@@ -39,11 +39,6 @@ export default {
         target: 'scan',
         img: require('@/assets/note-add-scan.jpg')
       }, {
-        title: '上传文件',
-        desc: '输入文字以创建笔记',
-        target: 'uploadFile',
-        img: require('@/assets/note-add-upload.png')
-      }, {
         title: '上传图片',
         desc: '输入文字以创建笔记',
         target: 'uploadImg',

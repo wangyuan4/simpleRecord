@@ -7,7 +7,7 @@
     <group>
       <cell title="个人信息"  is-link class="list-style" link="/mine/info"></cell>
       <cell title="好友列表"  is-link class="list-style" link="/mine/friends"></cell>
-      <cell title="新朋友"  is-link class="list-style" link="/mine/newFriend"><badge></badge></cell>
+      <cell title="新朋友"  is-link class="list-style" link="/mine/newFriend"></cell>
       <cell title="个人二维码" is-link class="list-style" link="/mine/QRCode"></cell>
       <cell title="日历" is-link class="list-style" link="/mine/calender"></cell>
     </group>
@@ -22,6 +22,7 @@
 <script>
 import 'font-awesome/css/font-awesome.min.css'
 import { Group, Cell, CellBox, Badge } from 'vux'
+import { getItem } from '../../utils/storage'
 export default {
   components: {
     Group,
@@ -31,7 +32,7 @@ export default {
   },
   data () {
     return {
-      name: global.user.name
+      name: getItem('user').name
     }
   }
 }

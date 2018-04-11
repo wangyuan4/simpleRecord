@@ -7,9 +7,12 @@ import {
   addFriendFun, 
   getUsersFun, 
   delFriendFun,
-  shareFileFun
+	shareFileFun,
+	updateFriendFun,
+	delSFileFun
 } from "../sqls/index";
 import {createUTC} from './comDataDeal'
+import { BADRESP } from 'dns';
 
 const router = new Router();
 
@@ -58,20 +61,18 @@ router.post('/api/addfriend',async (ctx,next) => {
 	const {userId,friendId} = ctx.request.body;
 	const res = await addFriendFun(userId,friendId);
   ctx.body = res ? true : false;
-  // ctx.websocket.send('message')
-	// ctx.websocket.on('message',(message) => {
-  //   console.log(message)
-  // });
+})
+
+router.post('/api/updatefriend', async (ctx, next) => {
+	const { userId, friendId, status } = ctx.request.body;
+	const res = await updateFriendFun(userId, friendId, status);
+	ctx.body = res ? true : false;
 })
 
 router.get('/api/getfriendslist',async (ctx, next) => {
-	const {userId,val} = ctx.query;
-	let res = {}
-	if(val === ''){
-		res = await searchFriendsFun(userId)
-	} else {
-    res = await searchFriendsFun(userId,val);
-	}
+	const {userId,val,status} = ctx.query;
+	console.log(ctx.query)
+	const res = await searchFriendsFun(userId,val,status);
   return ctx.body = res ? {
     status: true,
     list: res
@@ -100,14 +101,22 @@ router.post('/api/deletefriend', async (ctx, next) => {
   ctx.body = res ? true : false;
 })
 
-// router.post('/api/sharefile', async (ctx, next) => {
-//   const { userId, friendId, fileIds } = ctx.request.body;
-//   let isSuc = true
-//   fileIds.forEach(el => {
-//     const res = await shareFileFun(userId, friendId, el);
-//     !res && !isSuc
-//   });
-//   ctx.body = isSuc ? true : false;
-// })
+router.post('/api/sharefile', async (ctx, next) => {
+	const { userId, friendIds, fileId, fileAuth } = ctx.request.body;
+	let isSuc = true
+	friendIds.forEach(async el => {
+		const res = await shareFileFun(userId, el, fileId, fileAuth);
+		console.log('res-----------------',res)
+		isSuc = res ? true : false
+  });
+  ctx.body = isSuc ? true : false;
+})
+
+router.post('/api/delsharefile', async (ctx, next) => {
+	const { userId, fileId} = ctx.request.body;
+	const res = await delSFileFun(userId,fileId)
+	ctx.body = res ? true : false;
+})
+
 
 export default router

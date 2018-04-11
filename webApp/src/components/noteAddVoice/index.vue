@@ -27,6 +27,11 @@ export default {
     Box,
     XHeader
   },
+  data () {
+    return {
+      recordIng: false
+    }
+  },
   mounted () {
     try {
       // webkit shim
@@ -44,11 +49,6 @@ export default {
     }, this.startUserMedia, function (e) {
       console.log('No live audio input: ' + e)
     })
-  },
-  data () {
-    return {
-      recordIng: false
-    }
   },
   methods: {
     startUserMedia (stream) {

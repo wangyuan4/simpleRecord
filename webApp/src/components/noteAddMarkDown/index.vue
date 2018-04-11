@@ -1,6 +1,6 @@
 <template>
   <div>
-    <x-header><span slot="right">回退版本</span><span slot="right" class="option-line">|</span><span slot="right" @click="show=true">保存</span></x-header>
+    <x-header>{{item.title}}<span slot="right">回退版本</span><span slot="right" class="option-line">|</span><span slot="right" @click="save">保存</span></x-header>
     <x-input class="input" placeholder="标题" v-model="item.title"></x-input>
     <mavon-editor
       v-model="item.content"
@@ -59,15 +59,13 @@
 import 'mavon-editor/dist/css/index.css'
 import {mavonEditor} from 'mavon-editor'
 import { XInput, XHeader, PopupHeader, Popup, Group, Radio } from 'vux'
-import { saveFiles } from '../../utils/comAjax'
+import axios from 'axios'
+import { getItem } from '../../utils/storage'
 
 export default {
   data () {
     return {
-      item: {
-        title: '',
-        content: ''
-      },
+      item: {},
       options: [{
         key: 0,
         value: '工作文件'
@@ -76,7 +74,8 @@ export default {
         value: '生活文件'
       }],
       show: false,
-      opt: 0
+      opt: 0,
+      userId: getItem('user').id
     }
   },
   components: {
@@ -88,24 +87,35 @@ export default {
     Group,
     Radio
   },
-  created () {
-    console.log(this.$route)
-    // this.item = this.$router.params.item || {
-    //   title: '',
-    //   content: ''
-    // }
+  mounted () {
+    const { item } = this.$route.params
+    this.item = item || {
+      title: '',
+      content: '',
+      type: 0,
+      fileType: 'md',
+      fileId: ''
+    }
   },
   methods: {
+    save () {
+      this.item.fileId === '' ? this.show = true : this.saveFile()
+    },
     saveFile () {
-      this.show = !this.show
-      saveFiles({
-        id: global.user.id,
+      this.show = false
+      const body = {
+        id: this.userId,
         title: this.title === '' ? '无标题' : this.title,
-        content: this.content,
-        type: this.opt,
-        fileType: this.fileType,
-        fileId: this.fileId
-      })
+        ...this.item
+      }
+      console.log(this.item)
+      axios
+        .post(`/api/savefile`, body)
+        .then((res) => {
+          res.data && this.$router.push({ path: '/note/list' })
+        }).catch((error) => {
+          console.log(error)
+        })
     }
   }
 }

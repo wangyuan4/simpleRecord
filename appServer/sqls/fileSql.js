@@ -6,7 +6,7 @@ const createId = () => Math.round(new Date().getTime()/1000)
 export const addFileFun = (id, fileId, title, content, type,fileType,updateTime) => {
   return new Promise((resolve,reject) => {
     const  sql = `
-        insert into file (file_id,file_title,file_content,user_id,file_type,update_time,type,is_trash) values ("${fileId}","${title}","${content}","${id}","${fileType}","${updateTime}",${type},0)
+        insert into file (file_id,file_title,file_content,user_id,file_type,update_time,type,is_trash) values ("${fileId}","${title}",'${content}',"${id}","${fileType}","${updateTime}",${type},0)
       `;
       console.log(sql)
     query(sql,resolve,reject)
@@ -14,14 +14,17 @@ export const addFileFun = (id, fileId, title, content, type,fileType,updateTime)
   })
 }
 
-export const getFileList = (id,type,isTrash) => {
+export const getFileList = (id,type,isTrash,val) => {
   return new Promise((resolve,reject) => {
-    const sql = parseInt(isTrash) ? `
-      select * from file where user_id = '${id}' and is_trash = ${isTrash}
+    const sql1 = parseInt(isTrash) ? `
+      select * from file where user_id = '${id}' and is_trash = ${isTrash} and file_title like '%${val}%'
 		` : `
-      select * from file where user_id = '${id}' and file_type = ${type} and is_trash = ${isTrash}
-		` 
-		console.log(sql)
+      select * from file where user_id = '${id}' and type = ${type} and is_trash = ${isTrash} and file_title like '%${val}%'
+    ` 
+    const sql2 = `
+      select * from file,F${id},user where file.file_id = F${id}.file_id and user.user_id = F${id}.friend_id and file.file_title like '%${val}%'
+    `
+    const sql = type === '2' ? sql2 : sql1
     query(sql,resolve,reject)
   })
 }

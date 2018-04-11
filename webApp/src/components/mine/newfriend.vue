@@ -3,15 +3,20 @@
 		<x-header>新朋友<span slot="right" @click="scan">扫二维码</span></x-header>
     <search
       @on-change="getResult"
-      position="absolute"
-      auto-scroll-to-top top="46px"
       @on-submit="getResult"
       ref="search">
     </search>
-		<div class="title">好友通知</div>
-		<group style="margin-top:30px" >
-			<cell :title="item.name" class="list-style"  v-for="(item,index) in list" :key="index">
-        <i class='fa fa-plus' style="color:#494949;margin-right:10px" @click="() => add(index)"></i>
+    <div class="title" >好友通知</div>
+    <group style="margin-top:10px" >
+      <cell :title="item.name" class="list-style"  v-for="(item,index) in list" :key="index">
+        <i v-if="item.friendStatus === undefined" class='fa fa-plus' style="color:#494949;margin-right:10px" @click="() => add(index)"></i>
+        <span v-if="item.friendStatus === 0">已发送</span>
+        <span v-if="item.friendStatus === 2">已同意</span>
+        <span v-if="item.friendStatus === 3">已拒绝</span>
+        <div class="updateOpt">
+          <div v-if="item.friendStatus === 1" class="agree" @click="() => updateFriend(item.id,2)">同意</div>
+          <div v-if="item.friendStatus === 1" class="agree" @click="() => updateFriend(item.id,3)">拒绝</div>
+        </div>
       </cell>
     </group>
   </div>
@@ -23,22 +28,9 @@ import Icon from 'vue-awesome/components/Icon'
 import 'font-awesome/css/font-awesome.min.css'
 import axios from 'axios'
 import { Group, Cell, CellBox, Search, XDialog, XHeader, AlertModule } from 'vux'
-import { userInfoTran } from '../../utils/dataTran'
+import { userInfoTran, friendInfoTran } from '../../utils/dataTran'
+import { getItem } from '../../utils/storage'
 
-// const ws = new WebSocket('ws://localhost:3320')
-
-// ws.onopen = (evt) => {
-//   console.log('Connection open ...')
-//   ws.send('Hello WebSockets!')
-// }
-// ws.onmessage = (evt) => {
-//   console.log('Received Message: ' + evt.data)
-//   ws.close()
-// }
-
-// ws.onclose = (evt) => {
-//   console.log('Connection closed.')
-// }
 export default {
   components: {
     Icon,
@@ -49,10 +41,19 @@ export default {
     XDialog,
     XHeader
   },
+  data () {
+    return {
+      list: [],
+      userId: getItem('user').id
+    }
+  },
+  mounted () {
+    this.getAddedFriends()
+  },
   methods: {
     add (index) {
       const body = {
-        userId: global.user.id,
+        userId: this.userId,
         friendId: this.list[index].id
       }
       const _this = this
@@ -61,9 +62,9 @@ export default {
       .then((res) => {
         if (res.data) {
           AlertModule.show({
-            title: '添加成功！',
+            title: '请求已发送！',
             onHide () {
-              _this.$router.push({path: '/mine/friends'})
+              _this.getAddedFriends()
             }
           })
         }
@@ -71,6 +72,39 @@ export default {
         console.log(error)
       })
     },
+    updateFriend (id, status) {
+      const _this = this
+      const body = {
+        userId: this.userId,
+        friendId: id,
+        status
+      }
+      axios
+      .post(`/api/updatefriend`, body)
+      .then((res) => {
+        if (res.data) {
+          _this.getAddedFriends()
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    getAddedFriends (val) {
+      axios
+      .get(`/api/getfriendslist`, {
+        params: {
+          userId: this.userId,
+          val: val || '',
+          status: 0
+        }
+      })
+      .then((res) => {
+        this.list = res.data.status && friendInfoTran(res.data.list)
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+
     scan () {
       this.$router.push('/mine/qrcode/scanner')
     },
@@ -78,7 +112,7 @@ export default {
       val !== '' && axios
       .get(`/api/getuserlist`, {
         params: {
-          userId: global.user.id,
+          userId: this.userId,
           val: val || ''
         }
       })
@@ -87,11 +121,6 @@ export default {
       }).catch((error) => {
         console.log(error)
       })
-    }
-  },
-  data () {
-    return {
-      list: []
     }
   }
 }
@@ -108,6 +137,18 @@ export default {
 	text-align: center;
 	font-size: 14px;
 	margin-top: 4px
+}
+.updateOpt{
+  display: flex;
+  flex-direction: row
+}
+.agree{
+  background-color: #35485d;
+  width: 40px;
+  text-align: center;
+  font-size: 16px;
+  color: white;
+  margin-left: 6px
 }
 </style>
     
