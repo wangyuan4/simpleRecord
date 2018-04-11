@@ -53,7 +53,6 @@ export default {
   },
   methods: {
     onClickMask (item) {
-      console.log(item)
       this.$router.push(`/note/add/${item.target}`)
     }
   },

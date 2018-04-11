@@ -54,6 +54,19 @@ export default {
       }).catch((error) => {
         console.log(error)
       })
+    },
+    shareFile () {
+      const body = {
+        userId: global.user.id,
+        fileId: this.fileId
+      }
+      axios
+      .post(`${global.IP}/sharefile`, body)
+      .then((res) => {
+        res.data && this.$router.push({ path: '/note/list' })
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   },
   created () {

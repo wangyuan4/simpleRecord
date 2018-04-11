@@ -21,8 +21,8 @@ import {userInfoTran} from '../utils/dataTran'
 export default {
   data () {
     return {
-      userName: '',
-      userPwd: ''
+      userName: 'tony',
+      userPwd: '111111'
     }
   },
   methods: {

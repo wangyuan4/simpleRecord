@@ -62,10 +62,12 @@ import { XInput, XHeader, PopupHeader, Popup, Group, Radio } from 'vux'
 import { saveFiles } from '../../utils/comAjax'
 
 export default {
-  props: ['item'],
   data () {
     return {
-      item: {},
+      item: {
+        title: '',
+        content: ''
+      },
       options: [{
         key: 0,
         value: '工作文件'
@@ -87,11 +89,11 @@ export default {
     Radio
   },
   created () {
-    console.log(this.$router.params)
-    this.item = this.$router.params.item || {
-      title: '',
-      content: ''
-    }
+    console.log(this.$route)
+    // this.item = this.$router.params.item || {
+    //   title: '',
+    //   content: ''
+    // }
   },
   methods: {
     saveFile () {
