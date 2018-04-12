@@ -61,6 +61,7 @@ import {mavonEditor} from 'mavon-editor'
 import { XInput, XHeader, PopupHeader, Popup, Group, Radio } from 'vux'
 import axios from 'axios'
 import { getItem } from '../../utils/storage'
+import { fileInfoTran } from '../../utils/dataTran'
 
 export default {
   data () {
@@ -96,6 +97,7 @@ export default {
       fileType: 'md',
       fileId: ''
     }
+    console.log(this.item)
   },
   methods: {
     save () {
@@ -108,11 +110,17 @@ export default {
         title: this.title === '' ? '无标题' : this.title,
         ...this.item
       }
-      console.log(this.item)
       axios
         .post(`/api/savefile`, body)
         .then((res) => {
-          res.data && this.$router.push({ path: '/note/list' })
+          // res.data.status && !res.data.isDiff && this.$router.push({ path: '/note/list' })
+          const opt = {
+            name: 'noteShow',
+            params: {
+              item: fileInfoTran([res.data.fileInfo], true, res.data.isDiff)
+            }
+          }
+          this.$router.push(opt)
         }).catch((error) => {
           console.log(error)
         })

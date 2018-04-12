@@ -3,10 +3,22 @@
     <div style="margin: 10px" v-for="(item, index) in list" :key="index">
       <masker style="border-radius: 2px;" @click.native="onClickMask(item)">
         <div class="m-img" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
-        <div slot="content" class="m-title">
+        <div slot="content" class="m-title" v-if="!item.isInput">
           {{item.title}}
           <br/>
           <span class="m-desc">{{item.desc}}</span>
+        </div>
+        <div slot="content" class="m-title" v-if="item.isInput">
+          {{item.title}}
+          <br/>
+          <span class="m-desc">{{item.desc}}</span>
+          <input type="file" accept="image/*" capture="camera" v-if="false" />
+        </div>
+        <div slot="content" class="m-title" v-if="item.isInput">
+          {{item.title}}
+          <br/>
+          <span class="m-desc">{{item.desc}}</span>
+          <input type="file" accept="image/*" v-if="false" />
         </div>
       </masker>
     </div>
@@ -22,33 +34,38 @@ export default {
         title: '新建笔记',
         desc: '输入文字以创建笔记',
         target: 'input',
+        isInput: false,
         img: require('@/assets/note-add-input.jpg')
       }, {
         title: '新建MarkDown',
         desc: '以markdown的形式创建笔记',
         target: 'markdown',
+        isInput: false,
         img: require('@/assets/note-add-input.jpg')
       }, {
         title: '新建语音笔记',
         desc: '随时随地记录灵感',
         target: 'voice',
+        isInput: false,
         img: require('@/assets/note-add-input.jpg')
       }, {
         title: '文档扫描',
         desc: '使用摄像头对文档进行扫描',
         target: 'scan',
+        isInput: true,
         img: require('@/assets/note-add-scan.jpg')
       }, {
         title: '上传图片',
-        desc: '输入文字以创建笔记',
+        desc: '上传图片以创建笔记',
         target: 'uploadImg',
+        isInput: true,
         img: require('@/assets/note-add-upload.png')
       }]
     }
   },
   methods: {
     onClickMask (item) {
-      this.$router.push(`/note/add/${item.target}`)
+      !item.isInput && this.$router.push(`/note/add/${item.target}`)
     }
   },
   components: {

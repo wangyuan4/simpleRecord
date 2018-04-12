@@ -6,7 +6,7 @@ const createId = () => Math.round(new Date().getTime()/1000)
 export const addFileFun = (id, fileId, title, content, type,fileType,updateTime) => {
   return new Promise((resolve,reject) => {
     const  sql = `
-        insert into file (file_id,file_title,file_content,user_id,file_type,update_time,type,is_trash) values ("${fileId}","${title}",'${content}',"${id}","${fileType}","${updateTime}",${type},0)
+        insert into file (file_id,file_title,file_content,user_id,file_type,update_time,update_user,type,is_trash) values ("${fileId}","${title}",'${content}',"${id}","${fileType}","${updateTime}","${id}",${type},0)
       `;
       console.log(sql)
     query(sql,resolve,reject)

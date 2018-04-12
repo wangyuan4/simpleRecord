@@ -3,8 +3,17 @@
     <x-header class="head">{{item.title}}
       <i slot="right" class='fa fa-edit' style="font-size:20px;color:white" @click="editFile"></i>
     </x-header>
-    <div class="md" v-if="item.fileType==='md'">
-      md
+    <div class="md">
+      <div v-for="(el,index) in diffRes" :key="index">
+        <div v-if="!el.removed && !el.added">{{el.value}}</div>
+        <div v-if="index===1">
+          <span class="opt">保留之前的更改</span>
+          <span class="opt">保留传入的更改</span>
+          <span class="opt">保留双方更改</span>
+        </div>
+        <div v-if="el.removed" class="remove">-  {{el.value}}</div>
+        <div v-if="el.added" class="add">+  {{el.value}}</div>
+      </div>
     </div>
     <div  class="html" v-if="item.fileType==='html'" ref="htmlContent">
       {{item.content}}
@@ -31,7 +40,8 @@ export default {
   },
   data () {
     return {
-      item: {}
+      item: {},
+      diffRes: []
     }
   },
   mounted () {
@@ -41,6 +51,7 @@ export default {
         this.$refs.htmlContent.innerHTML = this.item.content
       }, 50)
     }
+    this.diffRes = this.item.content
   },
   methods: {
     editFile () {
@@ -68,5 +79,17 @@ export default {
 <style scoped>
 .head{
   margin-bottom: 10px
+}
+.remove{
+  color: rgb(116, 4, 4)
+}
+.add{
+  color: rgb(2, 49, 2)
+}
+.opt{
+  font-size: 14px;
+  color: rgb(2, 9, 116);
+  margin-left: 6px;
+  text-decoration-line: underline
 }
 </style>

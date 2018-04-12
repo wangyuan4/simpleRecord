@@ -78,7 +78,6 @@
     },
     data () {
       return {
-        results: [],
         value: '',
         list: [],
         index01: 0,
@@ -136,7 +135,7 @@
           })
         } else if (re.test(this.shareType) === true) {
           console.log('分享至邮箱')
-          this.readySendMail()
+          this.readySendMail(this.shareType)
         } else {
           AlertModule.show({
             title: '邮箱格式错误！'
@@ -144,13 +143,13 @@
           this.show1 = true
         }
       },
-      readySendMail () {
+      readySendMail (email) {
         // from：当前用户，to：填写的邮箱，内容，傻媛你自己写下
         axios
           .post(`/api/sendmail`, {
-            from: 'userName',
-            to: 'haowen737@gmail.com',
-            content: 'hi, zhengmeili'
+            from: getItem('user').name,
+            to: email,
+            content: this.list[this.currentIndex].content
           })
           .then((res) => {
             this.$vux.toast.text('分享成功')
@@ -194,8 +193,8 @@
             break
         }
       },
-      jumpToShow () {
-        const data = this.list[this.currentIndex]
+      jumpToShow (index) {
+        const data = this.list[index]
         const opt = data.fileType === 'md' ? {
           name: 'noteAddMakdown',
           params: {

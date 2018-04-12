@@ -26,20 +26,27 @@ router.post('/api/savefile',async (ctx) => {
 	const {id,title,content,type,fileType,fileId} = ctx.request.body;
 	if(fileId !== ''){
 		const result = await getFileById(fileId);
-		const updateTime = createUTC()
-		console.log(result)
-		const diffRes = diffLines(result[0].file_content,content);
-		let haveConflict = false
-    diffRes.forEach(part => {
-			if(part.removed){
-				haveConflict = true
-			}
-    });
-    haveConflict
-    ? ctx.body = diffRes
-    : await updateFileFun([{ 
-      keyName: 'update_user',
-      keyValue: id 
+    const updateTime = createUTC()
+    if(result.user_id !== id){
+      const diffRes = diffLines(result[0].file_content, content);
+      let haveConflict = false
+      diffRes.forEach(part => {
+        if (part.removed) {
+          haveConflict = true
+        }
+      });
+      haveConflict
+      ? ctx.body = {
+        status: true,
+        isDiff: true,
+        fileInfo: {
+          ...result[0],
+          file_content: diffRes
+        }
+      }
+      : await updateFileFun([{
+        keyName: 'update_user',
+        keyValue: id
       }, {
         keyName: 'file_id',
         keyValue: fileId
@@ -53,11 +60,31 @@ router.post('/api/savefile',async (ctx) => {
         keyName: 'update_time',
         keyValue: updateTime
       }])
+    }else{
+      const res = await updateFileFun([{
+        keyName: 'update_user',
+        keyValue: id
+      }, {
+        keyName: 'file_id',
+        keyValue: fileId
+      }, {
+        keyName: 'file_title',
+        keyValue: title
+      }, {
+        keyName: 'file_content',
+        keyValue: content
+      }, {
+        keyName: 'update_time',
+        keyValue: updateTime
+      }])
+      ctx.body = res ? { status: true, isDiff: false } : false;
+    }
+		
 	}else{
 		const fileId = createUTC()
 		const updateTime = createUTC()
 		const result = await addFileFun(id, fileId, title, content, type, fileType, updateTime);
-		ctx.body = result ? true : false;
+		ctx.body = result ? {status:true,isDiff:false} : false;
 	}
 	
 })
