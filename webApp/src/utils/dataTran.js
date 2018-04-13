@@ -35,7 +35,7 @@ export const fileInfoTran = (data, turnToObj, isDiff) => {
 const fileDetailTran = (el, isDiff) => {
   const times = moment((new Date(el.update_time * 1000)).toString()).format('YYYY-MM-DD-HH:mm:ss').split('-')
   return {
-    fileId: el.file_id,
+    id: el.file_id,
     title: el.file_title,
     content: el.file_content,
     fileType: el.file_type,

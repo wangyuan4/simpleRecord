@@ -2,11 +2,12 @@
   <div>
     <x-header class="head">{{item.title}}
       <i slot="right" class='fa fa-edit' style="font-size:20px;color:white" @click="editFile"></i>
+      <span slot="right" class='fa fa-edit' style="font-size:20px;color:white" @click="editFile"></span>
     </x-header>
-    <div class="md">
+    <div class="md" >
       <div v-for="(el,index) in diffRes" :key="index">
         <div v-if="!el.removed && !el.added">{{el.value}}</div>
-        <div v-if="index===1">
+        <div v-if="el.removed">
           <span class="opt">保留之前的更改</span>
           <span class="opt">保留传入的更改</span>
           <span class="opt">保留双方更改</span>
@@ -51,6 +52,7 @@ export default {
         this.$refs.htmlContent.innerHTML = this.item.content
       }, 50)
     }
+    console.log(this.item)
     this.diffRes = this.item.content
   },
   methods: {
@@ -71,6 +73,8 @@ export default {
         }
       }
       this.$router.push(opt)
+    },
+    saveFile () {
     }
   }
 }

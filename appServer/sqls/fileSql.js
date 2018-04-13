@@ -17,9 +17,9 @@ export const addFileFun = (id, fileId, title, content, type,fileType,updateTime)
 export const getFileList = (id,type,isTrash,val) => {
   return new Promise((resolve,reject) => {
     const sql1 = parseInt(isTrash) ? `
-      select * from file where user_id = '${id}' and is_trash = ${isTrash} and file_title like '%${val}%'
+      select * from file where user_id = '${id}' and is_trash = ${isTrash} and file_title like '%${val}%' 
 		` : `
-      select * from file where user_id = '${id}' and type = ${type} and is_trash = ${isTrash} and file_title like '%${val}%'
+      select * from file where user_id = '${id}' and type = ${type} and is_trash = ${isTrash} and file_title like '%${val}%' group by file_id
     ` 
     const sql2 = `
       select * from file,F${id},user where file.file_id = F${id}.file_id and user.user_id = F${id}.friend_id and file.file_title like '%${val}%'
@@ -32,7 +32,7 @@ export const getFileList = (id,type,isTrash,val) => {
 export const getFileById = (id) => {
   return new Promise((resolve,reject) => {
     const sql = `
-      select * from file where file_id = '${id}' 
+      select * from file where file_id = '${id}' order by update_time desc
     `;
     query(sql,resolve,reject)
   })
@@ -54,12 +54,21 @@ export const updateFileFun = (fileId,options) => {
 }
 
 export const deleteFileFun = (fileId) => {
-    return new Promise((resolve,reject) => {
-      const sql = `
-        delete from file where file_id = ${fileId}  
-      `;
-      query(sql,resolve,reject)
-    })
-  }
+  return new Promise((resolve,reject) => {
+    const sql = `
+      delete from file where file_id = ${fileId}  
+    `;
+    query(sql,resolve,reject)
+  })
+}
+
+export const delFileByUpTimeFun = (updateTime) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      delete from file where update_time = ${updateTime}  
+    `;
+    query(sql, resolve, reject)
+  })
+}
 
 

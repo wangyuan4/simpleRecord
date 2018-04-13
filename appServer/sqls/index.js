@@ -15,7 +15,8 @@ import {
 	addFileFun,
 	getFileList,
 	deleteFileFun,
-	updateFileFun
+	updateFileFun,
+	delFileByUpTimeFun
 } from './fileSql'
 const mysql  = require('mysql');
 
@@ -59,6 +60,7 @@ export {
 	getFileById,
 	getFileList,
 	deleteFileFun,
-	updateFileFun
+	updateFileFun,
+	delFileByUpTimeFun
 }
 

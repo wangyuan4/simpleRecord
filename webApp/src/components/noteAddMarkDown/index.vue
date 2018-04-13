@@ -95,30 +95,34 @@ export default {
       content: '',
       type: 0,
       fileType: 'md',
-      fileId: ''
+      id: ''
     }
     console.log(this.item)
   },
   methods: {
     save () {
-      this.item.fileId === '' ? this.show = true : this.saveFile()
+      this.item.id === '' ? this.show = true : this.saveFile()
     },
     saveFile () {
       this.show = false
       const body = {
-        id: this.userId,
-        title: this.title === '' ? '无标题' : this.title,
-        ...this.item
+        ...this.item,
+        userId: this.userId,
+        fileId: this.item.id,
+        title: this.item.title === '' ? '无标题' : this.item.title,
+        type: this.item.id === '' ? this.opt : this.item.type
       }
+      console.log(body)
       axios
         .post(`/api/savefile`, body)
         .then((res) => {
-          // res.data.status && !res.data.isDiff && this.$router.push({ path: '/note/list' })
-          const opt = {
+          const opt = res.data.status && res.data.isDiff ? {
             name: 'noteShow',
             params: {
               item: fileInfoTran([res.data.fileInfo], true, res.data.isDiff)
             }
+          } : {
+            path: '/note/list'
           }
           this.$router.push(opt)
         }).catch((error) => {

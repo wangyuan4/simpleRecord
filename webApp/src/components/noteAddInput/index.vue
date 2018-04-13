@@ -57,7 +57,7 @@ export default {
       content: '',
       type: 0,
       fileType: 'html',
-      fileId: ''
+      id: ''
     }
     console.log(this.item)
   },
@@ -69,10 +69,10 @@ export default {
       this.show = !this.show
       console.log(this.item)
       const body = {
-        id: this.userId,
+        userId: this.userId,
         title: this.title === '' ? '无标题' : this.title,
         ...this.item,
-        type: this.opt
+        type: this.item.id === '' ? this.opt : this.item.type
       }
       axios
         .post(`/api/savefile`, body)

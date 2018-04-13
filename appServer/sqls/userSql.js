@@ -33,10 +33,10 @@ export const searchFriendsFun = (userId,val,status) => {
   return new Promise((resolve,reject) => {
     const  sql = status === '2' ? 
       `
-        select * from F${userId},user where user.user_id = F${userId}.friend_id and friend_status = 2 and user.user_name like '%${val}%'
+        select * from F${userId},user where user.user_id = F${userId}.friend_id and friend_status = 2 and user.user_name like '%${val}%' and F${userId}.file_id = ''
       ` :
       `
-        select * from F${userId},user where user.user_id = F${userId}.friend_id and user.user_name like '%${val}%'
+        select * from F${userId},user where user.user_id = F${userId}.friend_id and user.user_name like '%${val}%' and F${userId}.file_id = ''
       `;
     query(sql,resolve,reject)
   })
@@ -45,10 +45,10 @@ export const searchFriendsFun = (userId,val,status) => {
 export const addFriendFun = (userId,friendId) => {
   return new Promise((resolve,reject) => {
     const  sql1 = `
-        insert into F${userId} (friend_id,friend_status) values ('${friendId}',0)
+        insert into F${userId} (friend_id,friend_status,file_id) values ('${friendId}',0,'')
       `;
     const sql2 = `
-        insert into F${friendId} (friend_id,friend_status) values ('${userId}',1)
+        insert into F${friendId} (friend_id,friend_status,file_id) values ('${userId}',1,'')
     `
     query(sql1,resolve,reject)
     query(sql2, resolve, reject)

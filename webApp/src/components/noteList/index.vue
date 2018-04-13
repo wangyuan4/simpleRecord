@@ -130,7 +130,7 @@
           this.$router.push({
             name: 'choosefriend',
             params: {
-              fileId: this.list[this.currentIndex].fileId
+              fileId: this.list[this.currentIndex].id
             }
           })
         } else if (re.test(this.shareType) === true) {
@@ -144,7 +144,6 @@
         }
       },
       readySendMail (email) {
-        // from：当前用户，to：填写的邮箱，内容，傻媛你自己写下
         axios
           .post(`/api/sendmail`, {
             from: getItem('user').name,

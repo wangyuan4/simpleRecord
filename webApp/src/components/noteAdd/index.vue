@@ -12,21 +12,23 @@
           {{item.title}}
           <br/>
           <span class="m-desc">{{item.desc}}</span>
-          <input type="file" accept="image/*" capture="camera" v-if="false" />
         </div>
         <div slot="content" class="m-title" v-if="item.isInput">
           {{item.title}}
           <br/>
           <span class="m-desc">{{item.desc}}</span>
-          <input type="file" accept="image/*" v-if="false" />
         </div>
       </masker>
     </div>
+    <!-- <input type="file" accept="image/*" ref="photo" @input="handleInput" > -->
+    <input type="file" accept="image/*" ref="photo"  style="opacity:0;width:0px;height:0px" capture="camera" @change="saveImg"/>
+    <!-- <input type="file" accept="image/*" v-if="false" ref="img" style="opacity:0:width:0;height:0px" /> -->
   </div>
 </template>
 
 <script>
 import { Masker } from 'vux'
+
 export default {
   data () {
     return {
@@ -66,6 +68,14 @@ export default {
   methods: {
     onClickMask (item) {
       !item.isInput && this.$router.push(`/note/add/${item.target}`)
+      if (item.isInput && item.target === 'scan') {
+        this.$refs.photo.dispatchEvent(new MouseEvent('click'))
+        console.log(this.$refs)
+      } else if (item.isInput && item.target === 'uploadImg') {
+      }
+    },
+    saveImg (event) {
+      console.log(event)
     }
   },
   components: {
