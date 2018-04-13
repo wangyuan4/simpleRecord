@@ -1,10 +1,10 @@
 {
     "scope": "/",
-    "name": "运维平台",
-    "short_name": "运维平台",
+    "name": "简记",
+    "short_name": "简记",
     "start_url": "/?from=homescreen",
     "display": "standalone",
-    "description": "Gomo运维平台",
+    "description": "简记-记录生活工作的点滴",
     "orientation": "portrait",
     "theme_color": "#3f51b5",
     "background_color": "#fff",

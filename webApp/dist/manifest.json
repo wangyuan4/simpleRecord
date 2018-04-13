@@ -1,0 +1,23 @@
+{
+  "manifest.jsonvendor.js": "/static/js/vendor.6709b4fb1be3377b387e.js",
+  "manifest.jsonvendor.js.map": "/static/js/vendor.6709b4fb1be3377b387e.js.map",
+  "manifest.jsonapp.js": "/static/js/app.27fb47325ae664c73037.js",
+  "manifest.jsonapp.css": "/static/css/app.0bb52e8075eec13f39a76f8e9e310d8f.css",
+  "manifest.jsonapp.js.map": "/static/js/app.27fb47325ae664c73037.js.map",
+  "manifest.jsonmanifest.js": "/static/js/manifest.2ae2e69a05c33dfc65f8.js",
+  "manifest.jsonmanifest.js.map": "/static/js/manifest.2ae2e69a05c33dfc65f8.js.map",
+  "manifest.jsonstatic/img/note-add-upload.png": "/static/img/note-add-upload.3a029c9.png",
+  "manifest.jsonstatic/img/fontawesome-webfont.svg?v=4.7.0": "/static/img/fontawesome-webfont.912ec66.svg",
+  "manifest.jsonstatic/fonts/fontawesome-webfont.eot": "/static/fonts/fontawesome-webfont.674f50d.eot",
+  "manifest.jsonstatic/fonts/fontawesome-webfont.woff?v=4.7.0": "/static/fonts/fontawesome-webfont.fee66e7.woff",
+  "manifest.jsonstatic/fonts/fontawesome-webfont.woff2?v=4.7.0": "/static/fonts/fontawesome-webfont.af7ae50.woff2",
+  "manifest.jsonstatic/img/fontello.svg": "/static/img/fontello.9354499.svg",
+  "manifest.jsonstatic/fonts/fontello.eot": "/static/fonts/fontello.e73a064.eot",
+  "manifest.jsonstatic/fonts/fontello.ttf": "/static/fonts/fontello.068ca2b.ttf",
+  "manifest.jsonstatic/img/note-add-input.jpg": "/static/img/note-add-input.9846688.jpg",
+  "manifest.jsonstatic/img/note-add-scan.jpg": "/static/img/note-add-scan.e6c0f64.jpg",
+  "manifest.jsonstatic/fonts/fontawesome-webfont.ttf?v=4.7.0": "/static/fonts/fontawesome-webfont.b06871f.ttf",
+  "manifest.jsonstatic/css/app.0bb52e8075eec13f39a76f8e9e310d8f.css.map": "/static/css/app.0bb52e8075eec13f39a76f8e9e310d8f.css.map",
+  "manifest.jsonindex.html": "/index.html",
+  "manifest.jsonstatic/recorder.browser.min.js": "/static/recorder.browser.min.js"
+}

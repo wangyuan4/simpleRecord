@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
+const WebpackPwaManifest = require('webpack-pwa-manifest')
 const env = require('../config/prod.env')
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -121,6 +122,23 @@ const webpackConfig = merge(baseWebpackConfig, {
       staticFileGlobs: ['dist/**/*.{js,html,css}'],
       minify: true,
       stripPrefix: 'dist/'
+    }),
+
+    new WebpackPwaManifest({
+      name: 'SimpleRecord',
+      short_name: 'SimpleRecord',
+      description: 'An awesome SimpleRecord app',
+      background_color: '#ffffff',
+      icons: [
+        {
+          src: path.resolve('src/assets/logo.png'),
+          sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+        }
+      ],
+      ios: {
+        'apple-mobile-web-app-title': 'SimpleRecord',
+        'apple-mobile-web-app-status-bar-style': 'black'
+      }
     })
   ]
 })
