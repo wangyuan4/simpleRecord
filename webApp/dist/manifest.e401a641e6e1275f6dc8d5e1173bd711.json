@@ -1,0 +1,42 @@
+{
+  "icons": [
+    {
+      "src": "/icon_512x512.0c286c2c202e301b6dfc548bf387baef.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_384x384.0dfdffa5fe139e6ef00b875b5f9b93d2.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_256x256.83da7418df55327ea4ee1a29b730aeba.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_192x192.a8b9bf51f78473db18fd1f0a14db8c46.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_128x128.f5da5c1e0afa85a4556f6e7e0cd8e35b.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_96x96.16bd36fb3c32a9fac36216d0a72d944f.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ],
+  "name": "SimpleRecord",
+  "short_name": "SimpleRecord",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": "/",
+  "description": "An awesome SimpleRecord app",
+  "theme_color": "#3f51b5",
+  "background_color": "#fff"
+}

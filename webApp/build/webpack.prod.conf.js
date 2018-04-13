@@ -126,9 +126,12 @@ const webpackConfig = merge(baseWebpackConfig, {
 
     new WebpackPwaManifest({
       name: 'SimpleRecord',
+      display: "standalone",
+      start_url: "/",
       short_name: 'SimpleRecord',
       description: 'An awesome SimpleRecord app',
-      background_color: '#ffffff',
+      theme_color: "#3f51b5",
+      background_color: "#fff",
       icons: [
         {
           src: path.resolve('src/assets/logo.png'),
