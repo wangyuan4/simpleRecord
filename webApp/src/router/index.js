@@ -17,6 +17,7 @@ import QRCode from '@/components/mine/qrcode'
 import CPwd from '@/components/mine/cpwd'
 import NFriends from '@/components/mine/newfriend'
 import NoteAddVoice from '@/components/noteAddVoice'
+import ShowVoice from '@/components/noteAddVoice/showVoice'
 import Calender from '@/components/mine/calender'
 import ChooseFriend from '@/components/mine/chooseFriend'
 import QrcodeScanner from '@/components/mine/qrcodeScanner'
@@ -67,6 +68,10 @@ export default new Router({
           path: '/note/add/voice',
           name: 'NoteAddVoice',
           component: NoteAddVoice
+        }, {
+          path: '/note/showvoice',
+          name: 'ShowVoice',
+          component: ShowVoice
         }, {
           path: '/mine',
           name: 'mine',

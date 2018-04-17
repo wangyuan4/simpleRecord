@@ -97,6 +97,11 @@
     // 生命周期钩子函放在前面是个好习惯
     mounted () {
       this.getFileList(0, 0)
+      try {
+        window.URL = window.URL || window.webkitURL
+      } catch (error) {
+        alert('No web audio support in this browser!')
+      }
     },
     methods: {
       getResult (val) {
@@ -194,16 +199,38 @@
       },
       jumpToShow (index) {
         const data = this.list[index]
-        const opt = data.fileType === 'md' ? {
-          name: 'noteAddMakdown',
-          params: {
-            item: data
+        console.log(data)
+        let opt = {}
+        switch (data.fileType) {
+          case 'md': opt = {
+            name: 'noteAddMakdown',
+            params: {
+              fileId: data.id
+            }
           }
-        } : {
-          name: 'noteShow',
-          params: {
-            item: data
+            break
+          case 'html': opt = {
+            name: 'noteShow',
+            params: {
+              item: data
+            }
           }
+            break
+          case 'voice': {
+            let url = URL.createObjectURL(data.fileBlob)
+            opt = {
+              name: 'ShowVoice',
+              params: {
+                item: {
+                  fileType: 'voice',
+                  url
+                }
+              }
+            }
+          }
+            break
+          default:
+            break
         }
         this.$router.push(opt)
       },

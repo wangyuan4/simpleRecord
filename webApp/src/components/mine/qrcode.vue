@@ -7,7 +7,7 @@
 				<div>{{userName}}</div>
 			</div>
 			<div class="img">
-    		<qrcode :value="userName" type="img"></qrcode>
+    		<qrcode :value="userId" type="img"></qrcode>
 			</div>
 			<div class="footer">扫二维码，加我好友</div>
 		</div>
@@ -28,7 +28,7 @@ export default {
   data () {
     return {
       userId: getItem('user').id,
-      userName: getItem('user').id
+      userName: getItem('user').name
     }
   }
 }
@@ -55,7 +55,8 @@ export default {
 	width: 100%;
 	height: 100%;
 	padding-top: 30px;
-	padding-left: 5px
+	padding-left: 5px;
+	font-size: 16px
 }
 .img{
 	margin:20% 20% 10% 20%

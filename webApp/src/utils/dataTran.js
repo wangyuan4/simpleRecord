@@ -28,16 +28,18 @@ export const friendInfoTran = (data) => {
 export const fileInfoTran = (data, turnToObj, isDiff) => {
   const isdiff = !!isDiff
   return turnToObj && data.length === 1
-    ? fileDetailTran(data[0])
+    ? fileDetailTran(data[0], isdiff)
     : data.map(el => fileDetailTran(el, isdiff))
 }
 
 const fileDetailTran = (el, isDiff) => {
   const times = moment((new Date(el.update_time * 1000)).toString()).format('YYYY-MM-DD-HH:mm:ss').split('-')
-  return {
+  const re = {
     id: el.file_id,
     title: el.file_title,
     content: el.file_content,
+    fileBlob: el.file_blob,
+    diffRes: el.diffRes || [],
     fileType: el.file_type,
     type: el.type,
     userId: el.user_id,
@@ -45,10 +47,11 @@ const fileDetailTran = (el, isDiff) => {
     day: times[2],
     time: times[3],
     isTrash: el.is_trash,
-    isShare: el.friend_id,
+    isShare: el.friend_id || false,
     friendId: el.user_id,
     friendName: el.user_name,
     fileAuth: el.file_auth,
-    isDiff: isDiff
+    isDiff: isDiff || false
   }
+  return re
 }

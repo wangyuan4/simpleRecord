@@ -20,14 +20,13 @@
         </div>
       </masker>
     </div>
-    <!-- <input type="file" accept="image/*" ref="photo" @input="handleInput" > -->
-    <input type="file" accept="image/*" ref="photo"  style="opacity:0;width:0px;height:0px" capture="camera" @change="saveImg"/>
-    <!-- <input type="file" accept="image/*" v-if="false" ref="img" style="opacity:0:width:0;height:0px" /> -->
+    <input type="file" accept="image/*" ref="photo" @change="saveImg" style="width:0px;height:0px"/>
   </div>
 </template>
 
 <script>
 import { Masker } from 'vux'
+import axios from 'axios'
 
 export default {
   data () {
@@ -36,46 +35,50 @@ export default {
         title: '新建笔记',
         desc: '输入文字以创建笔记',
         target: 'input',
-        isInput: false,
         img: require('@/assets/note-add-input.jpg')
       }, {
         title: '新建MarkDown',
         desc: '以markdown的形式创建笔记',
         target: 'markdown',
-        isInput: false,
         img: require('@/assets/note-add-input.jpg')
       }, {
         title: '新建语音笔记',
         desc: '随时随地记录灵感',
         target: 'voice',
-        isInput: false,
         img: require('@/assets/note-add-input.jpg')
       }, {
-        title: '文档扫描',
-        desc: '使用摄像头对文档进行扫描',
-        target: 'scan',
-        isInput: true,
+        title: '新建图片文件',
+        desc: '拍照或上传图片以创建笔记',
+        target: 'img',
         img: require('@/assets/note-add-scan.jpg')
       }, {
-        title: '上传图片',
-        desc: '上传图片以创建笔记',
-        target: 'uploadImg',
-        isInput: true,
+        title: '新建手写笔记',
+        desc: '使用画笔创建手写笔记',
+        target: 'scan',
         img: require('@/assets/note-add-upload.png')
       }]
     }
   },
   methods: {
     onClickMask (item) {
-      !item.isInput && this.$router.push(`/note/add/${item.target}`)
-      if (item.isInput && item.target === 'scan') {
-        this.$refs.photo.dispatchEvent(new MouseEvent('click'))
-        console.log(this.$refs)
-      } else if (item.isInput && item.target === 'uploadImg') {
-      }
+      item.target === 'img'
+      ? this.$refs.photo.dispatchEvent(new MouseEvent('click'))
+      : this.$router.push(`/note/add/${item.target}`)
     },
-    saveImg (event) {
-      console.log(event)
+    saveImg (e) {
+      const file = e.target.files[0]
+      let param = new FormData() // 创建form对象
+      param.append('file', file, file.name) // 通过append向form对象添加数据
+      param.append('chunk', '0') // 添加form表单中其他数据
+      console.log(param.get('file')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      let config = {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }
+      // 添加请求头
+      axios.post(`/api/savemedia`, param, config)
+      .then(res => {
+        console.log(res)
+      })
     }
   },
   components: {

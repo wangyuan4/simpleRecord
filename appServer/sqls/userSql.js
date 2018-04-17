@@ -12,7 +12,7 @@ export const createTable = (userId) => {
   
 }
 
-export const searchUserByNameFun = (val) => {
+export const searchUserFun = (val) => {
   return new Promise((resolve,reject) => {
     const  sql = `
         select * from user where user_name like '%${val}%' or user_id like '%${val}%'
@@ -20,6 +20,7 @@ export const searchUserByNameFun = (val) => {
     query(sql,resolve,reject)
   })
 }
+
 export const addUserFun = (id,name,pwd) => {
   return new Promise((resolve,reject) => {
     const  sql = `
@@ -39,6 +40,16 @@ export const searchFriendsFun = (userId,val,status) => {
         select * from F${userId},user where user.user_id = F${userId}.friend_id and user.user_name like '%${val}%' and F${userId}.file_id = ''
       `;
     query(sql,resolve,reject)
+  })
+}
+
+export const searchFriendByIdFun = (userId, val, status) => {
+  return new Promise((resolve, reject) => {
+    const sql = 
+      `
+        select * from F${userId},user where user.user_id = F${userId}.friend_id and user.user_id = '${val}' and F${userId}.file_id = ''
+      `;
+    query(sql, resolve, reject)
   })
 }
 
@@ -104,6 +115,15 @@ export const delSFileFun = (userId, fileId ) => {
   return new Promise((resolve, reject) => {
     const sql = `
         delete from F${userId} where file_id = '${fileId}'
+      `;
+    query(sql, resolve, reject)
+  })
+}
+
+export const changePwd = (userId, newPwd) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+        update user set user_pwd = '${newPwd}'  where user_id = '${userId}'
       `;
     query(sql, resolve, reject)
   })

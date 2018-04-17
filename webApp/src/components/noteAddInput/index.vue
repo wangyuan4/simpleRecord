@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <x-header><span slot="right">回退版本</span><span slot="right" class="option-line">|</span><span slot="right" @click="show=true">保存</span></x-header>
+  <div>   
+    <x-header>{{item.title}}<span slot="right" v-if="multiVer" @click="show1=true">回退版本</span><span slot="right" class="option-line" v-if="multiVer">|</span><span slot="right" @click="save">保存</span></x-header>
     <x-input class="input" placeholder="标题" v-model="item.title"></x-input>
-    <vue-html5-editor :content="item.content" :height='500' @change="updateData"></vue-html5-editor>
+    <vue-html5-editor :content="item.content" :height='450' @change="change=true" :z-index="100"></vue-html5-editor>
     <popup v-model="show">
       <popup-header
       right-text="确定"
@@ -14,16 +14,24 @@
         <radio :options="options" v-model="opt"></radio>
       </group>
     </popup>
+    <x-dialog v-model="show1" class="dialog-demo">
+        <div style="padding:15px;" v-for="(item,index) in everVer" :key="index">
+          <span @click="() => retVer(index)">{{item.month}}月{{item.day}}日{{item.time}}</span>
+        </div>
+        <div @click="show1=false">
+          <span class="vux-close"></span>
+        </div>
+      </x-dialog>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { XInput, XHeader, PopupHeader, Popup, Group, Radio } from 'vux'
 import VueHtml5Editor from 'vue-html5-editor'
+import { XInput, XHeader, PopupHeader, Popup, Group, Radio, AlertModule, XDialog } from 'vux'
 import axios from 'axios'
-import 'font-awesome/css/font-awesome.min.css'
 import { getItem } from '../../utils/storage'
+import { fileInfoTran } from '../../utils/dataTran'
 
 export default {
   name: 'h5Editor',
@@ -38,8 +46,12 @@ export default {
         value: '生活文件'
       }],
       show: false,
+      show1: false,
       opt: 0,
-      userId: getItem('user').id
+      userId: getItem('user').id,
+      multiVer: false,
+      everVer: [],
+      change: false
     }
   },
   components: {
@@ -48,41 +60,76 @@ export default {
     PopupHeader,
     Popup,
     Group,
-    Radio
+    Radio,
+    XDialog
   },
   mounted () {
-    const { item } = this.$route.params
-    this.item = item || {
+    const { fileId } = this.$route.params
+    console.log(fileId)
+    !fileId
+    ? this.item = {
       title: '',
       content: '',
       type: 0,
-      fileType: 'html',
+      fileType: 'md',
       id: ''
     }
+    : axios.get(`/api/getfileinfo`, {
+      params: {
+        fileId
+      }})
+      .then((res) => {
+        if (res.data.status) {
+          const data = fileInfoTran(res.data.list)
+          this.item = data[0]
+          if (res.data.list.length > 1) {
+            this.multiVer = true
+            this.everVer = data.slice(1)
+          }
+          console.log(this.everVer)
+        } else {
+          AlertModule.show({
+            content: res.data.msg
+          })
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
     console.log(this.item)
   },
   methods: {
-    updateData (e = '') {
-      this.item.content = e
+    save () {
+      this.item.id === '' ? this.show = true : this.saveFile()
     },
     saveFile () {
-      this.show = !this.show
-      console.log(this.item)
+      this.show = false
       const body = {
-        userId: this.userId,
-        title: this.title === '' ? '无标题' : this.title,
         ...this.item,
+        userId: this.userId,
+        fileId: this.item.id,
+        title: this.item.title === '' ? '无标题' : this.item.title,
         type: this.item.id === '' ? this.opt : this.item.type
       }
-      axios
+      this.change ? axios
         .post(`/api/savefile`, body)
         .then((res) => {
-          res.data && this.$router.push({
-            name: 'noteList'
-          })
+          const opt = res.data.status && res.data.isDiff ? {
+            name: 'noteShow',
+            params: {
+              item: fileInfoTran([res.data.fileInfo], true, res.data.isDiff)
+            }
+          } : {
+            path: '/note/list'
+          }
+          this.$router.push(opt)
         }).catch((error) => {
           console.log(error)
+        }) : this.$router.push({
+          path: '/note/list'
         })
+    },
+    retVer (index) {
+      this.item = this.everVer[index]
     }
   }
 }
@@ -222,9 +269,14 @@ Vue.use(VueHtml5Editor, {
 })
 </script>
 
-<style scoped>
+<style  scoped lang='less'>
+@import '~vux/src/styles/close';
 .option-line{
   margin-left:4px;
   margin-right: 4px
+}
+.md{
+  min-height:520px;
+  z-index: 100;
 }
 </style>
