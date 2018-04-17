@@ -4,7 +4,7 @@
       <i slot="right" class='fa fa-edit' style="font-size:20px;color:white" @click="editFile" v-if="!item.isDiff"></i>
       <i slot="right" class='fa fa-save' style="font-size:20px;color:white" @click="saveFile" v-if="item.isDiff"></i>
     </x-header>
-    <div class="md"  v-if="item.isDiff">
+    <div class="md"  v-if="item.isDiff && item.fileType === 'md'">
       <div v-for="(el,index) in diffRes" :key="index">
         <div v-if="!el.removed && !el.added">{{el.value}}</div>
         <div v-if="el.removed">
@@ -17,13 +17,9 @@
       </div>
     </div>
     <div  class="html" v-if="item.fileType==='html'" ref="htmlContent">
-      {{item.content}}
     </div>
     <div class="img" v-if="item.fileType==='img'">
       img
-    </div>
-    <div class="voice" v-if="item.fileType==='voice'">
-      voice
     </div>
   </div>
 </template>
@@ -51,8 +47,26 @@ export default {
     this.diffRes = this.item.diffRes
   },
   mounted () {
-    if (this.item.fileType === 'html') {
+    if (this.item.fileType === 'html' && !this.item.isDiff) {
       this.$refs.htmlContent.innerHTML = this.item.content
+    } else if (this.item.fileType === 'html' && this.item.isDiff) {
+      let content = ''
+      this.diffRes.map((el, index) => {
+        if (el.added) {
+          content = content + `<div style="color: rgb(1, 78, 1)">+  ${el.value}</div>`
+        } else if (el.removed) {
+          content = content + `<div>
+          <span style="font-size: 14px;color: rgb(2, 9, 116);margin-left: 6px;text-decoration-line: underline" @click="${() => this.saveEver(index)}">保留之前的更改</span>
+          <span style="font-size: 14px;color: rgb(2, 9, 116);margin-left: 6px;text-decoration-line: underline" @click="${() => this.saveCur(index)}">保留传入的更改</span>
+          <span style="font-size: 14px;color: rgb(2, 9, 116);margin-left: 6px;text-decoration-line: underline" @click="${() => this.saveBoth(index)}">保留双方更改</span>
+        </div>
+        <div style="color: rgb(150, 4, 4)">-  ${el.value}</div>
+        `
+        } else {
+          content = content + `<div >${el.value}</div>`
+        }
+      })
+      this.$refs.htmlContent.innerHTML = content
     }
   },
   methods: {
@@ -69,7 +83,8 @@ export default {
       const opt = {
         name,
         params: {
-          item: this.item
+          fileId: this.item.id,
+          fileAuth: this.item.fileAuth
         }
       }
       this.$router.push(opt)
@@ -99,17 +114,23 @@ export default {
           content = content + el.value
         }
       })
-      !haveDiff && this.save(content)
+      if (!haveDiff) {
+        this.save(content)
+        this.$refs.htmlContent.innerHTML = content
+      }
     },
     save (content) {
-      // userId,title,content,type,fileType,fileId
       const body = {
         userId: this.userId,
         fileId: this.item.id,
         ...this.item,
         content: content
       }
-      axios
+      this.item.fileAuth === 0
+      ? AlertModule.show({
+        content: '您只有读取权限，无法提交修改！'
+      })
+      : axios
         .post(`/api/savefile`, body)
         .then((res) => {
           res.data.status && this.$router.push({

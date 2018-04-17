@@ -205,7 +205,8 @@
           case 'md': opt = {
             name: 'noteAddMakdown',
             params: {
-              fileId: data.id
+              fileId: data.id,
+              fileAuth: data.fileAuth
             }
           }
             break
@@ -216,16 +217,10 @@
             }
           }
             break
-          case 'voice': {
-            let url = URL.createObjectURL(data.fileBlob)
-            opt = {
-              name: 'ShowVoice',
-              params: {
-                item: {
-                  fileType: 'voice',
-                  url
-                }
-              }
+          case 'voice': opt = {
+            name: 'ShowVoice',
+            params: {
+              item: getItem('voicefile')
             }
           }
             break

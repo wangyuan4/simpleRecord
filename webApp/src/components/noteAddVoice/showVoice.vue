@@ -38,7 +38,7 @@
 import { XInput, Box, XButton, XHeader, PopupHeader, Popup, Group, Radio, XProgress } from 'vux'
 import vueLoading from 'vue-loading-template'
 import axios from 'axios'
-import { getItem } from '../../utils/storage'
+import { setItem, getItem } from '../../utils/storage'
 export default {
   components: {
     XButton,
@@ -91,11 +91,6 @@ export default {
     error () {
     },
     ended () {
-      // if (this.mode === playMode.loop) {
-      //   this.loop()
-      // } else {
-      //   this.next()
-      // }
     },
     showVoice () {
       this.isOpen = !this.isOpen
@@ -112,18 +107,23 @@ export default {
       const body = {
         userId: this.userId,
         fileId: '',
-        title: this.title === '' ? '无标题' : this.title,
+        title: this.title === '' ? `语音_${Math.round(new Date().getTime() / 1000)}` : this.title,
         type: this.opt,
-        content: JSON.stringify(this.item.blob),
+        content: this.item.url,
         fileType: 'voice'
       }
-      console.log(body)
       axios
         .post(`/api/savefile`, body)
         .then((res) => {
-          res.data.status && this.$router.push({
-            path: '/note/list'
-          })
+          if (res.data.status) {
+            setItem('voicefile', {
+              title: body.title,
+              url: this.item.url
+            })
+            this.$router.push({
+              path: '/note/list'
+            })
+          }
         }).catch((error) => {
           console.log(error)
         })

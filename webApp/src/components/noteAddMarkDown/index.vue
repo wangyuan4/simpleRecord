@@ -57,7 +57,7 @@
     </popup>
     <x-dialog v-model="show1" class="dialog-demo">
         <div style="padding:15px;" v-for="(item,index) in everVer" :key="index">
-          <span @click="() => retVer(index)">{{item.month}}月{{item.day}}日{{item.time}}</span>
+          <cell :title="item.month+'月'+item.day+'日'+item.time" @click.native="() => retVer(index)" is-link></cell>
         </div>
         <div @click="show1=false">
           <span class="vux-close"></span>
@@ -69,7 +69,7 @@
 <script>
 import 'mavon-editor/dist/css/index.css'
 import {mavonEditor} from 'mavon-editor'
-import { XInput, XHeader, PopupHeader, Popup, Group, Radio, AlertModule, XDialog } from 'vux'
+import { XInput, XHeader, PopupHeader, Popup, Group, Radio, AlertModule, XDialog, Cell } from 'vux'
 import axios from 'axios'
 import { getItem } from '../../utils/storage'
 import { fileInfoTran } from '../../utils/dataTran'
@@ -102,11 +102,11 @@ export default {
     Popup,
     Group,
     Radio,
-    XDialog
+    XDialog,
+    Cell
   },
   mounted () {
-    const { fileId } = this.$route.params
-    console.log(fileId)
+    const { fileId, fileAuth } = this.$route.params
     !fileId
     ? this.item = {
       title: '',
@@ -122,12 +122,14 @@ export default {
       .then((res) => {
         if (res.data.status) {
           const data = fileInfoTran(res.data.list)
-          this.item = data[0]
+          this.item = {
+            ...data[0],
+            fileAuth
+          }
           if (res.data.list.length > 1) {
             this.multiVer = true
             this.everVer = data.slice(1)
           }
-          console.log(this.everVer)
         } else {
           AlertModule.show({
             content: res.data.msg
@@ -136,7 +138,6 @@ export default {
       }).catch((error) => {
         console.log(error)
       })
-    console.log(this.item)
   },
   methods: {
     save () {
@@ -151,7 +152,12 @@ export default {
         title: this.item.title === '' ? '无标题' : this.item.title,
         type: this.item.id === '' ? this.opt : this.item.type
       }
-      this.change ? axios
+      this.change
+      ? (this.item.fileAuth === 0
+      ? AlertModule.show({
+        content: '您只有读取权限，无法提交修改！'
+      })
+      : axios
         .post(`/api/savefile`, body)
         .then((res) => {
           const opt = res.data.status && res.data.isDiff ? {
@@ -165,11 +171,12 @@ export default {
           this.$router.push(opt)
         }).catch((error) => {
           console.log(error)
-        }) : this.$router.push({
+        })) : this.$router.push({
           path: '/note/list'
         })
     },
     retVer (index) {
+      this.show1 = false
       this.item = this.everVer[index]
     }
   }

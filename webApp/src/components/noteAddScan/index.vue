@@ -1,15 +1,27 @@
 <template>
   <div class="hello">
-<!--touchstart,touchmove,touchend,touchcancel 这-->
-  <button type="" v-on:click="clear">清除</button>
-  <button v-on:click="save">保存</button>
-    <canvas id="canvas" width="300" height="600" style="border:1px solid black">Canvas画板</canvas>
-   <img v-bind:src="url" alt="">
+    <x-header>手写笔记<span slot="right" @click="clear">清除</span><span slot="right" class="option-line">|</span><span slot="right" @click="save">保存</span></x-header>
+    <x-input class="input" placeholder="标题" v-model="title"></x-input>
+    <canvas id="canvas" width="375px" height="525px">Canvas画板</canvas>
+   <!-- <img v-bind:src="url" alt=""> -->
+   <popup v-model="show">
+      <popup-header
+      right-text="确定"
+      title="请选择文件保存分类:"
+      :show-bottom-border="true"
+      @on-click-left="show = false"
+      @on-click-right="save"></popup-header>
+      <group gutter="0">
+        <radio :options="options" v-model="opt"></radio>
+      </group>
+    </popup>
   </div>
  
 </template>
 
 <script>
+import { XInput, XHeader, PopupHeader, Popup, Group, Radio, AlertModule } from 'vux'
+import { getItem } from '../../utils/storage'
 var draw
 var preHandler = function (e) {
   e.preventDefault()
@@ -82,8 +94,28 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       val: true,
-      url: ''
+      url: '',
+      title: '',
+      options: [{
+        key: 0,
+        value: '工作文件'
+      }, {
+        key: 1,
+        value: '生活文件'
+      }],
+      show: false,
+      opt: 0,
+      userId: getItem('user').id
     }
+  },
+  components: {
+    XInput,
+    XHeader,
+    PopupHeader,
+    Popup,
+    Group,
+    Radio,
+    AlertModule
   },
   mounted () {
     draw = new Draw('canvas')
@@ -106,10 +138,14 @@ export default {
 </script>
  <!-- Add "scoped" attribute to limit CSS to this component only --> 
  <style scoped> 
+ .hello{
+   width: 100%;
+   height: 100%;
+ }
  h1, h2 { font-weight: normal; } 
  ul { list-style-type: none; padding: 0; } 
  li { display: inline-block; margin: 0 10px; } 
  a { color: #42b983; } 
- #canvas { background: pink; cursor: default; } 
+ #canvas { background: white; cursor: default; } 
  #keyword-box { margin: 10px 0; }
 </style>
