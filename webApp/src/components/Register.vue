@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="login-font">登  录</div>
+    <div class="login-font">注  册</div>
     <div class="loginBg">
       <div class="login-icon"><i class='fa fa-user-plus' style="font-size:100px;color:#494949;"></i></div>
         <x-input class="input" placeholder="用户名" v-model="userName" :required="true"></x-input>

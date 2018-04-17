@@ -5,7 +5,11 @@ const createId = () => Math.round(new Date().getTime()/1000)
 
 export const addFileFun = (id, fileId, title, content, type,fileType,updateTime) => {
   return new Promise((resolve,reject) => {
-    const  sql = `
+    const sql = fileType === 'voice' ?
+      `
+        insert into file (file_id,file_title,file_blob,user_id,file_type,update_time,update_user,type,is_trash) values ("${fileId}","${title}",${JSON.parse(content)},"${id}","${fileType}","${updateTime}","${id}",${type},0)
+      `
+      : `
         insert into file (file_id,file_title,file_content,user_id,file_type,update_time,update_user,type,is_trash) values ("${fileId}","${title}",'${content}',"${id}","${fileType}","${updateTime}","${id}",${type},0)
       `;
       console.log(sql)
@@ -17,12 +21,12 @@ export const addFileFun = (id, fileId, title, content, type,fileType,updateTime)
 export const getFileList = (id,type,isTrash,val) => {
   return new Promise((resolve,reject) => {
     const sql1 = parseInt(isTrash) ? `
-      select * from file where user_id = '${id}' and is_trash = ${isTrash} and file_title like '%${val}%' 
+      select * from file where update_time in (select max(update_time) from file group by file_id) and user_id = '${id}' and is_trash = ${isTrash} and file_title like '%${val}%'
 		` : `
-      select * from file where user_id = '${id}' and type = ${type} and is_trash = ${isTrash} and file_title like '%${val}%' group by file_id
+      select * from file where update_time in (select max(update_time) from file group by file_id) and user_id = '${id}' and type = ${type} and is_trash = ${isTrash} and file_title like '%${val}%'
     ` 
     const sql2 = `
-      select * from file,F${id},user where file.file_id = F${id}.file_id and user.user_id = F${id}.friend_id and file.file_title like '%${val}%'
+      select * from file,F${id},user where update_time in (select max(update_time) from file group by file_id) and file.file_id = F${id}.file_id and user.user_id = F${id}.friend_id and file.file_title like '%${val}%'
     `
     const sql = type === '2' ? sql2 : sql1
     query(sql,resolve,reject)

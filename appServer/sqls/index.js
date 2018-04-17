@@ -1,5 +1,5 @@
 import {
-	searchUserByNameFun,
+	searchUserFun,
 	addUserFun,
 	searchFriendsFun,
 	createTable,
@@ -8,7 +8,9 @@ import {
 	delFriendFun,
 	shareFileFun,
 	updateFriendFun,
-	delSFileFun
+	delSFileFun,
+	changePwd,
+	searchFriendByIdFun
 } from './userSql'
 import {
 	getFileById,
@@ -45,7 +47,7 @@ export const query = (sql,resolve,reject) => connection.query(sql,function (err,
 });
 
 export {
-	searchUserByNameFun,
+	searchUserFun,
 	addUserFun,
 	createTable,
 	searchFriendsFun,
@@ -55,6 +57,8 @@ export {
 	shareFileFun,
 	updateFriendFun,
 	delSFileFun,
+	changePwd,
+	searchFriendByIdFun,
 
 	addFileFun,
 	getFileById,

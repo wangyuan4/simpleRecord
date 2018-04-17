@@ -16,7 +16,7 @@
 <script>
 import Recorder from '@/../static/recorder.browser.min.js'
 import vueLoading from 'vue-loading-template'
-import { XButton, Box, XHeader } from 'vux'
+import { XButton, Box, XHeader, PopupHeader, Popup, Group, Radio } from 'vux'
 
 let audioContext
 let recorder
@@ -25,7 +25,11 @@ export default {
     XButton,
     vueLoading,
     Box,
-    XHeader
+    XHeader,
+    PopupHeader,
+    Popup,
+    Group,
+    Radio
   },
   data () {
     return {
@@ -72,23 +76,38 @@ export default {
       // recorder.clear()
     },
     createDownloadLink () {
+      const _this = this
       console.log(recorder)
       recorder && recorder.exportWAV(function (blob) {
+        console.log(blob)
         console.log('blob get --->', blob)
-        var url = URL.createObjectURL(blob)
-        var li = document.createElement('li')
-        var au = document.createElement('audio')
-        var hf = document.createElement('a')
-        au.controls = true
-        au.src = url
-        hf.href = url
-        hf.download = new Date().toISOString() + '.wav'
-        hf.innerHTML = hf.download
-        li.appendChild(au)
-        li.appendChild(hf)
-        hf.click()
+        let url = URL.createObjectURL(blob)
+        _this.$router.push({
+          name: 'ShowVoice',
+          params: {
+            item: {
+              fileType: 'voice',
+              url,
+              blob
+            }
+          }
+        })
+        // var li = document.createElement('li')
+        // var au = document.createElement('audio')
+        // var hf = document.createElement('a')
+        // au.controls = true
+        // au.src = url
+        // hf.href = url
+        // hf.download = new Date().toISOString() + '.wav'
+        // hf.innerHTML = hf.download
+        // li.appendChild(au)
+        // li.appendChild(hf)
+        // hf.click()
         // recordingslist && recordingslist.appendChild(li)
       })
+    },
+    saveFile () {
+
     }
   }
 }

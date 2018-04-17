@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 import { 
   createTable, 
-  searchUserByNameFun, 
+	searchUserFun, 
   addUserFun, 
   searchFriendsFun, 
   addFriendFun, 
@@ -9,7 +9,9 @@ import {
   delFriendFun,
 	shareFileFun,
 	updateFriendFun,
-	delSFileFun
+	delSFileFun,
+	changePwd,
+	searchFriendByIdFun,
 } from "../sqls/index";
 import {createUTC} from './comDataDeal'
 import { BADRESP } from 'dns';
@@ -18,7 +20,7 @@ const router = new Router();
 
 router.get('/api/searchuser',async (ctx, next) => {
 	const {name,pwd} = ctx.query;
-  const data = await searchUserByNameFun(name)
+	const data = await searchUserFun(name)
 	let msg = ''
 	if(data.length && data[0].user_pwd !== pwd){
 		msg = '密码错误,请重试！'
@@ -36,7 +38,7 @@ router.get('/api/searchuser',async (ctx, next) => {
 
 router.post('/api/adduser',async (ctx,next) => {
 	const {name,pwd} = ctx.request.body;
-  const data = await searchUserByNameFun(name)
+	const data = await searchUserFun(name)
 	if(data.length === 0){
 		const userId = createUTC()
 		const result = await addUserFun(userId,name,pwd);
@@ -117,6 +119,35 @@ router.post('/api/delsharefile', async (ctx, next) => {
 	const res = await delSFileFun(userId,fileId)
 	ctx.body = res ? true : false;
 })
+
+router.post('/api/changepwd', async (ctx, next) => {
+	const { userId, newPwd } = ctx.request.body;
+	const res = await changePwd(userId, newPwd)
+	ctx.body = res ? true : false;
+})
+
+router.get('/api/getuserinfo', async (ctx, next) => {
+	const { userId, friendId } = ctx.query;
+	const res1 = await searchFriendByIdFun(userId, friendId)
+	if (res1.length === 0) {
+		const res2 = await searchUserFun(friendId)
+		return ctx.body = res2 ? {
+			status: true,
+			list: res2
+		} : {
+				status: false,
+				msg: '服务器内部错误！'
+			}
+	} else {
+		return ctx.body = res1 ? {
+			status: true,
+			list: res1
+		} : {
+				status: false,
+				msg: '服务器内部错误！'
+			}
+	}
+});
 
 
 export default router
