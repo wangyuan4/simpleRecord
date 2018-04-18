@@ -21,11 +21,22 @@
       </masker>
     </div>
     <input type="file" accept="image/*" ref="photo" @change="saveImg" style="width:0px;height:0px"/>
+    <!-- <x-dialog v-model="show" class="dialog-demo">
+        <div style="margin:10% 5%">
+          <div style="text-align:left;font-size:20px;margin-bottom:20px"><span>链接收藏</span></div>
+          <x-input title="标题" v-model="herf" class="input" ></x-input>
+          <x-input title="链接" v-model="herf" class="input" ></x-input>
+        </div>
+        <div style="text-align:right;margin-right:30px;margin-bottom:30px">
+          <span @click="save">确定</span>
+          <span @click="show=false;herf=''">取消</span>
+        </div>
+      </x-dialog> -->
   </div>
 </template>
 
 <script>
-import { Masker } from 'vux'
+import { Masker, XDialog, XInput } from 'vux'
 import axios from 'axios'
 
 export default {
@@ -56,7 +67,9 @@ export default {
         desc: '使用画笔创建手写笔记',
         target: 'scan',
         img: require('@/assets/note-add-upload.png')
-      }]
+      }],
+      show: false,
+      herf: ''
     }
   },
   methods: {
@@ -82,12 +95,15 @@ export default {
     }
   },
   components: {
-    Masker
+    Masker,
+    XDialog,
+    XInput
   }
 }
 </script>
 
-<style scoped>
+<style  scoped lang='less'>
+@import '~vux/src/styles/close';
 .m-img {
   padding-bottom: 33%;
   display: block;
@@ -120,5 +136,8 @@ export default {
   border-top: 1px solid #f0f0f0;
   display: inline-block;
   margin-top: 5px;
+}
+.input {
+  border-bottom: 1px solid black
 }
 </style>

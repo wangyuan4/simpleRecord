@@ -15,6 +15,7 @@ import {
 import {
 	getFileById,
 	addFileFun,
+	addMediaFileFun,
 	getFileList,
 	deleteFileFun,
 	updateFileFun,
@@ -61,6 +62,7 @@ export {
 	searchFriendByIdFun,
 
 	addFileFun,
+	addMediaFileFun,
 	getFileById,
 	getFileList,
 	deleteFileFun,

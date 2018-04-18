@@ -8,7 +8,9 @@
       <cell title="个人信息"  is-link class="list-style" link="/mine/info"></cell>
       <cell title="好友列表"  is-link class="list-style" link="/mine/friends"></cell>
       <cell title="新朋友"  is-link class="list-style" link="/mine/newFriend"></cell>
-      <cell title="个人二维码" is-link class="list-style" link="/mine/QRCode"></cell>
+      <cell title="个人二维码" is-link class="list-style" link="/mine/QRCode">
+        <i class='fa fa-qrcode' style="color:#35495e;margin-right:10px"></i>
+      </cell>
       <cell title="日历" is-link class="list-style" link="/mine/calender"></cell>
     </group>
     <group>

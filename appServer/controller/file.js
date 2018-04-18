@@ -4,7 +4,8 @@ import multer from 'koa-multer'
 import {
 	getFileList,
 	getFileById,
-	addFileFun,
+  addFileFun,
+  addMediaFileFun,
 	updateFileFun,
   deleteFileFun,
   delFileByUpTimeFun
@@ -104,8 +105,12 @@ router.post('/api/savefile',async (ctx) => {
 })
 
 router.post('/api/savemedia', upload.single('file'), async (ctx) => {
-  // const { userId, title, content, type, fileType, fileId } = ctx.request.body;
-  console.log(ctx.req.file)
+  const { userId, title, type, fileType } = JSON.parse(ctx.req.body.otherinfo)
+  const content = ctx.req.file
+  const fileId = createUTC()
+  const updateTime = createUTC()
+  const res = addMediaFileFun(userId,fileId,title,content,type,fileType,updateTime)
+  console.log(res)
 })
 
 router.post('/api/deletefile',async (ctx) => {

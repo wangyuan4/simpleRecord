@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
-    <x-header>手写笔记<span slot="right" @click="clear">清除</span><span slot="right" class="option-line">|</span><span slot="right" @click="save">保存</span></x-header>
+    <x-header>手写笔记<span slot="right" @click="clear">清除</span><span slot="right" class="option-line">|</span><span slot="right" @click="show=true">保存</span></x-header>
     <x-input class="input" placeholder="标题" v-model="title"></x-input>
-    <canvas id="canvas" width="375px" height="525px">Canvas画板</canvas>
+    <canvas id="canvas" width="375px" height="475px">Canvas画板</canvas>
    <!-- <img v-bind:src="url" alt=""> -->
    <popup v-model="show">
       <popup-header
@@ -21,6 +21,7 @@
 
 <script>
 import { XInput, XHeader, PopupHeader, Popup, Group, Radio, AlertModule } from 'vux'
+import axios from 'axios'
 import { getItem } from '../../utils/storage'
 var draw
 var preHandler = function (e) {
@@ -85,7 +86,7 @@ class Draw {
     this.cxt.clearRect(0, 0, 300, 600)
   }
   save () {
-    return this.canvas.toDataURL('image/png')
+    return this.canvas
   }
 }
 
@@ -122,13 +123,32 @@ export default {
     draw.init()
   },
   methods: {
-    clear: function () {
+    clear () {
       draw.clear()
     },
-    save: function () {
-      var data = draw.save()
-      this.url = data
-      console.log(data)
+    save () {
+      const _this = this
+      draw.save().toBlob((blob) => {
+        // const url = URL.createObjectURL(blob)
+        const fileName = this.title === '' ? `手写_${Math.round(new Date().getTime() / 1000)}` : this.title
+        const otherinfo = JSON.stringify({
+          userId: _this.userId,
+          title: fileName,
+          type: this.opt,
+          fileType: 'img'
+        })
+        let param = new FormData() // 创建form对象
+        param.append('file', blob) // 通过append向form对象添加数据
+        param.append('otherinfo', otherinfo) // 添加form表单中其他数据
+        let config = {
+          headers: {'Content-Type': 'multipart/form-data'}
+        }
+        // 添加请求头
+        axios.post(`/api/savemedia`, param, config)
+        .then(res => {
+          console.log(res)
+        })
+      })
     },
     mutate (word) {
       this.$emit('input', word)
@@ -142,6 +162,10 @@ export default {
    width: 100%;
    height: 100%;
  }
+ .option-line{
+  margin-left:4px;
+  margin-right: 4px
+}
  h1, h2 { font-weight: normal; } 
  ul { list-style-type: none; padding: 0; } 
  li { display: inline-block; margin: 0 10px; } 

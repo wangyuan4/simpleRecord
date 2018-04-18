@@ -75,10 +75,25 @@ export default {
   },
   created () {
     this.item = this.$route.params.item
+    console.log(this.item.base)
+    const blob = this.base64ToBlob(this.item.base)
+    let url = URL.createObjectURL(blob)
+    console.log(url)
   },
   mounted () {
   },
   methods: {
+    base64ToBlob (dataurl) {
+      const arr = dataurl.split(',')
+      const mime = arr[0].match(/:(.*?);/)[1]
+      const bstr = atob(arr[1])
+      let n = bstr.length
+      const u8arr = new Uint8Array(n)
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n)
+      }
+      return new Blob([u8arr], {type: mime})
+    },
     updateTime (e) {
       this.currentTime = (e.target.currentTime / this.duration) * 100
       if (this.currentTime === 100) {

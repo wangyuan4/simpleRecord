@@ -7,12 +7,16 @@
       @on-submit="getResult"
       ref="search">
     </search>
+    <sticky
+      :check-sticky-support="false"
+    >
       <tab>
         <tab-item selected @on-item-click="switchTabitem">工作文件</tab-item>
         <tab-item @on-item-click="switchTabitem">生活文件</tab-item>
         <tab-item @on-item-click="switchTabitem">好友分享</tab-item>
         <tab-item @on-item-click="switchTabitem">回收站</tab-item>
       </tab>
+    </sticky>
       <swipeout style="margin-top:6px">
         <swipeout-item transition-mode="follow" v-for="(item,index) in list" :key="index">
           <div slot="right-menu" >
@@ -57,7 +61,7 @@
 </template>
 
 <script>
-  import {AlertModule, Search, Tab, TabItem, Swipeout, SwipeoutItem, SwipeoutButton, Confirm, PopupHeader, Popup, Radio, Group} from 'vux'
+  import {AlertModule, Search, Tab, TabItem, Swipeout, SwipeoutItem, SwipeoutButton, Confirm, PopupHeader, Popup, Radio, Group, Sticky} from 'vux'
   import axios from 'axios'
   import { fileInfoTran } from '../../utils/dataTran'
   import { getItem } from '../../utils/storage'
@@ -74,7 +78,8 @@
       PopupHeader,
       Popup,
       Radio,
-      Group
+      Group,
+      Sticky
     },
     data () {
       return {
@@ -105,7 +110,7 @@
     },
     methods: {
       getResult (val) {
-        this.getFileList(this.currentTabIndex, this.currentTabIndex === 2 ? 1 : 0, val)
+        this.getFileList(this.currentTabIndex, this.currentTabIndex === 3 ? 1 : 0, val)
       },
       change (value, label) {
         this.shareType = value
@@ -123,7 +128,7 @@
             title: '删除成功！',
             content: this.list[this.currentIndex].isTrash ? '已永久删除！' : '已移到垃圾桶，如有需要可还原！'
           })
-          this.getFileList(this.currentTabIndex, this.currentTabIndex === 2 ? 1 : 0)
+          this.getFileList(this.currentTabIndex, this.currentTabIndex === 3 ? 1 : 0)
         }).catch((error) => {
           console.log(error)
         })

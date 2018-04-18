@@ -75,22 +75,24 @@ export default {
       this.createDownloadLink()
       // recorder.clear()
     },
-    createDownloadLink () {
+    async createDownloadLink () {
       const _this = this
       console.log(recorder)
       recorder && recorder.exportWAV(function (blob) {
         console.log(blob)
         console.log('blob get --->', blob)
         let url = URL.createObjectURL(blob)
-        _this.$router.push({
-          name: 'ShowVoice',
-          params: {
-            item: {
-              fileType: 'voice',
-              url,
-              blob
+        _this.blobToDataURL(blob, (re) => {
+          _this.$router.push({
+            name: 'ShowVoice',
+            params: {
+              item: {
+                fileType: 'voice',
+                url,
+                base: re
+              }
             }
-          }
+          })
         })
         // var li = document.createElement('li')
         // var au = document.createElement('audio')
@@ -106,8 +108,14 @@ export default {
         // recordingslist && recordingslist.appendChild(li)
       })
     },
+    blobToDataURL (blob, callback) {
+      var a = new FileReader()
+      a.onload = function (e) {
+        callback(e.target.result)
+      }
+      a.readAsDataURL(blob)
+    },
     saveFile () {
-
     }
   }
 }
