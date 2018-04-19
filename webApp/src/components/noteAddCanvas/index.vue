@@ -86,7 +86,7 @@ class Draw {
     this.cxt.clearRect(0, 0, 300, 600)
   }
   save () {
-    return this.canvas
+    return this.canvas.toDataURL()
   }
 }
 
@@ -127,27 +127,24 @@ export default {
       draw.clear()
     },
     save () {
-      const _this = this
-      draw.save().toBlob((blob) => {
-        // const url = URL.createObjectURL(blob)
-        const fileName = this.title === '' ? `手写_${Math.round(new Date().getTime() / 1000)}` : this.title
-        const otherinfo = JSON.stringify({
-          userId: _this.userId,
-          title: fileName,
-          type: this.opt,
-          fileType: 'img'
-        })
-        let param = new FormData() // 创建form对象
-        param.append('file', blob) // 通过append向form对象添加数据
-        param.append('otherinfo', otherinfo) // 添加form表单中其他数据
-        let config = {
-          headers: {'Content-Type': 'multipart/form-data'}
-        }
-        // 添加请求头
-        axios.post(`/api/savemedia`, param, config)
-        .then(res => {
-          console.log(res)
-        })
+      const file = draw.save()
+      const fileName = this.title === '' ? `手写_${Math.round(new Date().getTime() / 1000)}` : this.title
+      const otherinfo = JSON.stringify({
+        userId: this.userId,
+        title: fileName,
+        type: this.opt,
+        fileType: 'img'
+      })
+      let param = new FormData() // 创建form对象
+      param.append('file', file) // 通过append向form对象添加数据
+      param.append('otherinfo', otherinfo) // 添加form表单中其他数据
+      let config = {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }
+      // 添加请求头
+      axios.post(`/api/savemedia`, param, config)
+      .then(res => {
+        res.data && this.$router.push('/note/list')
       })
     },
     mutate (word) {

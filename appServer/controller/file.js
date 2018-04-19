@@ -1,11 +1,11 @@
 import Router from 'koa-router'
+import fs from 'fs'
 import {diffLines} from 'diff'
 import multer from 'koa-multer'
 import {
 	getFileList,
 	getFileById,
   addFileFun,
-  addMediaFileFun,
 	updateFileFun,
   deleteFileFun,
   delFileByUpTimeFun
@@ -13,22 +13,22 @@ import {
 import {removeSpeciChar,createUTC} from './comDataDeal'
 
 const router = new Router()
-const storage = multer.diskStorage({
-  //文件保存路径  
-  // destination: function (req, file, cb) {
-  //   cb(null, 'public/uploads/')
-  // },
-  //修改文件名称  
-  // filename: function (req, file, cb) {
-  //   var fileFormat = (file.originalname).split(".");
-  //   cb(null, Date.now() + "." + fileFormat[fileFormat.length - 1]);
-  // }
-})  
-const upload = multer({ storage: storage })
+const storage = multer.diskStorage({})
+const maxSize = 1 * 1000 * 1000 * 1000
+const upload = multer({ 
+  storage: storage,
+  limits: { fieldSize: maxSize }
+ })
 
 router.get('/api/getfilelist',async (ctx) => {
   const {id,type,isTrash,val} = ctx.query;
   const result = await getFileList(id,type,isTrash,val);
+  result.map(el => {
+    if (el.file_type === 'img' || el.file_type === 'voice') {
+      const pre = el.file_type === 'img' ? 'data:image/png;base64,' : 'data:audio/wav;base64,'
+      el.file_content = pre + fs.readFileSync(`controller/data/${el.file_id}`).toString("base64")
+    }
+  })
   ctx.body = result ? {
     status:true,
     list:result
@@ -106,11 +106,20 @@ router.post('/api/savefile',async (ctx) => {
 
 router.post('/api/savemedia', upload.single('file'), async (ctx) => {
   const { userId, title, type, fileType } = JSON.parse(ctx.req.body.otherinfo)
-  const content = ctx.req.file
+  const content = ctx.req.body.file
   const fileId = createUTC()
   const updateTime = createUTC()
-  const res = addMediaFileFun(userId,fileId,title,content,type,fileType,updateTime)
-  console.log(res)
+  const base = fileType === 'img' ? content.replace(/^data:image\/\w+;base64,/, "") : content.replace(/^data:audio\/\w+;base64,/, "")
+  const buf = new Buffer(base, 'base64')
+  fs.open(`controller/data/${fileId}`, "w", function (err, fd) {
+    fs.writeFile(`controller/data/${fileId}`, buf, function (err) {
+      if (err) {
+        return console.error(err)
+      }
+    })
+  })
+  const res = addFileFun(userId,fileId,title,'',type,fileType,updateTime)
+  ctx.body = res ? true: false
 })
 
 router.post('/api/deletefile',async (ctx) => {
@@ -127,6 +136,5 @@ router.post('/api/revertfile', async (ctx) => {
 	const result =	await updateFileFun(fileId, [{ keyName: 'is_trash', keyValue: 0 }])
 	ctx.body = result ? true : false;
 })
-
 
 export default router

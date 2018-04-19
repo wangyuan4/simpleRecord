@@ -21,23 +21,26 @@
       </masker>
     </div>
     <input type="file" accept="image/*" ref="photo" @change="saveImg" style="width:0px;height:0px"/>
-    <!-- <x-dialog v-model="show" class="dialog-demo">
-        <div style="margin:10% 5%">
-          <div style="text-align:left;font-size:20px;margin-bottom:20px"><span>链接收藏</span></div>
-          <x-input title="标题" v-model="herf" class="input" ></x-input>
-          <x-input title="链接" v-model="herf" class="input" ></x-input>
-        </div>
-        <div style="text-align:right;margin-right:30px;margin-bottom:30px">
-          <span @click="save">确定</span>
-          <span @click="show=false;herf=''">取消</span>
-        </div>
-      </x-dialog> -->
+    <x-dialog v-model="show" class="dialog-demo">
+      <div style="margin:10% 5%">
+        <div class="dialog-title"><span>图片信息</span></div>
+        <x-input title="标题" v-model="title" class="input" placeholder="请填写图片标题" style="font-size:16px" ></x-input>
+        <group gutter="0">
+          <radio :options="options" v-model="opt" class="radio" style="font-size:16px"></radio>
+        </group>
+      </div>
+      <div class="btn">
+        <span @click="save" style="margin-left:40px">确定</span>
+        <span @click="show=false;herf=''">取消</span>
+      </div>
+    </x-dialog>
   </div>
 </template>
 
 <script>
-import { Masker, XDialog, XInput } from 'vux'
+import { Masker, XDialog, XInput, Group, Radio } from 'vux'
 import axios from 'axios'
+import { getItem } from '../../utils/storage'
 
 export default {
   data () {
@@ -65,11 +68,21 @@ export default {
       }, {
         title: '新建手写笔记',
         desc: '使用画笔创建手写笔记',
-        target: 'scan',
+        target: 'canvas',
         img: require('@/assets/note-add-upload.png')
       }],
+      options: [{
+        key: 0,
+        value: '工作文件'
+      }, {
+        key: 1,
+        value: '生活文件'
+      }],
       show: false,
-      herf: ''
+      opt: -1,
+      title: '',
+      file: {},
+      userId: getItem('user').id
     }
   },
   methods: {
@@ -79,25 +92,43 @@ export default {
       : this.$router.push(`/note/add/${item.target}`)
     },
     saveImg (e) {
-      const file = e.target.files[0]
-      let param = new FormData() // 创建form对象
-      param.append('file', file, file.name) // 通过append向form对象添加数据
-      param.append('chunk', '0') // 添加form表单中其他数据
-      console.log(param.get('file')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
-      let config = {
-        headers: {'Content-Type': 'multipart/form-data'}
+      this.file = e.target.files[0]
+      this.show = true
+    },
+    save () {
+      const reader = new FileReader()
+      const _this = this
+      reader.onloadend = function () {
+        const dataURL = reader.result
+        const fileName = _this.title === '' ? `图片_${Math.round(new Date().getTime() / 1000)}` : _this.title
+        const otherinfo = JSON.stringify({
+          userId: _this.userId,
+          title: fileName,
+          type: _this.opt,
+          fileType: 'img'
+        })
+        console.log(otherinfo)
+        let param = new FormData() // 创建form对象
+        param.append('file', dataURL) // 通过append向form对象添加数据
+        param.append('otherinfo', otherinfo) // 添加form表单中其他数据
+        let config = {
+          headers: {'Content-Type': 'multipart/form-data'}
+        }
+        // 添加请求头
+        axios.post(`/api/savemedia`, param, config)
+        .then(res => {
+          res.data && _this.$router.push('/note/list')
+        })
       }
-      // 添加请求头
-      axios.post(`/api/savemedia`, param, config)
-      .then(res => {
-        console.log(res)
-      })
+      reader.readAsDataURL(this.file) // 读出 base64
     }
   },
   components: {
     Masker,
     XDialog,
-    XInput
+    XInput,
+    Group,
+    Radio
   }
 }
 </script>
@@ -137,7 +168,20 @@ export default {
   display: inline-block;
   margin-top: 5px;
 }
-.input {
-  border-bottom: 1px solid black
+.dialog-title {
+  text-align: left;
+  margin: 30px 20px;
+  font-size: 20px;
+}
+.radio {
+  text-align: left
+}
+.btn {
+  text-align:right;
+  margin-right:30px;
+  margin-bottom:30px;
+}
+.btn span{
+  margin-left: 30px;
 }
 </style>

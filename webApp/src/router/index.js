@@ -9,7 +9,7 @@ import NoteShow from '@/components/noteList/showFileInfo'
 
 import NoteAddInput from '@/components/noteAddInput'
 import NoteAddMakdown from '@/components/noteAddMarkdown'
-import NoteAddScan from '@/components/noteAddScan'
+import NoteAddCanvas from '@/components/noteAddCanvas'
 import Mine from '@/components/mine/index'
 import Info from '@/components/mine/info'
 import Friends from '@/components/mine/friends'
@@ -61,9 +61,9 @@ export default new Router({
           name: 'noteAddMakdown',
           component: NoteAddMakdown
         }, {
-          path: '/note/add/scan',
-          name: 'NoteAddScan',
-          component: NoteAddScan
+          path: '/note/add/canvas',
+          name: 'NoteAddCanvas',
+          component: NoteAddCanvas
         }, {
           path: '/note/add/voice',
           name: 'NoteAddVoice',

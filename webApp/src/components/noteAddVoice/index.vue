@@ -77,35 +77,18 @@ export default {
     },
     async createDownloadLink () {
       const _this = this
-      console.log(recorder)
       recorder && recorder.exportWAV(function (blob) {
-        console.log(blob)
-        console.log('blob get --->', blob)
-        let url = URL.createObjectURL(blob)
         _this.blobToDataURL(blob, (re) => {
           _this.$router.push({
             name: 'ShowVoice',
             params: {
               item: {
                 fileType: 'voice',
-                url,
-                base: re
+                content: re
               }
             }
           })
         })
-        // var li = document.createElement('li')
-        // var au = document.createElement('audio')
-        // var hf = document.createElement('a')
-        // au.controls = true
-        // au.src = url
-        // hf.href = url
-        // hf.download = new Date().toISOString() + '.wav'
-        // hf.innerHTML = hf.download
-        // li.appendChild(au)
-        // li.appendChild(hf)
-        // hf.click()
-        // recordingslist && recordingslist.appendChild(li)
       })
     },
     blobToDataURL (blob, callback) {

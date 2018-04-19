@@ -1,6 +1,6 @@
 <template>
   <div>
-    <x-header>{{item.title}}<span slot="right" v-if="multiVer" @click="show1=true">回退版本</span><span slot="right" class="option-line" v-if="multiVer">|</span><span slot="right" @click="save">保存</span></x-header>
+    <x-header :left-options="{preventGoBack: true}" @on-click-back="backToList">{{item.title}}<span slot="right" v-if="multiVer" @click="show1=true">回退版本</span><span slot="right" class="option-line" v-if="multiVer">|</span><span slot="right" @click="save">保存</span></x-header>
     <x-input class="input" placeholder="标题" v-model="item.title"></x-input>
     <mavon-editor
       class="md"
@@ -140,6 +140,11 @@ export default {
       })
   },
   methods: {
+    backToList () {
+      this.$router.push({
+        path: this.item.id === '' ? '/note/add' : '/note/list'
+      })
+    },
     save () {
       this.item.id === '' ? this.show = true : this.saveFile()
     },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <x-header>播放音频文件<span slot="right" @click="show=true" v-if="item.blob">保存</span></x-header>
+    <x-header>{{item.title||'播放音频文件'}}<span slot="right" @click="show=true" v-if="!item.title">保存</span></x-header>
     <div class="animate-group">
       <vue-loading v-if="recordIng" type="bars" color="#d9544e" :size="{ width: '50px', height: '50px' }"></vue-loading>
       <vue-loading v-if="!recordIng" type="beat" color="#d9544e" :size="{ width: '50px', height: '50px' }"></vue-loading>
@@ -38,7 +38,7 @@
 import { XInput, Box, XButton, XHeader, PopupHeader, Popup, Group, Radio, XProgress } from 'vux'
 import vueLoading from 'vue-loading-template'
 import axios from 'axios'
-import { setItem, getItem } from '../../utils/storage'
+import { getItem } from '../../utils/storage'
 export default {
   components: {
     XButton,
@@ -75,10 +75,8 @@ export default {
   },
   created () {
     this.item = this.$route.params.item
-    console.log(this.item.base)
-    const blob = this.base64ToBlob(this.item.base)
-    let url = URL.createObjectURL(blob)
-    console.log(url)
+    const blob = this.base64ToBlob(this.item.content)
+    this.item.url = URL.createObjectURL(blob)
   },
   mounted () {
   },
@@ -119,29 +117,25 @@ export default {
       }
     },
     saveFile () {
-      const body = {
+      const file = this.item.content
+      const fileName = this.title === '' ? `语音_${Math.round(new Date().getTime() / 1000)}` : this.title
+      const otherinfo = JSON.stringify({
         userId: this.userId,
-        fileId: '',
-        title: this.title === '' ? `语音_${Math.round(new Date().getTime() / 1000)}` : this.title,
+        title: fileName,
         type: this.opt,
-        content: this.item.url,
         fileType: 'voice'
+      })
+      let param = new FormData() // 创建form对象
+      param.append('file', file) // 通过append向form对象添加数据
+      param.append('otherinfo', otherinfo) // 添加form表单中其他数据
+      let config = {
+        headers: {'Content-Type': 'multipart/form-data'}
       }
-      axios
-        .post(`/api/savefile`, body)
-        .then((res) => {
-          if (res.data.status) {
-            setItem('voicefile', {
-              title: body.title,
-              url: this.item.url
-            })
-            this.$router.push({
-              path: '/note/list'
-            })
-          }
-        }).catch((error) => {
-          console.log(error)
-        })
+      // 添加请求头
+      axios.post(`/api/savemedia`, param, config)
+      .then(res => {
+        res.data && this.$router.push('/note/list')
+      })
     }
   }
 }

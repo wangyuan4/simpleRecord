@@ -14,17 +14,6 @@ export const addFileFun = (id, fileId, title, content, type,fileType,updateTime)
   })
 }
 
-export const addMediaFileFun = (id, fileId, title, content, type, fileType, updateTime) => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-        insert into file (file_id,file_title,file_blob,user_id,file_type,update_time,update_user,type,is_trash) values ("${fileId}","${title}",${content},"${id}","${fileType}","${updateTime}","${id}",${type},0)
-      `;
-    console.log(sql)
-    query(sql, resolve, reject)
-
-  })
-}
-
 export const getFileList = (id, type, isTrash, val) => {
   return new Promise((resolve,reject) => {
     const sql1 = parseInt(isTrash) ? `

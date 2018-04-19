@@ -109,6 +109,17 @@
       }
     },
     methods: {
+      base64ToBlob (dataurl) {
+        const arr = dataurl.split(',')
+        const mime = arr[0].match(/:(.*?);/)[0]
+        const bstr = atob(arr[1])
+        let n = bstr.length
+        const u8arr = new Uint8Array(n)
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n)
+        }
+        return new Blob([u8arr], {type: mime})
+      },
       getResult (val) {
         this.getFileList(this.currentTabIndex, this.currentTabIndex === 3 ? 1 : 0, val)
       },
@@ -225,7 +236,14 @@
           case 'voice': opt = {
             name: 'ShowVoice',
             params: {
-              item: getItem('voicefile')
+              item: data
+            }
+          }
+            break
+          case 'img': opt = {
+            name: 'noteShow',
+            params: {
+              item: data
             }
           }
             break
@@ -244,7 +262,11 @@
           }})
           .then((res) => {
             if (res.data.status) {
+              res.data.list.map(el => {
+                el.file_content = el.file_type === 'img' ? URL.createObjectURL(this.base64ToBlob(el.file_content)) : el.file_content
+              })
               this.list = fileInfoTran(res.data.list)
+              console.log(this.list)
             } else {
               AlertModule.show({
                 content: res.data.msg
