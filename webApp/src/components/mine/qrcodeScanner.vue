@@ -1,11 +1,21 @@
 <template>
-  <div>
+  <div style="height:520px">
     <x-header>二维码扫描</x-header>    
     <qrcode-reader
+      class="qrscan"
       @decode="onDecode"
       :paused="paused"
     >
     </qrcode-reader>
+    <div class="qrbody">
+      <div class="qrbox">
+        <span class="sp row row1"></span>
+        <span class="sp row row2"></span>
+        <span class="sp col col1"></span>
+        <span class="sp col col2"></span>
+        <div class="line"></div>
+      </div>
+    </div>
     <x-dialog v-model="show" class="dialog-demo">
       <div>
 			  <i class='fa fa-user' style="font-size:80px;color:#35495e"></i>
@@ -132,10 +142,7 @@ export default {
 
 <style scoped lang='less'>
 @import '~vux/src/styles/close';
-.mine-head{
-  margin:15% 35% 10px 35%;
-  text-align: center;
-}
+
 .btn{
   border-radius:99px;
   width:80%;
@@ -143,4 +150,69 @@ export default {
   color: #494949;
   border: 1px #494949 solid
 }
+.qrscan{
+  z-index: 1;
+}
+.qrbody{
+  position: absolute;
+  background-color: #494949;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  top: 46px;
+  opacity: 0.7;
+}
+.qrbox {
+  position: absolute;
+  z-index: 150; 
+  top: 30%;
+  bottom: 30%;
+  left: 30%;
+  right: 30%;
+  width:150px;
+  height:150px;
+  background-color: white;
+}
+.sp {
+  position:absolute;
+  padding:5px;
+  border-style: solid;
+  border-color: rgb(11, 196, 20);
+}
+.row1 {
+  border-width: 3px 0 0 3px;
+  top:-5px;
+  left:-5px;
+}
+.row2 {
+  border-width: 3px 3px 0 0;
+  top:-5px;
+  right:-5px;
+}
+.col1 {
+  border-width: 0 0 3px 3px;
+  bottom:-5px;
+  left:-5px;
+}
+.col2 {
+  border-width: 0 3px 3px 0;
+  bottom:-5px;
+  right:-5px;
+}
+
+.line{ 
+    position: absolute; 
+    top: 0px;
+    z-index: 101; 
+    height: 1px; 
+    width: 150px;
+    background-color: rgb(3, 110, 8);
+    animation: myScan 1s infinite alternate; 
+    -webkit-animation: myScan 1s infinite alternate; 
+}
+@keyframes  myScan{
+    from { top:5px; }
+    to { top: 150px; }
+}
+
 </style>

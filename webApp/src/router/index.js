@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import FirstPage from '../beginPage/firstpage'
 import Login from '../components/Login'
 import Register from '../components/Register'
 import App from '../App'
@@ -28,6 +29,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'firstpage',
+      component: FirstPage
+    },
+    {
+      path: '/login',
       name: 'login',
       component: Login
     }, {
